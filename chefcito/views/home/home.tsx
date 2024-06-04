@@ -1,22 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks/hook';
-import { decrement, increment } from '../../redux/reducer/counter';
+import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
+const mcdonaldsImage = require("../../assets/images/mcdonalds.jpg")
+const burgerKing = require("../../assets/images/burgerKing.jpg")
+const mostaza = require("../../assets/images/mostaza.jpg")
+const wendys = require("../../assets/images/wendys.jpg")
 
 export default function Home() {
-  const dispatch = useAppDispatch()
-  const count = useAppSelector((state) => state.counter.value)
 
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
-      <Text>{count}</Text>
-      <Button title='increment' onPress={()=>{
-        dispatch(increment())
-      }} />
-      <Button title='decrement' onPress={()=>{
-        dispatch(decrement())
-      }} />
+      <ImageCarrousel data={[
+        {
+          id:'1',
+          image:mcdonaldsImage,
+        },
+        {
+          id:'2',
+          image:burgerKing,
+        },
+        {
+          id:'3',
+          image:mostaza,
+        },
+        {
+          id:'4',
+          image:wendys,
+        },
+        {
+          id:'5',
+          image:mcdonaldsImage,
+        },
+      ]}
+      />
     </View>
   );
 }

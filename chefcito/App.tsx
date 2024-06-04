@@ -17,13 +17,22 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'home'
-                : 'home';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'settings' : 'settings';
+            switch(route.name) {
+              case 'Home':
+                iconName = 'home'
+                break;
+              case 'Mapa':
+                iconName = 'map'
+                break;
+              case 'Explorar':
+                iconName = 'compass'
+                break;
+              case 'Restós':
+                iconName = 'restaurant'
+                break;
+              case 'Perfil':
+                iconName = 'list'
+                break;
             }
 
             // You can return any component that you like here!
@@ -34,7 +43,10 @@ export default function App() {
         })}
         >
           <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Settings" component={Settings} />
+          <Tab.Screen name="Mapa" component={Settings} />
+          <Tab.Screen name="Explorar" component={Settings} />
+          <Tab.Screen name="Restós" component={Settings} />
+          <Tab.Screen name="Perfil" component={Settings} />
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
