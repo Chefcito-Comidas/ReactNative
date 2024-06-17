@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "170744366068",
+    "project_id": "chefcito-comidas",
+    "storage_bucket": "chefcito-comidas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170744366068:android:fceb222b2e64f79ee6afa1",
+        "android_client_info": {
+          "package_name": "chefcito.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170744366068-hrdaou9sieacr0eg5fui2c23npa2berf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyywY2VXheuHWyAl-rjKQvvMXbsuxu2L8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170744366068-hrdaou9sieacr0eg5fui2c23npa2berf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
