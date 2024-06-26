@@ -4,6 +4,7 @@ import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
 import { useAppSelector } from 'redux/hooks/hook';
 import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
+import { createUserPassword, loginUserPassword } from '../../api/googleAuth';
 const mcdonaldsImage = require("../../assets/images/mcdonalds.jpg")
 const burgerKing = require("../../assets/images/burgerKing.jpg")
 const mostaza = require("../../assets/images/mostaza.jpg")
@@ -23,41 +24,12 @@ export default function Home() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const signIn = () => {
-    auth()
-    .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-    .then(() => {
-      console.log('User account created & signed in!');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(error);
-    });
+  const signIn = async () => {
+    const user = await createUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
   }
 
-  const onLogin = () =>{
-    auth().signInWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-    .then(()=>{
-      console.log('log in');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(error);
-    });
+  const onLogin = async () =>{
+    const user = await loginUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
   }
   return (
     <View style={styles.container}>
