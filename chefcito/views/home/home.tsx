@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
-import { useAppSelector } from 'redux/hooks/hook';
+import { useAppDispatch, } from '../../redux/hooks/hook';
+import { login } from '../../redux/reducer/user';
 import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { createUserPassword, loginUserPassword } from '../../api/googleAuth';
@@ -12,11 +13,12 @@ const wendys = require("../../assets/images/wendys.jpg")
 export default function Home() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
-
+  const dispatch = useAppDispatch()
   const onAuthStateChanged  = (user) => {
     setUser(user);
     if (initializing) setInitializing(false);
     console.log('user',user)
+    dispatch(login(user))
   }
 
   useEffect(() => {
@@ -26,14 +28,25 @@ export default function Home() {
 
   const signIn = async () => {
     const user = await createUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
+    if(user) {
+      console.log('sign in exitoso')
+    } else {
+      console.log('sign in error')
+    }
   }
 
   const onLogin = async () =>{
     const user = await loginUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
+    if(user) {
+      console.log('log in exitoso')
+    } else {
+      console.log('log in error')
+    }
   }
+
   return (
     <View style={styles.container}>
-      <Button title='Log in' onPress={signIn} />
+      <Button title='Log in' onPress={onLogin} />
       {/* <ImageCarrousel data={[
         {
           id:'1',
