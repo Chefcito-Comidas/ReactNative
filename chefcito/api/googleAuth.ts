@@ -9,6 +9,7 @@ const loginUserPassword = async (email:string,password:string) => {
     } catch (error:any) {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log("Error: ",errorCode,errorMessage)
         return null
     }
 }
@@ -20,6 +21,7 @@ const createUserPassword = async (email:string,password:string) => {
     } catch (error:any) {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log("Error: ",errorCode,errorMessage)
         return null
     }
 }

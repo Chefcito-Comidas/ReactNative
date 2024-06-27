@@ -6,6 +6,8 @@ import { login } from '../../redux/reducer/user';
 import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { createUserPassword, loginUserPassword } from '../../api/googleAuth';
+import { LogInForm } from '../../utils/components/login/login';
+import { SignInForm } from '../../utils/components/signIn/signIn';
 const mcdonaldsImage = require("../../assets/images/mcdonalds.jpg")
 const burgerKing = require("../../assets/images/burgerKing.jpg")
 const mostaza = require("../../assets/images/mostaza.jpg")
@@ -16,9 +18,11 @@ export default function Home() {
   const dispatch = useAppDispatch()
   const onAuthStateChanged  = (user) => {
     setUser(user);
-    if (initializing) setInitializing(false);
+    if (initializing) {
+      setInitializing(false);
+      // dispatch(login(user))
+    }
     console.log('user',user)
-    dispatch(login(user))
   }
 
   useEffect(() => {
@@ -26,27 +30,8 @@ export default function Home() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const signIn = async () => {
-    const user = await createUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
-    if(user) {
-      console.log('sign in exitoso')
-    } else {
-      console.log('sign in error')
-    }
-  }
-
-  const onLogin = async () =>{
-    const user = await loginUserPassword('jane.doe@example.com', 'SuperSecretPassword!')
-    if(user) {
-      console.log('log in exitoso')
-    } else {
-      console.log('log in error')
-    }
-  }
-
   return (
     <View style={styles.container}>
-      <Button title='Log in' onPress={onLogin} />
       {/* <ImageCarrousel data={[
         {
           id:'1',
@@ -70,6 +55,8 @@ export default function Home() {
         },
       ]}
       /> */}
+      <LogInForm/>
+      {/* <SignInForm/> */}
       {user&&<Text>{user?.email}</Text>}
     </View>
   );
