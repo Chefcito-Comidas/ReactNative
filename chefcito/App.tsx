@@ -1,19 +1,35 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
-import Home from './views/home/home';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-import Settings from './views/Settings/Settings';
 import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
+import { useEffect } from 'react';
+import { GetUser } from './hooks/getUser.hook';
+
+import Home from './views/home/home';
+import Settings from './views/Settings/Settings';
+import { LogInForm } from './views/login/login';
+import { SignInForm } from './views/signIn/signIn';
+
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const {
+    user,
+    initializing,
+  } = GetUser()
+
+  useEffect(()=>{
+    console.log(user,initializing)
+  },[user,initializing])
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator
+        {(!initializing&&user!==null)&&<Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -47,18 +63,14 @@ export default function App() {
           <Tab.Screen name="Explorar" component={Settings} />
           <Tab.Screen name="Restós" component={Settings} />
           <Tab.Screen name="Perfil" component={Settings} />
-        </Tab.Navigator>
+        </Tab.Navigator>}
+        {!(!initializing&&user!==null)&&<Stack.Navigator>
+          <Stack.Screen name="LogIn" component={LogInForm} />
+          <Stack.Screen name="SignIn" component={SignInForm} />
+        </Stack.Navigator>
+        }
       </NavigationContainer>
     </Provider>
-    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -26,7 +26,20 @@ const createUserPassword = async (email:string,password:string) => {
     }
 }
 
+const signOut = async () => {
+    try {
+        await auth().signOut()
+        return
+    } catch (error:any) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error: ",errorCode,errorMessage)
+        return
+    }
+}
+
 export {
     loginUserPassword,
     createUserPassword,
+    signOut,
 };

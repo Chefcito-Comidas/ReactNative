@@ -1,34 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
-import { useAppDispatch, } from '../../redux/hooks/hook';
-import { login } from '../../redux/reducer/user';
 import { useEffect, useState } from 'react';
-import auth from '@react-native-firebase/auth';
-import { createUserPassword, loginUserPassword } from '../../api/googleAuth';
-import { LogInForm } from '../../utils/components/login/login';
-import { SignInForm } from '../../utils/components/signIn/signIn';
+import { signOut } from '../../api/googleAuth';
+import { GetUser } from '../../hooks/getUser.hook';
 const mcdonaldsImage = require("../../assets/images/mcdonalds.jpg")
 const burgerKing = require("../../assets/images/burgerKing.jpg")
 const mostaza = require("../../assets/images/mostaza.jpg")
 const wendys = require("../../assets/images/wendys.jpg")
 export default function Home() {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState(null);
-  const dispatch = useAppDispatch()
-  const onAuthStateChanged  = (user) => {
-    setUser(user);
-    if (initializing) {
-      setInitializing(false);
-      // dispatch(login(user))
-    }
-    console.log('user',user)
-  }
+  const {
+    user
+  } = GetUser()
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  useEffect(()=>{
+    console.log(user)
+  },[user])
+
+  const signout = async () =>{
+    await signOut()
+  }
 
   return (
     <View style={styles.container}>
@@ -55,8 +46,7 @@ export default function Home() {
         },
       ]}
       /> */}
-      <LogInForm/>
-      {/* <SignInForm/> */}
+      <Button onPress={()=>signout()} title='sing out'></Button>
       {user&&<Text>{user?.email}</Text>}
     </View>
   );
