@@ -18,6 +18,7 @@ export const GetUser = ():GetUserActions => {
       const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
       return subscriber; // unsubscribe on unmount
     },[])
+
     return {
       initializing,
       user,

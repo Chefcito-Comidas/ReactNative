@@ -4,15 +4,18 @@ import { Button, TextInput, View, StyleSheet,Text,Pressable } from 'react-native
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { createUserPassword } from '../../api/googleAuth';
+import { getSearchResult } from '../../api/authRestApi';
 
 export const SignInForm = ({ navigation }) => {
 
     const signIn = async (values:any) => {
         const user = await createUserPassword(values.email,values.password)
         if(user) {
-          console.log('sign in exitoso')
+            const token = await user.getIdToken()
+            const newUser = await getSearchResult(token)
+            console.log('sign in exitoso',newUser)
         } else {
-          console.log('sign in error')
+            console.log('sign in error')
         }
     }
 

@@ -5,9 +5,6 @@ import { useEffect } from 'react';
 
 export default function Restaurant({route, navigation}) {
     const {restaurant} = route.params;
-    useEffect(()=>{
-        console.log(restaurant)
-    },[restaurant])
 
     return (
     <View style={styles.container}>
