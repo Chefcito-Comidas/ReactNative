@@ -69,11 +69,11 @@ export default function App() {
           tabBarInactiveTintColor: 'gray',
         })}
         >
-          <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
-          <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false }} />
-          <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false }} />
-          <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false }} />
-          <Tab.Screen name="PerfilNavigation" component={Profile} options={{ headerShown: false }} />
+          <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />
+          <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} />
+          <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} />
+          <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} />
+          <Tab.Screen name="PerfilNavigation" component={Profile} options={{ headerShown: false, title:'Perfil'}} />
         </Tab.Navigator>}
         {!(!initializing&&user!==null)&&<Stack.Navigator>
           <Stack.Screen name="LogIn" component={LogInForm} />
