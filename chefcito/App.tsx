@@ -12,9 +12,20 @@ import Home from './views/home/home';
 import Settings from './views/Settings/Settings';
 import { LogInForm } from './views/login/login';
 import { SignInForm } from './views/signIn/signIn';
+import Profile from './views/Profile/Profile';
+import Restaurant from './views/Restaurant/Restaurant';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function HomeNavigation() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Restaurante" component={Restaurant} />
+    </Stack.Navigator>
+  )
+}
 
 export default function App() {
   const {
@@ -34,19 +45,19 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             switch(route.name) {
-              case 'Home':
+              case 'HomeNavigation':
                 iconName = 'home'
                 break;
-              case 'Mapa':
+              case 'MapaNavigation':
                 iconName = 'map'
                 break;
-              case 'Explorar':
+              case 'ExplorarNavigation':
                 iconName = 'compass'
                 break;
-              case 'Restós':
+              case 'RestósNavigation':
                 iconName = 'restaurant'
                 break;
-              case 'Perfil':
+              case 'PerfilNavigation':
                 iconName = 'list'
                 break;
             }
@@ -58,11 +69,11 @@ export default function App() {
           tabBarInactiveTintColor: 'gray',
         })}
         >
-          <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Mapa" component={Settings} />
-          <Tab.Screen name="Explorar" component={Settings} />
-          <Tab.Screen name="Restós" component={Settings} />
-          <Tab.Screen name="Perfil" component={Settings} />
+          <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false }} />
+          <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false }} />
+          <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false }} />
+          <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false }} />
+          <Tab.Screen name="PerfilNavigation" component={Profile} options={{ headerShown: false }} />
         </Tab.Navigator>}
         {!(!initializing&&user!==null)&&<Stack.Navigator>
           <Stack.Screen name="LogIn" component={LogInForm} />
