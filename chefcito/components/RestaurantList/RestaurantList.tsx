@@ -14,16 +14,15 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
 
     const _renderItem = (item:Restaurant) =>{
         return (
-          <Pressable style={styles.Pressable} onPress={()=>goToRestaurantPage(item)}>
-                <View style={styles.RestaurantView}>
-                    <Image source={{uri:`data:image/jpeg;base64,${item.image}`}} style={styles.IconImage}/>
-                    <View style={styles.InfoContainer}>
-                        <Text style={styles.Name}>{item.name}</Text>
-                        <Text style={styles.Location}>{item.location.street}</Text>
-                    </View>
+        <Pressable style={styles.Pressable} onPress={()=>goToRestaurantPage(item)}>
+            <View style={styles.RestaurantView}>
+                <Image source={{uri:`data:image/jpeg;base64,${item.image}`}} style={styles.IconImage}/>
+                <View style={styles.InfoContainer}>
+                    <Text style={styles.Name}>{item.name}</Text>
+                    <Text style={styles.Location}>{item.location.street}</Text>
                 </View>
-          </Pressable>
-
+            </View>
+        </Pressable>
         )
     }
 
