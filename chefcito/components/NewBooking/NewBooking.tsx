@@ -20,10 +20,8 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
         setDate(currentDate);
         setShow(false)
     };
-    const onChangeTime = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setTime(currentDate);
-        setShowTimePicker(false)
+    const onChangeTime = (value) => {
+        console.log('onChangeTime',value)
     };
     const IsValid = ():boolean => {
         const amount = parseInt(people)
@@ -73,6 +71,8 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
                     mode={'date'}
                     is24Hour={true}
                     onChange={onChange}
+                    minimumDate={moment().toDate()}
+                    maximumDate={moment().add(1,"month").toDate()}
                     />}
                     {showTimePicker&&<DateTimePicker
                     value={time}
