@@ -40,7 +40,7 @@ export default function Restaurant({route, navigation}) {
               <Text style={styles.Name}>{restaurant.name}</Text>
           </View>
           <View>
-            <Text style={styles.Location}>{restaurant.location.street}</Text>
+            <Text style={styles.Location}>{restaurant.location}</Text>
             {/*Temporal despues reemplazar por un mapa de verdad*/}
             <Image source={img} style={styles.Image} />
           </View>

@@ -1,7 +1,7 @@
 export class Restaurant {
     id:string;
     name:string;
-    location:Location
+    location:string
     image:string;
 }
 
