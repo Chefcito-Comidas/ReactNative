@@ -15,7 +15,7 @@ export default function Home({navigation}) {
         {
           id:'10',
           image:WendysImage,
-          location:"https://maps.app.goo.gl/c9524XNaxyTpeoXY8",
+          location:"-34.5070944,-58.542399",
           name:'wendys'
         }
       ]} navigation={navigation} />

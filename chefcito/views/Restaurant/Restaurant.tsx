@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View,Image,ScrollView,SafeAreaView  } from 'react-native';
+import { Button, StyleSheet, Text, View,Image,ScrollView,SafeAreaView, Pressable, Platform, Linking  } from 'react-native';
 import NewBooking from "../../components/NewBooking/NewBooking"
 import { useState } from 'react';
 import {NewBookingModel,NewBookingPost} from "../../models/NewBooking.model";
@@ -32,6 +32,16 @@ export default function Restaurant({route, navigation}) {
     } 
   }
 
+  const openMaps = () => {
+    const fullAddress = restaurant.location
+    const url = Platform.select({
+      ios: `maps:0,0?q=${fullAddress}`,
+      android: `geo:0,0?q=${fullAddress}`,
+    })
+    
+    Linking.openURL(url)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView centerContent={true}>
@@ -40,9 +50,9 @@ export default function Restaurant({route, navigation}) {
               <Text style={styles.Name}>{restaurant.name}</Text>
           </View>
           <View>
-            <Text style={styles.Location}>{restaurant.location}</Text>
+            <Pressable onPress={openMaps} style={styles.mapButton}><Text style={styles.Location}>Abrir ubicacion en el mapa</Text></Pressable>
             {/*Temporal despues reemplazar por un mapa de verdad*/}
-            <Image source={img} style={styles.Image} />
+            {/* <Image source={img} style={styles.Image} /> */}
           </View>
           <View style={styles.ButtonContainer}>
             <Button title='Hacer una Reserva' onPress={()=>setShowNewBooking(true)} />
@@ -57,6 +67,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingHorizontal:8
   },
   MainImage: {
     width:'100%',
@@ -77,5 +88,11 @@ const styles = StyleSheet.create({
   },
   ButtonContainer:{
     marginTop:12
+  },
+  mapButton:{
+    borderRadius:8,
+    borderWidth:2,
+    borderColor:'gray',
+    marginTop:8
   }
 });
