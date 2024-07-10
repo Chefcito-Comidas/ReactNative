@@ -1,24 +1,39 @@
 import { StyleSheet, Text, View,Pressable } from 'react-native';
 import RestaurantList from '../../components/RestaurantList/RestaurantList';
-import {WendysImage} from "../../models/Restauran.model"
+import {Restaurant, WendysImage} from "../../models/Restauran.model"
 import Ionicons from '@expo/vector-icons/Ionicons';
-const wendys = require("../../assets/images/wendys.jpg")
+import { useEffect, useState } from 'react';
+import {getRestaurant} from "../../api/Restaurant.API"
+import { GetUser } from '../../hooks/getUser.hook';
+import Loader from '../../components/Loader/Loader';
 
 export default function Home({navigation}) {
+
+  const [restaurants,setRestaurants] = useState<Restaurant[]>([])
+  const {user,initializing} = GetUser()
+  const [loading,setLoading] = useState(false)
+  const getRestaurantData = async () => {
+    try {
+      setLoading(true)
+      const restaurantList = await getRestaurant(user)
+      setLoading(false)
+      setRestaurants(restaurantList)
+    } catch {
+      setLoading(false)
+    }
+    
+  }
+  useEffect(()=>{
+    if(!initializing) getRestaurantData()
+  },[user,initializing])
   return (
     <View style={styles.container}>
+      {loading&&<Loader />}
       <Pressable style={styles.searchBar}>
         <Ionicons name={'search'} size={16}  />
         <Text style={styles.searchText}>Buscar</Text>
       </Pressable>
-      <RestaurantList data={[
-        {
-          id:'10',
-          image:WendysImage,
-          location:"-34.5070944,-58.542399",
-          name:'wendys'
-        }
-      ]} navigation={navigation} />
+      {restaurants.length>0&&<RestaurantList data={restaurants} navigation={navigation} />}
     </View>
   );
 }

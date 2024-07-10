@@ -3,6 +3,12 @@ export class Restaurant {
     name:string;
     location:string
     image:string;
+    capacity:number;
+    status:Status;
+}
+
+type Status = {
+    status:string;
 }
 
 class Location{

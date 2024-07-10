@@ -1,5 +1,6 @@
 import { Restaurant } from '../../models/Restauran.model';
 import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'react-native';
+import {WendysImage} from "../../models/Restauran.model"
 interface RestaurantListProps {
     data:Restaurant[],
     navigation
@@ -15,7 +16,7 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
         return (
         <Pressable style={styles.Pressable} onPress={()=>goToRestaurantPage(item)}>
             <View style={styles.RestaurantView}>
-                <Image source={{uri:`data:image/jpeg;base64,${item.image}`}} style={styles.IconImage}/>
+                <Image source={{uri:`data:image/jpeg;base64,${WendysImage}`}} style={styles.IconImage}/>
                 <View style={styles.InfoContainer}>
                     <Text style={styles.Name}>{item.name}</Text>
                     {/* <Text style={styles.Location}>{item.location}</Text> */}

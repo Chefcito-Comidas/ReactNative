@@ -30,6 +30,8 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
     const onAccept = () => {
         const timeData = moment(time)
         const dateData = moment(date)
+        setShowTimePicker(false)
+        setShow(false)
         dateData.set('hour', timeData.hour()); 
         dateData.set('minute', timeData.minute()); 
         dateData.set('second', timeData.second());

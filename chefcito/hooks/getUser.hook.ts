@@ -7,10 +7,12 @@ type GetUserActions = {
 export const GetUser = ():GetUserActions => {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState<FirebaseAuthTypes.User>(null);
-    const onAuthStateChanged  = (user) => {
+    const onAuthStateChanged  = async (user) => {
       setInitializing(false);
       if(user) {
         setUser(user);
+        const token = await user.getIdToken()
+        console.log('token',token)
       }
     }
   
