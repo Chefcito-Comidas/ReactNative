@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor:'gray',
         padding:10, 
+        marginVertical:4
     },
     RestaurantView:{
         flex:1,

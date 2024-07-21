@@ -7,7 +7,10 @@ import {PostBooking} from "../../api/bookings";
 import {WendysImage} from "../../models/Restauran.model";
 import Loader from '../../components/Loader/Loader';
 import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
-const wendys = require('../../assets/images/wendys.jpg')
+const wendys_1 = require('../../assets/images/wendys.jpg')
+const wendys_2 = require('../../assets/images/wendys_menu_1.jpg')
+const wendys_3 = require('../../assets/images/wendys_menu_2.jpg')
+const wendys_4= require('../../assets/images/wendys_menu_3.jpg')
 export default function Restaurant({route, navigation}) {
  
   const {
@@ -84,24 +87,24 @@ export default function Restaurant({route, navigation}) {
               [
                 {
                   id:'1',
-                  image:wendys
+                  image:wendys_1
                 },
                 {
                   id:'2',
-                  image:wendys
+                  image:wendys_2
                 },
                 {
                   id:'3',
-                  image:wendys
+                  image:wendys_3
                 },
                 {
                   id:'4',
-                  image:wendys
+                  image:wendys_4
                 },
-                {
-                  id:'5',
-                  image:wendys
-                }
+                // {
+                //   id:'5',
+                //   image:wendys
+                // }
               ]
             } />
           </View>
