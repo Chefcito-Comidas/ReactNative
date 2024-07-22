@@ -34,7 +34,7 @@ export default function Home({navigation}) {
       const props = new GetReservationProps()
       props.start = 0;
       props.limit = 20;
-      // props.status = "Accepted"
+      props.status = "Accepted"
       // props.from_time = moment().toISOString()
       // props.to_time = moment().add(1,"months").toISOString()
       const reservation = await GetReservations(props,user)
