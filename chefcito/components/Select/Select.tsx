@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, StyleSheet, Text, Pressable, FlatList,SafeAreaView, ScrollView,} from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, FlatList,SafeAreaView, ScrollView,View} from 'react-native';
 
 type Items = {
     label:string;
@@ -16,9 +16,10 @@ export const Select = ({onValueChange,items,placeHolder}:SelectProps) => {
     const [value,setvalue] = useState('')
     const renderItem = ({item}) => {
         return (
-            <Pressable onPress={()=>{
+            <Pressable style={styles.flatListStyle} onPress={()=>{
                 onValueChange(item.value)
                 setvalue(item.value)
+                setShow(false)
             }}>
                 <Text>{item.label}</Text>
             </Pressable>
@@ -27,10 +28,12 @@ export const Select = ({onValueChange,items,placeHolder}:SelectProps) => {
     return(
         <>
             <Pressable onPress={()=>setShow(true)} style={styles.placeHolder}>
-                {value?<Text>{placeHolder}</Text>:<Text>{value}</Text>}
+                <Text>{placeHolder}: {value}</Text>
             </Pressable>
-            <Modal transparent={true} animationType="slide" visible={show} onRequestClose={()=>{}}>
-                <FlatList scrollEnabled data={items} renderItem={renderItem} />
+            <Modal transparent={true} animationType="fade" visible={show} onRequestClose={()=>{}}>
+                <View style={styles.modal}>
+                    <FlatList scrollEnabled contentContainerStyle={{flex:1,justifyContent:'center'}} data={items} renderItem={renderItem} />
+                </View>
             </Modal>
         </>
         
@@ -39,7 +42,18 @@ export const Select = ({onValueChange,items,placeHolder}:SelectProps) => {
 
 const styles = StyleSheet.create({
     placeHolder:{
-        width:100,
-        height:70
+        width:'auto',
+        marginBottom:4
+    },
+    modal:{
+        flex:1,
+        alignItems:'center',
+        backgroundColor:'#00000099',
+        alignContent:'center'
+    },
+    flatListStyle:{
+        backgroundColor:'white',
+        paddingHorizontal:40,
+        paddingVertical:4,
     }
 })

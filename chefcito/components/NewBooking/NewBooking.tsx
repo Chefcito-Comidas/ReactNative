@@ -3,6 +3,7 @@ import {NewBookingModel} from "../../models/NewBooking.model"
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import { Select } from '../../components/Select/Select';
 type NewBookingProps = {
     cancel:()=>void;
     accept:(value:NewBookingModel)=>void;
@@ -11,6 +12,7 @@ type NewBookingProps = {
 export default function NewBooking({cancel,accept,show}:NewBookingProps) {
     const [date,setDate] = useState(new Date())
     const [time,setTime] = useState(new Date())
+    const [slot,setSlot] = useState('');
     const [people,setPeople] = useState('1')
     const [showDatePicker, setShow] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
@@ -32,6 +34,7 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
         const dateData = moment(date)
         setShowTimePicker(false)
         setShow(false)
+        console.log('slot',slot)
         dateData.set('hour', timeData.hour()); 
         dateData.set('minute', timeData.minute()); 
         dateData.set('second', timeData.second());
@@ -63,11 +66,19 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
                     onPress={() => setShow(true)}>
                         <Text style={styles.textStyle}>Elegir Fecha</Text>
                     </Pressable>
-                    <Pressable
+                    {/* <Pressable
                     style={[styles.button]}
                     onPress={() => setShowTimePicker(true)}>
                         <Text style={styles.textStyle}>Elegir Horario</Text>
-                    </Pressable>
+                    </Pressable> */}
+                    <Select onValueChange={setSlot} items={[
+                        {label:'11:00',value:'11:00'},
+                        {label:'12:00',value:'12:00'},
+                        {label:'13:00',value:'13:00'},
+                        {label:'14:00',value:'14:00'},
+                        {label:'15:00',value:'15:00'},
+                        {label:'16:00',value:'16:00'},
+                    ]} placeHolder='Elegir Horario' />
                     {showDatePicker&&<DateTimePicker
                     value={date}
                     mode={'date'}
@@ -76,12 +87,12 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
                     minimumDate={moment().toDate()}
                     maximumDate={moment().add(1,"month").toDate()}
                     />}
-                    {showTimePicker&&<DateTimePicker
+                    {/* {showTimePicker&&<DateTimePicker
                     value={time}
                     mode={'time'}
                     is24Hour={true}
                     onChange={onChangeTime}
-                    />}
+                    />} */}
                     <View style={styles.buttonContainer}>
                         <Pressable
                         disabled={!IsValid()}
