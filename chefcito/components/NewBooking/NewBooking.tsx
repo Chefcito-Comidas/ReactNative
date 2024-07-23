@@ -7,9 +7,10 @@ import { Select } from '../../components/Select/Select';
 type NewBookingProps = {
     cancel:()=>void;
     accept:(value:NewBookingModel)=>void;
-    show:boolean
+    show:boolean;
+    slots:string[];
 }
-export default function NewBooking({cancel,accept,show}:NewBookingProps) {
+export default function NewBooking({cancel,accept,show,slots}:NewBookingProps) {
     const [date,setDate] = useState(new Date())
     const [time,setTime] = useState(new Date())
     const [slot,setSlot] = useState('');
@@ -71,14 +72,12 @@ export default function NewBooking({cancel,accept,show}:NewBookingProps) {
                     onPress={() => setShowTimePicker(true)}>
                         <Text style={styles.textStyle}>Elegir Horario</Text>
                     </Pressable> */}
-                    <Select onValueChange={setSlot} items={[
-                        {label:'11:00',value:'11:00'},
-                        {label:'12:00',value:'12:00'},
-                        {label:'13:00',value:'13:00'},
-                        {label:'14:00',value:'14:00'},
-                        {label:'15:00',value:'15:00'},
-                        {label:'16:00',value:'16:00'},
-                    ]} placeHolder='Elegir Horario' />
+                    <Select onValueChange={setSlot} items={slots.map((item)=>{
+                        return {
+                            label:item,
+                            value:item,
+                        }
+                    })} placeHolder='Elegir Horario' />
                     {showDatePicker&&<DateTimePicker
                     value={date}
                     mode={'date'}

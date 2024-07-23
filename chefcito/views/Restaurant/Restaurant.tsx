@@ -4,19 +4,24 @@ import { useRef, useState } from 'react';
 import {NewBookingModel,NewBookingPost} from "../../models/NewBooking.model";
 import {GetUser} from "../../hooks/getUser.hook";
 import {PostBooking} from "../../api/bookings";
-import {WendysImage} from "../../models/Restauran.model";
+import {Restaurant as RestaurantData, WendysImage} from "../../models/Restauran.model";
 import Loader from '../../components/Loader/Loader';
 import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
+import moment from 'moment';
 const wendys_1 = require('../../assets/images/wendys.jpg')
 const wendys_2 = require('../../assets/images/wendys_menu_1.jpg')
 const wendys_3 = require('../../assets/images/wendys_menu_2.jpg')
 const wendys_4= require('../../assets/images/wendys_menu_3.jpg')
+
+type routeParam = {
+  restaurant:RestaurantData
+}
 export default function Restaurant({route, navigation}) {
  
   const {
     user,
   } = GetUser()
-  const {restaurant} = route.params;
+  const {restaurant}:routeParam = route.params;
   const [showNewBooking,setShowNewBooking] = useState(false)
   const [loading,setLoading] = useState(false)
 
@@ -44,7 +49,7 @@ export default function Restaurant({route, navigation}) {
   }
 
   const openMaps = () => {
-    const fullAddress = '-34.5070944,-58.542399'
+    const fullAddress = restaurant.location.split("@").length>0?restaurant.location.split("@")[1]:restaurant.location
     const url = Platform.select({
       ios: `maps:0,0?q=${fullAddress}`,
       android: `geo:0,0?q=${fullAddress}`,
@@ -73,7 +78,7 @@ export default function Restaurant({route, navigation}) {
     <SafeAreaView style={styles.container}>
       <ScrollView centerContent={true}>
           {loading&&<Loader />}
-          <Image source={{uri:`data:image/jpeg;base64,${WendysImage}`}} style={styles.MainImage}/>
+          <Image source={{uri:restaurant.logo}} style={styles.MainImage}/>
           <View style={styles.InfoContainer}>
               <Text style={styles.Name}>{restaurant.name}</Text>
           </View>
@@ -83,35 +88,19 @@ export default function Restaurant({route, navigation}) {
             {/* <Image source={img} style={styles.Image} /> */}
           </View>
           <View style={styles.imageCarrousel}>
-            <ImageCarrousel data={
-              [
-                {
-                  id:'1',
-                  image:wendys_1
-                },
-                {
-                  id:'2',
-                  image:wendys_2
-                },
-                {
-                  id:'3',
-                  image:wendys_3
-                },
-                {
-                  id:'4',
-                  image:wendys_4
-                },
-                // {
-                //   id:'5',
-                //   image:wendys
-                // }
-              ]
-            } />
+            {restaurant.pictures&&restaurant.pictures.length>0&&<ImageCarrousel data={
+              restaurant.pictures.map((item,index)=>{
+                return {
+                  image:item,
+                  id:index
+                }
+              })
+            } />}
           </View>
           <View style={styles.ButtonContainer}>
             <Button title='Hacer una Reserva' onPress={()=>setShowNewBooking(true)} />
           </View>
-          <NewBooking show={showNewBooking} cancel={cancel} accept={accept} />
+          <NewBooking show={showNewBooking} cancel={cancel} accept={accept} slots={restaurant.slots.map((item)=>moment(item).format("HH:mm"))} />
         </ScrollView>
     </SafeAreaView>
   );

@@ -2,7 +2,9 @@ export class Restaurant {
     id:string;
     name:string;
     location:string
-    image:string;
+    logo:string;
+    pictures:string[];
+    slots:string[];
     capacity:number;
     status:Status;
 }
