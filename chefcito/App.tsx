@@ -60,6 +60,9 @@ export default function App() {
               case 'PerfilNavigation':
                 iconName = 'list'
                 break;
+              case 'HistorialNavigation':
+                iconName = 'history'
+                break;
             }
 
             // You can return any component that you like here!
@@ -70,6 +73,7 @@ export default function App() {
         })}
         >
           <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />
+          <Tab.Screen name="HistorialNavigation" component={Profile} options={{ headerShown: false, title:'Perfil'}} />
           <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} />
           <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} />
           <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} />

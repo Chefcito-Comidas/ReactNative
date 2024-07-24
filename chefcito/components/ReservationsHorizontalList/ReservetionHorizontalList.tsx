@@ -20,7 +20,7 @@ const ReservetionHorizontalList = ({data}:ReservetionHorizontalListProps) =>{
             }}
             >
                 <View>
-                    <Image source={{uri:`data:image/jpeg;base64,${item?.restaurant?.image}`}} style={{height:70,width:70}} />
+                    <Image source={{uri:`data:image/jpeg;base64,${item?.restaurant?.logo}`}} style={{height:70,width:70}} />
                 </View>
                 <View>
                     <Text>{item?.restaurant?.name}</Text>

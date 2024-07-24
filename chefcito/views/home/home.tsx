@@ -34,16 +34,11 @@ export default function Home({navigation}) {
       const props = new GetReservationProps()
       props.start = 0;
       props.limit = 20;
-      props.status = "Accepted"
-      // props.from_time = moment().toISOString()
-      // props.to_time = moment().add(1,"months").toISOString()
       const reservation = await GetReservations(props,user)
       for (const item of reservation) {
         const rest = await getRestaurantById(user,item.venue)
         item.restaurant = rest[0];
-        item.restaurant.image = WendysImage
       }
-      // console.log('reservation',reservation)
       setReservations(reservation)
     } catch (err) {
       console.log("get reservation error",err)
