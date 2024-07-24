@@ -1,4 +1,4 @@
-import { apiPost,apiGet } from "./apiRestWrapper"
+import { apiPost,apiGet,apiPut } from "./apiRestWrapper"
 import {NewBookingPost} from "../models/NewBooking.model";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Reservation } from '../models/Reservations.model';
@@ -33,4 +33,15 @@ export const GetReservations = async (props:GetReservationProps,user:FirebaseAut
     if(props.limit) reqProps += `&limit=${props.limit}`;
     if(props.start) reqProps += `&start=${props.start}`;
     return apiGet<any>({ url: `reservations?${reqProps}`,customHeaders:{Authorization:`Bearer ${token}`} })
+}
+
+export const CancelBooking = async (reservation:Reservation,user:FirebaseAuthTypes.User) => {
+    const token = await user.getIdToken()
+    const value = {
+        accept:false,
+        cancel:true,
+        time:reservation.time,
+        people:reservation.people
+    }
+    return apiPut<any>({ url: `reservations/${reservation.id}`,payload:value,customHeaders:{Authorization:`Bearer ${token}`} })
 }

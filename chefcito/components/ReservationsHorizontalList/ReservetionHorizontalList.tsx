@@ -1,22 +1,50 @@
 import moment from 'moment';
 import { Reservation } from '../../models/Reservations.model';
-import { SafeAreaView, View, FlatList,Image, Text } from 'react-native';
-
+import { SafeAreaView, View, FlatList,Image, Text,Pressable } from 'react-native';
+import { useState } from 'react';
+import { ConfirmationModal } from '../ConfirmationModal/ComfirmationModal';
+import {CancelBooking} from "../../api/bookings"
+import { GetUser } from '../../hooks/getUser.hook';
 
 interface ReservetionHorizontalListProps {
-    data:Reservation[]
+    data:Reservation[],
+    reload:()=>void,
 }
 
-const ReservetionHorizontalList = ({data}:ReservetionHorizontalListProps) =>{
+const ReservetionHorizontalList = ({data,reload}:ReservetionHorizontalListProps) =>{
+    const [show,setShow] = useState(false)
+    const [currentId,setCurrentId] = useState<Reservation>(null)
+    const {user} = GetUser()
+
+    const onAccept = async () =>{
+        setShow(false)
+        try {
+            const result = await CancelBooking(currentId,user)
+        } catch (err) {
+            console.log("Error al cancelar")
+        }
+        setCurrentId(null)
+        reload()
+    }
+
+    const onCancel = () =>{
+        setShow(false)
+        setCurrentId(null)
+    }
+
     const ReservationItem = (item:Reservation) =>{
         return (
-          <View style={{
+          <Pressable style={{
                 borderRadius: 5,
                 backgroundColor:'transparent',
                 marginHorizontal:12,
                 padding:10,
                 flex:1,
                 flexDirection:'row'
+            }}
+            onPress={()=>{
+                setCurrentId(item)
+                setShow(true)
             }}
             >
                 <View>
@@ -27,7 +55,7 @@ const ReservetionHorizontalList = ({data}:ReservetionHorizontalListProps) =>{
                     <Text>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
                     <Text>Personas: {item.people}</Text>
                 </View>
-          </View>
+          </Pressable>
     
         )
     }
@@ -46,7 +74,13 @@ const ReservetionHorizontalList = ({data}:ReservetionHorizontalListProps) =>{
                 keyExtractor={item => item.id}
                 />
             </View>
-            
+            <ConfirmationModal 
+            show={show}
+            title='Cancelar Reserva'
+            subtitle='Va a cancelar la reserva, ¿Esta seguro?'
+            onAccept={onAccept}
+            onCancel={onCancel}
+            />
         </SafeAreaView>
     );
 }

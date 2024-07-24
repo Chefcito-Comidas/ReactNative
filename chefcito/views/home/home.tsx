@@ -34,6 +34,7 @@ export default function Home({navigation}) {
       const props = new GetReservationProps()
       props.start = 0;
       props.limit = 20;
+      props.status = "Accepted"
       const reservation = await GetReservations(props,user)
       for (const item of reservation) {
         const rest = await getRestaurantById(user,item.venue)
@@ -63,7 +64,7 @@ export default function Home({navigation}) {
       {reservations.length>0&&
       <View>
         <Text style={styles.ReservationTitle}>Reservas</Text>
-        <ReservetionHorizontalList data={reservations} />
+        <ReservetionHorizontalList data={reservations} reload={getReservation} />
       </View>
       }
     </View>

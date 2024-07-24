@@ -7,7 +7,7 @@ import { StyleSheet, Text, View,Pressable } from 'react-native';
 import { Reservation } from '../../models/Reservations.model';
 import Loader from '../../components/Loader/Loader';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import ReservationHorizontalList from '../../components/ReservationHorizontalList/ReservationHorizontalList';
+import ReservationVerticalList from '../../components/ReservationVerticalList/ReservationVerticalList';
 
 export default function History({navigation}) {
     const {user,initializing} = GetUser()
@@ -19,16 +19,11 @@ export default function History({navigation}) {
           const props = new GetReservationProps()
           props.start = 0;
           props.limit = 20;
-          props.status = "Accepted"
-          // props.from_time = moment().toISOString()
-          // props.to_time = moment().add(1,"months").toISOString()
           const reservation = await GetReservations(props,user)
           for (const item of reservation) {
             const rest = await getRestaurantById(user,item.venue)
             item.restaurant = rest[0];
-            // item.restaurant.logo = WendysImage
           }
-          // console.log('reservation',reservation)
           setReservations(reservation)
         } catch (err) {
           console.log("get reservation error",err)
@@ -48,7 +43,7 @@ export default function History({navigation}) {
                 <Ionicons name={'search'} size={16}  />
                 <Text style={styles.searchText}>Buscar</Text>
             </Pressable>
-            {reservations.length>0&&<ReservationHorizontalList data={reservations}/>}
+            {reservations.length>0&&<ReservationVerticalList data={reservations} reload={getReservation} />}
         </View>
     )
 }

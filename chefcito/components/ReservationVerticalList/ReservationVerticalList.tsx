@@ -2,20 +2,50 @@ import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'r
 import {WendysImage} from "../../models/Restauran.model"
 import { Reservation } from '../../models/Reservations.model';
 import moment from 'moment';
-interface ReservationHorizontalListProps {
-    data:Reservation[],
-}
-const ReservationHorizontalList = ({data}:ReservationHorizontalListProps) =>{
+import { useState } from 'react';
+import { ConfirmationModal } from '../ConfirmationModal/ComfirmationModal';
+import {CancelBooking} from "../../api/bookings"
+import { GetUser } from '../../hooks/getUser.hook';
 
+interface ReservationVerticalListProps {
+    data:Reservation[],
+    reload:()=>void,
+}
+const ReservationVerticalList = ({data,reload}:ReservationVerticalListProps) =>{
+
+    const [show,setShow] = useState(false)
+    const [currentId,setCurrentId] = useState<Reservation>(null)
+    const {user} = GetUser()
+
+    const onAccept = async () =>{
+        setShow(false)
+        try {
+            const result = await CancelBooking(currentId,user)
+        } catch (err) {
+            console.log("Error al cancelar")
+        }
+        setCurrentId(null)
+        reload()
+    }
+
+    const onCancel = () =>{
+        setShow(false)
+        setCurrentId(null)
+    }
+    
     const _renderItem = (item:Reservation) =>{
         return (
-        <View style={{
+        <Pressable style={{
             borderRadius: 5,
             backgroundColor:'transparent',
             marginHorizontal:12,
             padding:10,
             flex:1,
             flexDirection:'row'
+        }}
+        onPress={()=>{
+            setCurrentId(item)
+            setShow(true)
         }}
         >
             <View>
@@ -27,7 +57,7 @@ const ReservationHorizontalList = ({data}:ReservationHorizontalListProps) =>{
                 <Text>Personas: {item.people}</Text>
                 <Text>Estado: {item.status.status}</Text>
             </View>
-          </View>
+          </Pressable>
         )
     }
 
@@ -44,7 +74,13 @@ const ReservationHorizontalList = ({data}:ReservationHorizontalListProps) =>{
                 keyExtractor={item => item.id}
                 />
             </View>
-            
+            <ConfirmationModal 
+            show={show}
+            title='Cancelar Reserva'
+            subtitle='Va a cancelar la reserva, ¿Esta seguro?'
+            onAccept={onAccept}
+            onCancel={onCancel}
+            />
         </SafeAreaView>
     );
 }
@@ -82,4 +118,4 @@ const styles = StyleSheet.create({
     }
   });
 
-export default ReservationHorizontalList
+export default ReservationVerticalList
