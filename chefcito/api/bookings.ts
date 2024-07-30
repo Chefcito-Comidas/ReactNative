@@ -45,3 +45,12 @@ export const CancelBooking = async (reservation:Reservation,user:FirebaseAuthTyp
     }
     return apiPut<any>({ url: `reservations/${reservation.id}`,payload:value,customHeaders:{Authorization:`Bearer ${token}`} })
 }
+
+export const EditBooking = async (reservation:Reservation,user:FirebaseAuthTypes.User) => {
+    const token = await user.getIdToken()
+    const value = {
+        time:reservation.time,
+        people:reservation.people
+    }
+    return apiPut<any>({ url: `reservations/${reservation.id}`,payload:value,customHeaders:{Authorization:`Bearer ${token}`} })
+}

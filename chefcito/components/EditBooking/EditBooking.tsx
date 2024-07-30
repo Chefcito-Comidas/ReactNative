@@ -4,33 +4,24 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { Select } from '../../components/Select/Select';
-type NewBookingProps = {
+import { Reservation } from '../../models/Reservations.model';
+type EditBookingProps = {
     cancel:()=>void;
     accept:(value:NewBookingModel)=>void;
     show:boolean;
     slots:string[];
+    booking:Reservation;
 }
-export default function NewBooking({cancel,accept,show,slots}:NewBookingProps) {
-    const [date,setDate] = useState(new Date())
+export default function EditBooking({cancel,accept,show,slots,booking}:EditBookingProps) {
     const [slot,setSlot] = useState('');
-    const [people,setPeople] = useState('1')
-    const [showDatePicker, setShow] = useState(false);
+    const [people,setPeople] = useState(booking.people.toString())
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setDate(currentDate);
-        setShow(false)
-    };
-    const onChangeTime = (value) => {
-        console.log('onChangeTime',value)
-    };
     const IsValid = ():boolean => {
         const amount = parseInt(people)
         return !isNaN(amount)
     } 
     const onAccept = () => {
-        const dateData = moment(date)
-        setShow(false)
+        const dateData = moment(booking.time)
         console.log('slot',slot)
         const hour = slot.split(':')[0]
         const minute = slot.split(':')[1]
@@ -59,36 +50,12 @@ export default function NewBooking({cancel,accept,show,slots}:NewBookingProps) {
                     placeholder="Cantidad de Personas"
                     keyboardType="numeric"
                     />
-                    <Pressable
-                    style={[styles.button]}
-                    onPress={() => setShow(true)}>
-                        <Text style={styles.textStyle}>Elegir Fecha</Text>
-                    </Pressable>
-                    {/* <Pressable
-                    style={[styles.button]}
-                    onPress={() => setShowTimePicker(true)}>
-                        <Text style={styles.textStyle}>Elegir Horario</Text>
-                    </Pressable> */}
                     <Select onValueChange={setSlot} items={slots.map((item)=>{
                         return {
                             label:item,
                             value:item,
                         }
-                    })} placeHolder='Elegir Horario' />
-                    {showDatePicker&&<DateTimePicker
-                    value={date}
-                    mode={'date'}
-                    is24Hour={true}
-                    onChange={onChange}
-                    minimumDate={moment().toDate()}
-                    maximumDate={moment().add(1,"month").toDate()}
-                    />}
-                    {/* {showTimePicker&&<DateTimePicker
-                    value={time}
-                    mode={'time'}
-                    is24Hour={true}
-                    onChange={onChangeTime}
-                    />} */}
+                    })} placeHolder='Elegir Horario' defaultValue={moment(booking.time).format("HH:mm")} />
                     <View style={styles.buttonContainer}>
                         <Pressable
                         disabled={!IsValid()}

@@ -9,11 +9,12 @@ type SelectProps = {
     onValueChange:(value:string)=>void;
     items:Items[];
     placeHolder:string;
+    defaultValue?:string;
 }
 
-export const Select = ({onValueChange,items,placeHolder}:SelectProps) => {
+export const Select = ({onValueChange,items,placeHolder,defaultValue=''}:SelectProps) => {
     const [show,setShow] = useState(false)
-    const [value,setvalue] = useState('')
+    const [value,setvalue] = useState(defaultValue)
     const renderItem = ({item}) => {
         return (
             <Pressable style={styles.flatListStyle} onPress={()=>{

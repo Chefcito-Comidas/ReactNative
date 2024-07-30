@@ -58,22 +58,6 @@ export default function Restaurant({route, navigation}) {
     Linking.openURL(url)
   }
 
-  const _renderItem = ({item,index}) => {
-    return (
-      <View style={{
-          backgroundColor:'floralwhite',
-          borderRadius: 5,
-          height: 250,
-          padding: 50,
-          marginLeft: 25,
-          marginRight: 25, }}>
-        <Text style={{fontSize: 30}}>{item.title}</Text>
-        <Text>{item.text}</Text>
-      </View>
-
-    )
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView centerContent={true}>
@@ -84,8 +68,6 @@ export default function Restaurant({route, navigation}) {
           </View>
           <View>
             <Pressable onPress={openMaps} style={styles.mapButton}><Text style={styles.Location}>Abrir ubicacion en el mapa</Text></Pressable>
-            {/*Temporal despues reemplazar por un mapa de verdad*/}
-            {/* <Image source={img} style={styles.Image} /> */}
           </View>
           <View style={styles.imageCarrousel}>
             {restaurant.pictures&&restaurant.pictures.length>0&&<ImageCarrousel data={

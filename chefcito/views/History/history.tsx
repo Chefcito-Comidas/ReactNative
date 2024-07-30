@@ -29,6 +29,12 @@ export default function History({navigation}) {
           console.log("get reservation error",err)
         }
     }
+
+    const goToReservationData = (reservation:Reservation) =>{
+      navigation.navigate('HistoryReservation', {
+        reservation:reservation
+      });
+    }
     
     useEffect(()=>{
     if(!initializing) {
@@ -43,7 +49,7 @@ export default function History({navigation}) {
                 <Ionicons name={'search'} size={16}  />
                 <Text style={styles.searchText}>Buscar</Text>
             </Pressable>
-            {reservations.length>0&&<ReservationVerticalList data={reservations} reload={getReservation} />}
+            {reservations.length>0&&<ReservationVerticalList data={reservations} goToReservationData={goToReservationData} />}
         </View>
     )
 }

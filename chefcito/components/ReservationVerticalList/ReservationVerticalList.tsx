@@ -1,37 +1,12 @@
 import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'react-native';
-import {WendysImage} from "../../models/Restauran.model"
 import { Reservation } from '../../models/Reservations.model';
 import moment from 'moment';
-import { useState } from 'react';
-import { ConfirmationModal } from '../ConfirmationModal/ComfirmationModal';
-import {CancelBooking} from "../../api/bookings"
-import { GetUser } from '../../hooks/getUser.hook';
 
 interface ReservationVerticalListProps {
     data:Reservation[],
-    reload:()=>void,
+    goToReservationData:(reservation:Reservation)=>void,
 }
-const ReservationVerticalList = ({data,reload}:ReservationVerticalListProps) =>{
-
-    const [show,setShow] = useState(false)
-    const [currentId,setCurrentId] = useState<Reservation>(null)
-    const {user} = GetUser()
-
-    const onAccept = async () =>{
-        setShow(false)
-        try {
-            const result = await CancelBooking(currentId,user)
-        } catch (err) {
-            console.log("Error al cancelar")
-        }
-        setCurrentId(null)
-        reload()
-    }
-
-    const onCancel = () =>{
-        setShow(false)
-        setCurrentId(null)
-    }
+const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalListProps) =>{
     
     const _renderItem = (item:Reservation) =>{
         return (
@@ -44,8 +19,7 @@ const ReservationVerticalList = ({data,reload}:ReservationVerticalListProps) =>{
             flexDirection:'row'
         }}
         onPress={()=>{
-            setCurrentId(item)
-            setShow(true)
+            goToReservationData(item)
         }}
         >
             <View>
@@ -74,13 +48,6 @@ const ReservationVerticalList = ({data,reload}:ReservationVerticalListProps) =>{
                 keyExtractor={item => item.id}
                 />
             </View>
-            <ConfirmationModal 
-            show={show}
-            title='Cancelar Reserva'
-            subtitle='Va a cancelar la reserva, ¿Esta seguro?'
-            onAccept={onAccept}
-            onCancel={onCancel}
-            />
         </SafeAreaView>
     );
 }
@@ -116,6 +83,6 @@ const styles = StyleSheet.create({
     Location:{
         fontSize: 16
     }
-  });
+});
 
 export default ReservationVerticalList

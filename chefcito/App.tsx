@@ -14,7 +14,8 @@ import { LogInForm } from './views/login/login';
 import { SignInForm } from './views/signIn/signIn';
 import Profile from './views/Profile/Profile';
 import Restaurant from './views/Restaurant/Restaurant';
-
+import ReservationData from './views/ReservationData/ReservationData';
+import History from "./views/History/history"
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,16 @@ function HomeNavigation() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Restaurante" component={Restaurant} />
+      <Stack.Screen name="HomeReservation" component={ReservationData} />
+    </Stack.Navigator>
+  )
+}
+
+function HistoryNavigation() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="History" component={History} />
+      <Stack.Screen name="HistoryReservation" component={ReservationData} />
     </Stack.Navigator>
   )
 }
@@ -61,7 +72,7 @@ export default function App() {
                 iconName = 'list'
                 break;
               case 'HistorialNavigation':
-                iconName = 'history'
+                iconName = 'list'
                 break;
             }
 
@@ -73,7 +84,7 @@ export default function App() {
         })}
         >
           <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />
-          <Tab.Screen name="HistorialNavigation" component={Profile} options={{ headerShown: false, title:'Perfil'}} />
+          <Tab.Screen name="HistorialNavigation" component={HistoryNavigation} options={{ headerShown: false, title:'Historial'}} />
           <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} />
           <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} />
           <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} />

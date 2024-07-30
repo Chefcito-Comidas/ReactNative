@@ -1,36 +1,13 @@
 import moment from 'moment';
 import { Reservation } from '../../models/Reservations.model';
 import { SafeAreaView, View, FlatList,Image, Text,Pressable } from 'react-native';
-import { useState } from 'react';
-import { ConfirmationModal } from '../ConfirmationModal/ComfirmationModal';
-import {CancelBooking} from "../../api/bookings"
-import { GetUser } from '../../hooks/getUser.hook';
 
 interface ReservetionHorizontalListProps {
     data:Reservation[],
-    reload:()=>void,
+    goToReservationData:(reservation:Reservation)=>void,
 }
 
-const ReservetionHorizontalList = ({data,reload}:ReservetionHorizontalListProps) =>{
-    const [show,setShow] = useState(false)
-    const [currentId,setCurrentId] = useState<Reservation>(null)
-    const {user} = GetUser()
-
-    const onAccept = async () =>{
-        setShow(false)
-        try {
-            const result = await CancelBooking(currentId,user)
-        } catch (err) {
-            console.log("Error al cancelar")
-        }
-        setCurrentId(null)
-        reload()
-    }
-
-    const onCancel = () =>{
-        setShow(false)
-        setCurrentId(null)
-    }
+const ReservetionHorizontalList = ({data,goToReservationData}:ReservetionHorizontalListProps) =>{
 
     const ReservationItem = (item:Reservation) =>{
         return (
@@ -43,8 +20,7 @@ const ReservetionHorizontalList = ({data,reload}:ReservetionHorizontalListProps)
                 flexDirection:'row'
             }}
             onPress={()=>{
-                setCurrentId(item)
-                setShow(true)
+                goToReservationData(item)
             }}
             >
                 <View>
@@ -74,13 +50,6 @@ const ReservetionHorizontalList = ({data,reload}:ReservetionHorizontalListProps)
                 keyExtractor={item => item.id}
                 />
             </View>
-            <ConfirmationModal 
-            show={show}
-            title='Cancelar Reserva'
-            subtitle='Va a cancelar la reserva, ¿Esta seguro?'
-            onAccept={onAccept}
-            onCancel={onCancel}
-            />
         </SafeAreaView>
     );
 }

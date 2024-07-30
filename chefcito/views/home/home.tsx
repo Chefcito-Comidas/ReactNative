@@ -18,6 +18,16 @@ export default function Home({navigation}) {
   const {user,initializing} = GetUser()
   const [loading,setLoading] = useState(false)
 
+  useEffect(()=>{
+    const unsubscribe = navigation.addListener('focus', (e) => {
+      if(!initializing) {
+        getRestaurantData()
+        getReservation()
+      }
+    });
+    return unsubscribe
+  },[])
+
   const getRestaurantData = async () => {
     try {
       setLoading(true)
@@ -46,6 +56,12 @@ export default function Home({navigation}) {
     }
   }
 
+  const goToReservationData = (reservation:Reservation) =>{
+    navigation.navigate('HomeReservation', {
+      reservation:reservation
+    });
+  }
+
   useEffect(()=>{
     if(!initializing) {
       getRestaurantData()
@@ -64,7 +80,7 @@ export default function Home({navigation}) {
       {reservations.length>0&&
       <View>
         <Text style={styles.ReservationTitle}>Reservas</Text>
-        <ReservetionHorizontalList data={reservations} reload={getReservation} />
+        <ReservetionHorizontalList data={reservations} goToReservationData={goToReservationData} />
       </View>
       }
     </View>
