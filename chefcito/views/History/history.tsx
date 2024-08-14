@@ -1,4 +1,4 @@
-import { GetReservationProps, GetReservations } from 'api/bookings';
+import { GetReservationProps, GetReservations } from '../../api/bookings';
 import { getRestaurantById } from '../../api/Restaurant.API';
 import { GetUser } from '../../hooks/getUser.hook';
 import { WendysImage } from '../../models/Restauran.model';
@@ -8,6 +8,7 @@ import { Reservation } from '../../models/Reservations.model';
 import Loader from '../../components/Loader/Loader';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ReservationVerticalList from '../../components/ReservationVerticalList/ReservationVerticalList';
+import { COLORS } from '../../utils/constants';
 
 export default function History({navigation}) {
     const {user,initializing} = GetUser()
@@ -46,7 +47,7 @@ export default function History({navigation}) {
         <View style={styles.container}>
             {loading&&<Loader />}
             <Pressable style={styles.searchBar}>
-                <Ionicons name={'search'} size={16}  />
+                <Ionicons name={'search'} size={16} color={COLORS.white}  />
                 <Text style={styles.searchText}>Buscar</Text>
             </Pressable>
             {reservations.length>0&&<ReservationVerticalList data={reservations} goToReservationData={goToReservationData} />}
@@ -62,17 +63,19 @@ const styles = StyleSheet.create({
       padding:8
     },
     searchBar:{
-        borderColor:'gray',
-        borderWidth:2,
-        borderRadius:8,
-        width:'100%',
-        paddingStart:8,
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center'
+      borderColor:COLORS.silver,
+      backgroundColor:COLORS.blue,
+      borderWidth:2,
+      borderRadius:8,
+      width:'100%',
+      paddingStart:8,
+      display:'flex',
+      flexDirection:'row',
+      alignItems:'center'
     },
     searchText:{
-        fontSize:18,
-        marginStart:4
+      fontSize:18,
+      marginStart:4,
+      color:COLORS.white,
     },
   });

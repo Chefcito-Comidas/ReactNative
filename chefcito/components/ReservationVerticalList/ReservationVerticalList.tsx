@@ -1,6 +1,7 @@
 import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'react-native';
 import { Reservation } from '../../models/Reservations.model';
 import moment from 'moment';
+import { COLORS } from '../../utils/constants';
 
 interface ReservationVerticalListProps {
     data:Reservation[],
@@ -12,7 +13,8 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
         return (
         <Pressable style={{
             borderRadius: 5,
-            backgroundColor:'transparent',
+            backgroundColor:COLORS.blue,
+            borderColor:COLORS.white,
             marginHorizontal:12,
             padding:10,
             flex:1,
@@ -26,10 +28,10 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
                 <Image source={{uri:`data:image/jpeg;base64,${item?.restaurant?.logo}`}} style={{height:70,width:70}} />
             </View>
             <View>
-                <Text>{item?.restaurant?.name}</Text>
-                <Text>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
-                <Text>Personas: {item.people}</Text>
-                <Text>Estado: {item.status.status}</Text>
+                <Text style={{color:COLORS.silver}}>{item?.restaurant?.name}</Text>
+                <Text style={{color:COLORS.silver}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
+                <Text style={{color:COLORS.silver}}>Personas: {item.people}</Text>
+                <Text style={{color:COLORS.silver}}>Estado: {item.status.status}</Text>
             </View>
           </Pressable>
         )
@@ -72,7 +74,8 @@ const styles = StyleSheet.create({
     },
     IconImage:{
         height:100,
-        width:100
+        width:100,
+        borderRadius:15,
     },
     InfoContainer:{
         marginStart:10

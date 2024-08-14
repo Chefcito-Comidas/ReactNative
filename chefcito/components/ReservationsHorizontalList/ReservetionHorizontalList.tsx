@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { Reservation } from '../../models/Reservations.model';
 import { SafeAreaView, View, FlatList,Image, Text,Pressable } from 'react-native';
+import { COLORS } from '../../utils/constants';
 
 interface ReservetionHorizontalListProps {
     data:Reservation[],
@@ -13,7 +14,8 @@ const ReservetionHorizontalList = ({data,goToReservationData}:ReservetionHorizon
         return (
           <Pressable style={{
                 borderRadius: 5,
-                backgroundColor:'transparent',
+                backgroundColor:COLORS.blue,
+                borderColor:COLORS.white,
                 marginHorizontal:12,
                 padding:10,
                 flex:1,
@@ -27,9 +29,9 @@ const ReservetionHorizontalList = ({data,goToReservationData}:ReservetionHorizon
                     <Image source={{uri:`data:image/jpeg;base64,${item?.restaurant?.logo}`}} style={{height:70,width:70}} />
                 </View>
                 <View>
-                    <Text>{item?.restaurant?.name}</Text>
-                    <Text>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
-                    <Text>Personas: {item.people}</Text>
+                    <Text style={{color:COLORS.silver}}>{item?.restaurant?.name}</Text>
+                    <Text style={{color:COLORS.silver}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
+                    <Text style={{color:COLORS.silver}}>Personas: {item.people}</Text>
                 </View>
           </Pressable>
     

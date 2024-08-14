@@ -10,10 +10,20 @@ import Loader from '../../components/Loader/Loader';
 import { Reservation } from '../../models/Reservations.model';
 import moment from 'moment';
 import ReservetionHorizontalList from '../../components/ReservationsHorizontalList/ReservetionHorizontalList';
+import { COLORS } from '../../utils/constants';
 
 export default function Home({navigation}) {
 
-  const [restaurants,setRestaurants] = useState<Restaurant[]>([])
+  const [restaurants,setRestaurants] = useState<Restaurant[]>([{
+    id:'',
+    name:'Wendys',
+    location:'asdfaadfsf',
+    logo:`data:image/jpg;base64,${WendysImage}`,
+    pictures:[],
+    slots:[],
+    capacity:100,
+    status:{status:'Abierto'},
+  }])
   const [reservations,setReservations] = useState<Reservation[]>([])
   const {user,initializing} = GetUser()
   const [loading,setLoading] = useState(false)
@@ -21,8 +31,8 @@ export default function Home({navigation}) {
   useEffect(()=>{
     const unsubscribe = navigation.addListener('focus', (e) => {
       if(!initializing) {
-        getRestaurantData()
-        getReservation()
+        // getRestaurantData()
+        // getReservation()
       }
     });
     return unsubscribe
@@ -64,16 +74,16 @@ export default function Home({navigation}) {
 
   useEffect(()=>{
     if(!initializing) {
-      getRestaurantData()
-      getReservation()
+      // getRestaurantData()
+      // getReservation()
     }
   },[user,initializing])
 
   return (
     <View style={styles.container}>
-      {loading&&<Loader />}
+      {/* {loading&&<Loader />} */}
       <Pressable style={styles.searchBar}>
-        <Ionicons name={'search'} size={16}  />
+        <Ionicons name={'search'} size={16} style={{color:COLORS.white}}  />
         <Text style={styles.searchText}>Buscar</Text>
       </Pressable>
       {restaurants.length>0&&<RestaurantList data={restaurants} navigation={navigation} />}
@@ -98,7 +108,8 @@ const styles = StyleSheet.create({
     fontSize:18
   },
   searchBar:{
-    borderColor:'gray',
+    borderColor:COLORS.silver,
+    backgroundColor:COLORS.blue,
     borderWidth:2,
     borderRadius:8,
     width:'100%',
@@ -109,6 +120,7 @@ const styles = StyleSheet.create({
   },
   searchText:{
     fontSize:18,
-    marginStart:4
+    marginStart:4,
+    color:COLORS.white
   }
 });

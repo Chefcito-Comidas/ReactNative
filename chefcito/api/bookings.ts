@@ -38,10 +38,7 @@ export const GetReservations = async (props:GetReservationProps,user:FirebaseAut
 export const CancelBooking = async (reservation:Reservation,user:FirebaseAuthTypes.User) => {
     const token = await user.getIdToken()
     const value = {
-        accept:false,
         cancel:true,
-        time:reservation.time,
-        people:reservation.people
     }
     return apiPut<any>({ url: `reservations/${reservation.id}`,payload:value,customHeaders:{Authorization:`Bearer ${token}`} })
 }

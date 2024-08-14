@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
 import { useEffect } from 'react';
@@ -16,6 +17,7 @@ import Profile from './views/Profile/Profile';
 import Restaurant from './views/Restaurant/Restaurant';
 import ReservationData from './views/ReservationData/ReservationData';
 import History from "./views/History/history"
+import { COLORS } from './utils/constants';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -69,7 +71,7 @@ export default function App() {
                 iconName = 'restaurant'
                 break;
               case 'PerfilNavigation':
-                iconName = 'list'
+                return <AntDesign name="user" size={size} color={color} />
                 break;
               case 'HistorialNavigation':
                 iconName = 'list'
@@ -79,15 +81,17 @@ export default function App() {
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: COLORS.yellow,
+          tabBarInactiveTintColor: COLORS.gray,
+          tabBarActiveBackgroundColor:COLORS.blue,
+          tabBarInactiveBackgroundColor:COLORS.blue,
         })}
         >
           <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />
           <Tab.Screen name="HistorialNavigation" component={HistoryNavigation} options={{ headerShown: false, title:'Historial'}} />
-          <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} />
-          <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} />
-          <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} />
+          {/* <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} /> */}
+          {/* <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} /> */}
+          {/* <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} /> */}
           <Tab.Screen name="PerfilNavigation" component={Profile} options={{ headerShown: false, title:'Perfil'}} />
         </Tab.Navigator>}
         {!(!initializing&&user!==null)&&<Stack.Navigator>

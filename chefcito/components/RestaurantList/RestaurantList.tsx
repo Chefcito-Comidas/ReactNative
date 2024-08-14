@@ -1,6 +1,7 @@
 import { Restaurant } from '../../models/Restauran.model';
 import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'react-native';
 import {WendysImage} from "../../models/Restauran.model"
+import { COLORS } from '../../utils/constants';
 interface RestaurantListProps {
     data:Restaurant[],
     navigation
@@ -19,6 +20,8 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
                 <Image source={{uri:item.logo}} style={styles.IconImage}/>
                 <View style={styles.InfoContainer}>
                     <Text style={styles.Name}>{item.name}</Text>
+                    <Text style={styles.ExtraData}>Capacidad: {item.capacity}</Text>
+                    <Text style={styles.ExtraData}>Estado: {item.status.status}</Text>
                     {/* <Text style={styles.Location}>{item.location}</Text> */}
                 </View>
             </View>
@@ -53,10 +56,12 @@ const styles = StyleSheet.create({
         height:'auto'
     },
     Pressable:{
-        borderRadius: 5,
-        backgroundColor:'gray',
+        borderRadius: 15,
+        backgroundColor:COLORS.secondaryBlue,
         padding:10, 
-        marginVertical:4
+        marginVertical:4,
+        borderColor:COLORS.blue,
+        borderWidth:4,
     },
     RestaurantView:{
         flex:1,
@@ -64,16 +69,19 @@ const styles = StyleSheet.create({
     },
     IconImage:{
         height:100,
-        width:100
+        width:100,
+        borderRadius:15,
     },
     InfoContainer:{
-        marginStart:10
+        marginStart:10,
     },
     Name:{
         fontSize:24,
+        color:COLORS.white,
     },
-    Location:{
-        fontSize: 16
+    ExtraData:{
+        fontSize: 16,
+        color:COLORS.white,
     }
   });
 
