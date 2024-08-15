@@ -82,7 +82,12 @@ export default function Restaurant({route, navigation}) {
           <View style={styles.ButtonContainer}>
             <Button title='Hacer una Reserva' onPress={()=>
               // setShowNewBooking(true)
-              navigation.navigate('NewReservation')
+              navigation.navigate('NewReservation',{
+                screen: 'NewReservationPeople',
+                params: {
+                  restaurant
+                },
+              })
             } />
           </View>
           <NewBooking show={showNewBooking} cancel={cancel} accept={accept} slots={restaurant.slots.map((item)=>moment(item).format("HH:mm"))} />

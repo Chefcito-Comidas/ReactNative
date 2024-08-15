@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
       marginStart:4,
       color:COLORS.white,
     },
-  });
+});

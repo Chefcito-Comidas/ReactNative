@@ -19,11 +19,28 @@ export default function Home({navigation}) {
     //   id:'',
     //   name:'Wendys',
     //   location:'asdfaadfsf',
-    //   logo:`data:image/jpg;base64,${WendysImage}`,
-    //   pictures:[],
-    //   slots:[],
+    //   logo:"gs://chefcito-comidas.appspot.com/santiago.marinaro+1@gmail.com/1723323114751",
+    //   pictures:[
+    //     "gs://chefcito-comidas.appspot.com/santiago.marinaro+1@gmail.com/secondaryImage/0/1723323114752",
+    //     "gs://chefcito-comidas.appspot.com/santiago.marinaro+1@gmail.com/secondaryImage/1/1723323114752"
+    //   ],
+    //   slots:[
+    //     "2024-08-15T18:00:00.014Z",
+    //     "2024-08-15T18:30:00.014Z",
+    //     "2024-08-15T19:00:00.014Z",
+    //     "2024-08-15T19:30:00.014Z",
+    //     "2024-08-15T20:00:00.014Z",
+    //     "2024-08-15T20:30:00.014Z",
+    //     "2024-08-15T21:00:00.014Z",
+    //     "2024-08-15T21:30:00.014Z",
+    //     "2024-08-15T22:00:00.014Z",
+    //     "2024-08-15T22:30:00.014Z"
+    //   ],
     //   capacity:100,
     //   status:{status:'Abierto'},
+    //   vacations:[],
+    //   characteristics:["Hamburguesas", "Minutas"],
+    //   reservationLeadTime:10
     // }
   ])
   const [reservations,setReservations] = useState<Reservation[]>([
@@ -63,6 +80,7 @@ export default function Home({navigation}) {
     try {
       setLoading(true)
       const restaurantList = await getRestaurant(user)
+      // console.log("restaurantList",restaurantList)
       setLoading(false)
       setRestaurants(restaurantList)
     } catch {

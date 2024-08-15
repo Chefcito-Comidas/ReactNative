@@ -6,6 +6,9 @@ export class Restaurant {
     pictures:string[];
     slots:string[];
     capacity:number;
+    reservationLeadTime:number;
+    characteristics:string[];
+    vacations:string[];
     status:Status;
 }
 

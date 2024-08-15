@@ -29,8 +29,8 @@ function NewReservationNavigation () {
   return (
     <Stack.Navigator>
       <Stack.Screen name="NewReservationPeople" component={ReservationPeople} options={{headerShown:false}} />
-      <Stack.Screen name="NewReservationTime" component={ReservationTime} options={{headerShown:false}} />
       <Stack.Screen name="NewReservationDate" component={ReservationDate} options={{headerShown:false}} />
+      <Stack.Screen name="NewReservationTime" component={ReservationTime} options={{headerShown:false}} />
       <Stack.Screen name="NewReservationConfirmation" component={ReservationConfirmation} options={{headerShown:false}} />
     </Stack.Navigator>
   )
