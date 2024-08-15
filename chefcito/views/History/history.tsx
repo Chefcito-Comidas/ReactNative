@@ -21,11 +21,11 @@ export default function History({navigation}) {
           props.start = 0;
           props.limit = 20;
           const reservation = await GetReservations(props,user)
-          for (const item of reservation) {
+          for (const item of reservation.result) {
             const rest = await getRestaurantById(user,item.venue)
             item.restaurant = rest[0];
           }
-          setReservations(reservation)
+          setReservations(reservation.result)
         } catch (err) {
           console.log("get reservation error",err)
         }

@@ -18,15 +18,43 @@ import Restaurant from './views/Restaurant/Restaurant';
 import ReservationData from './views/ReservationData/ReservationData';
 import History from "./views/History/history"
 import { COLORS } from './utils/constants';
+import ReservationConfirmation from './views/Reservation/ReservationConfirmation/ReservationConfirmation';
+import ReservationTime from './views/Reservation/ReservationTime/ReservationTime';
+import ReservationPeople from './views/Reservation/ReservationPeople/ReservationPeople';
+import ReservationDate from './views/Reservation/ReservationDate/ReservationDate';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function NewReservationNavigation () {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="NewReservationPeople" component={ReservationPeople} options={{headerShown:false}} />
+      <Stack.Screen name="NewReservationTime" component={ReservationTime} options={{headerShown:false}} />
+      <Stack.Screen name="NewReservationDate" component={ReservationDate} options={{headerShown:false}} />
+      <Stack.Screen name="NewReservationConfirmation" component={ReservationConfirmation} options={{headerShown:false}} />
+    </Stack.Navigator>
+  )
+}
+
+function EditReservationNavigation () {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="EditReservationPeople" component={ReservationPeople} options={{headerShown:false}} />
+      <Stack.Screen name="EditReservationTime" component={ReservationTime} options={{headerShown:false}} />
+      <Stack.Screen name="EditReservationConfirmation" component={ReservationConfirmation} options={{headerShown:false}} />
+    </Stack.Navigator>
+  )
+}
+
 
 function HomeNavigation() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Restaurante" component={Restaurant} />
-      <Stack.Screen name="HomeReservation" component={ReservationData} />
+      <Stack.Screen name="Home" component={Home} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue}}} />
+      <Stack.Screen name="Restaurante" component={Restaurant} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue}}} />
+      <Stack.Screen name="HomeReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue},title:'Reserva'}} />
+      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue},title:'Editar Reserva'}} />
+      <Stack.Screen name="NewReservation" component={NewReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue},title:'Nueva Reserva'}} />
     </Stack.Navigator>
   )
 }
@@ -34,8 +62,9 @@ function HomeNavigation() {
 function HistoryNavigation() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="History" component={History} />
-      <Stack.Screen name="HistoryReservation" component={ReservationData} />
+      <Stack.Screen name="History" component={History} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue}}} />
+      <Stack.Screen name="HistoryReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue}}} />
+      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.blue},title:'Editar Reserva'}} />
     </Stack.Navigator>
   )
 }

@@ -20,7 +20,11 @@ export const PostBooking = async (value:NewBookingPost,user:FirebaseAuthTypes.Us
     return apiPost<any>({ url: `reservations`,payload:value,customHeaders:{Authorization:`Bearer ${token}`} })
 }
 
-export const GetReservations = async (props:GetReservationProps,user:FirebaseAuthTypes.User):Promise<Reservation[]> => {
+type GetReservationResult = {
+    result:Reservation[],
+    total:number
+}
+export const GetReservations = async (props:GetReservationProps,user:FirebaseAuthTypes.User):Promise<GetReservationResult> => {
     const token = await user.getIdToken()
     let reqProps = ''
     if(props.id) reqProps += `&id=${props.id}`;

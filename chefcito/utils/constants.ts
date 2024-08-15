@@ -10,4 +10,5 @@ export const COLORS = {
     error: '#ff6666',
     warning: '#ffff1a',
     silver: '#C0C0C0',
+    gray:'gray',
 }

@@ -14,25 +14,46 @@ import { COLORS } from '../../utils/constants';
 
 export default function Home({navigation}) {
 
-  const [restaurants,setRestaurants] = useState<Restaurant[]>([{
-    id:'',
-    name:'Wendys',
-    location:'asdfaadfsf',
-    logo:`data:image/jpg;base64,${WendysImage}`,
-    pictures:[],
-    slots:[],
-    capacity:100,
-    status:{status:'Abierto'},
-  }])
-  const [reservations,setReservations] = useState<Reservation[]>([])
+  const [restaurants,setRestaurants] = useState<Restaurant[]>([
+    // {
+    //   id:'',
+    //   name:'Wendys',
+    //   location:'asdfaadfsf',
+    //   logo:`data:image/jpg;base64,${WendysImage}`,
+    //   pictures:[],
+    //   slots:[],
+    //   capacity:100,
+    //   status:{status:'Abierto'},
+    // }
+  ])
+  const [reservations,setReservations] = useState<Reservation[]>([
+    // {
+    //   id:'',
+    //   user:'Santiago',
+    //   venue:'Wendys',
+    //   time:'',
+    //   people:10,
+    //   status:{status:'Aceptado'},
+    //   restaurant:{
+    //     id:'',
+    //     name:'Wendys',
+    //     location:'asdfaadfsf',
+    //     logo:`data:image/jpg;base64,${WendysImage}`,
+    //     pictures:[],
+    //     slots:[],
+    //     capacity:100,
+    //     status:{status:'Accepted'},
+    //   },
+    // }
+  ])
   const {user,initializing} = GetUser()
   const [loading,setLoading] = useState(false)
 
   useEffect(()=>{
     const unsubscribe = navigation.addListener('focus', (e) => {
       if(!initializing) {
-        // getRestaurantData()
-        // getReservation()
+        getRestaurantData()
+        getReservation()
       }
     });
     return unsubscribe
@@ -56,11 +77,11 @@ export default function Home({navigation}) {
       props.limit = 20;
       props.status = "Accepted"
       const reservation = await GetReservations(props,user)
-      for (const item of reservation) {
+      for (const item of reservation.result) {
         const rest = await getRestaurantById(user,item.venue)
         item.restaurant = rest[0];
       }
-      setReservations(reservation)
+      setReservations(reservation.result)
     } catch (err) {
       console.log("get reservation error",err)
     }
@@ -74,14 +95,14 @@ export default function Home({navigation}) {
 
   useEffect(()=>{
     if(!initializing) {
-      // getRestaurantData()
-      // getReservation()
+      getRestaurantData()
+      getReservation()
     }
   },[user,initializing])
 
   return (
     <View style={styles.container}>
-      {/* {loading&&<Loader />} */}
+      {loading&&<Loader />}
       <Pressable style={styles.searchBar}>
         <Ionicons name={'search'} size={16} style={{color:COLORS.white}}  />
         <Text style={styles.searchText}>Buscar</Text>

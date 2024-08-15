@@ -80,7 +80,10 @@ export default function Restaurant({route, navigation}) {
             } />}
           </View>
           <View style={styles.ButtonContainer}>
-            <Button title='Hacer una Reserva' onPress={()=>setShowNewBooking(true)} />
+            <Button title='Hacer una Reserva' onPress={()=>
+              // setShowNewBooking(true)
+              navigation.navigate('NewReservation')
+            } />
           </View>
           <NewBooking show={showNewBooking} cancel={cancel} accept={accept} slots={restaurant.slots.map((item)=>moment(item).format("HH:mm"))} />
         </ScrollView>

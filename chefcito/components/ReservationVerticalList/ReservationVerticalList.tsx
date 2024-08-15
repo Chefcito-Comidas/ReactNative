@@ -25,13 +25,13 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
         }}
         >
             <View>
-                <Image source={{uri:`data:image/jpeg;base64,${item?.restaurant?.logo}`}} style={{height:70,width:70}} />
+                <Image source={{uri:`${item?.restaurant?.logo}`}} style={{height:70,width:70,borderRadius:15}} />
             </View>
-            <View>
-                <Text style={{color:COLORS.silver}}>{item?.restaurant?.name}</Text>
-                <Text style={{color:COLORS.silver}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
-                <Text style={{color:COLORS.silver}}>Personas: {item.people}</Text>
-                <Text style={{color:COLORS.silver}}>Estado: {item.status.status}</Text>
+            <View style={{marginLeft:8}}>
+                <Text style={{color:COLORS.white}}>{item?.restaurant?.name}</Text>
+                <Text style={{color:COLORS.white}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
+                <Text style={{color:COLORS.white}}>Personas: {item.people}</Text>
+                <Text style={{color:COLORS.white}}>Estado: {item.status.status}</Text>
             </View>
           </Pressable>
         )
