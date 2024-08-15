@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, StyleSheet, Text, Pressable, FlatList,SafeAreaView, ScrollView,View} from 'react-native';
+import { Modal, StyleSheet, Text, Pressable, FlatList,View} from 'react-native';
 
 type Items = {
     label:string;
@@ -10,9 +10,10 @@ type SelectProps = {
     items:Items[];
     placeHolder:string;
     defaultValue?:string;
+    customStyles?:any
 }
 
-export const Select = ({onValueChange,items,placeHolder,defaultValue=''}:SelectProps) => {
+export const Select = ({onValueChange,items,placeHolder,defaultValue='',customStyles}:SelectProps) => {
     const [show,setShow] = useState(false)
     const [value,setvalue] = useState(defaultValue)
     const renderItem = ({item}) => {
@@ -22,14 +23,14 @@ export const Select = ({onValueChange,items,placeHolder,defaultValue=''}:SelectP
                 setvalue(item.value)
                 setShow(false)
             }}>
-                <Text>{item.label}</Text>
+                <Text style={customStyles?.item}>{item.label}</Text>
             </Pressable>
         )
     }
     return(
         <>
             <Pressable onPress={()=>setShow(true)} style={styles.placeHolder}>
-                <Text>{placeHolder}: {value}</Text>
+                <Text style={customStyles?.placeHolder}>{placeHolder}: {value}</Text>
             </Pressable>
             <Modal transparent={true} animationType="fade" visible={show} onRequestClose={()=>{}}>
                 <View style={styles.modal}>

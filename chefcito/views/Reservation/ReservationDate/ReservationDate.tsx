@@ -2,7 +2,6 @@ import { Restaurant } from "../../../models/Restauran.model";
 import { useState } from "react";
 import { StyleSheet, View,Pressable, Text } from 'react-native';
 import { COLORS } from "../../../utils/constants";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import CalendarPicker from "react-native-calendar-picker";
 type routeParam = {
@@ -19,7 +18,9 @@ export default function ReservationDate({route,navigation}) {
 
     const onAccept = () => {
         navigation.navigate('NewReservationTime', {
-            people:people
+            people:people,
+            restaurant,
+            date
         })
     }
     const IsValid = () => {
