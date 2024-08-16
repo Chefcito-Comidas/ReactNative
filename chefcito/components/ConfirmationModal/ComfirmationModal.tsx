@@ -1,4 +1,5 @@
 import { Modal,View,StyleSheet,Text,Pressable } from "react-native";
+import { COLORS } from "../../utils/constants";
 
 type ConfirmationModalProps = {
     onAccept:()=>void;
@@ -12,11 +13,13 @@ export const ConfirmationModal = ({onAccept,onCancel,show,title,subtitle}:Confir
     return(
         <Modal transparent={true} animationType="fade" visible={show} onRequestClose={()=>{}}>
             <View style={styles.modal}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.subTitle}>{subtitle}</Text>
-                <View style={styles.buttonContainer}>
-                    <Pressable style={styles.accept} onPress={onAccept}>Aceptar</Pressable>
-                    <Pressable style={styles.cancel} onPress={onCancel}>Cancelar</Pressable>
+                <View style={styles.subModal}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.subTitle}>{subtitle}</Text>
+                    <View style={styles.buttonContainer}>
+                        <Pressable style={styles.accept} onPress={onAccept}><Text style={styles.buttonText}>Aceptar</Text></Pressable>
+                        <Pressable style={styles.cancel} onPress={onCancel}><Text style={styles.buttonText}>Cancelar</Text></Pressable>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -26,9 +29,14 @@ export const ConfirmationModal = ({onAccept,onCancel,show,title,subtitle}:Confir
 const styles = StyleSheet.create({
     modal:{
         flex:1,
+        backgroundColor:'#00000099'
+    },
+    subModal:{
         alignItems:'center',
-        backgroundColor:'#00000099',
-        alignContent:'center'
+        backgroundColor:COLORS.blue,
+        alignContent:'center',
+        marginVertical:'auto',
+        height:110
     },
     buttonContainer:{
         flex:1,
@@ -36,20 +44,31 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:20,
-        fontWeight:'700'
+        fontWeight:'700',
+        color:COLORS.white,
     },
     subTitle:{
         fontSize:16,
-        marginVertical:8
+        marginVertical:8,
+        color:COLORS.white,
     },
     accept:{
         backgroundColor:'green',
         marginRight:2,
         borderRadius:12,
+        width:100,
+        height:30,
     },
     cancel:{
         backgroundColor:'red',
         marginLeft:2,
         borderRadius:12,
+        height:30,
+        width:100,
     },
+    buttonText:{
+        color:COLORS.white,
+        fontSize:18,
+        textAlign:'center',
+    }
 })

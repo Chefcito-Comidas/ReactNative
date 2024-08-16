@@ -2,13 +2,10 @@ import { SafeAreaView, View, Image,Pressable, StyleSheet,Text,ScrollView,Button,
 import { useState } from 'react';
 import {GetUser} from "../../hooks/getUser.hook";
 import Loader from '../../components/Loader/Loader';
-import moment from 'moment';
 import { Reservation } from '../../models/Reservations.model';
 import {CancelBooking} from "../../api/bookings";
 import { ConfirmationModal } from '../../components/ConfirmationModal/ComfirmationModal';
-import EditBooking from '../../components/EditBooking/EditBooking';
-import { NewBookingModel } from '../../models/NewBooking.model';
-import {EditBooking as EditBookingPut} from "../../api/bookings"
+import { COLORS } from '../../utils/constants';
 type routeParam = {
     reservation:Reservation
 }
@@ -19,7 +16,6 @@ export default function ReservationData({route,navigation}) {
         user,
     } = GetUser()
     const {reservation}:routeParam = route.params;
-    const [showNewBooking,setShowNewBooking] = useState(false)
     const [loading,setLoading] = useState(false)
 
     const openMaps = () => {
@@ -48,27 +44,6 @@ export default function ReservationData({route,navigation}) {
         setShow(false)
     }
 
-    const cancel = () =>{
-        setShowNewBooking(false)
-    }
-
-    const accept = async (value:NewBookingModel) =>{
-        setShowNewBooking(false)
-        const data = {...reservation}
-        data.time = value.time
-        data.people = value.people
-        try {
-            setLoading(true)
-            const result = await EditBookingPut(data,user)
-            setLoading(false)
-            if(result){
-            console.log('reserva editada',result)
-            }
-        } catch(err) {
-            setLoading(false)
-            console.log("error",err)
-        } 
-    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,18 +54,32 @@ export default function ReservationData({route,navigation}) {
                     <Text style={styles.Name}>{reservation.restaurant.name}</Text>
                 </View>
                 <View style={styles.ReservationInfoContainer}>
-                        <Text>Personas: {reservation.people}</Text>
-                        <Text>Hora: {reservation.time}</Text>
+                  <Text style={styles.displayText}>Personas: {reservation.people}</Text>
+                  <Text style={styles.displayText}>Hora: {reservation.time}</Text>
                 </View>
                 <View>
                     <Pressable onPress={openMaps} style={styles.mapButton}><Text style={styles.Location}>Abrir ubicacion en el mapa</Text></Pressable>
                 </View>
                 
                 {(reservation.status.status==="Uncomfirmed"||reservation.status.status==="Accepted")&&<View style={styles.ButtonContainer}>
-                    <Button title='Editar Reserva' onPress={()=>setShowNewBooking(true)} />
+                    <Pressable style={styles.reservationButton} 
+                    onPress={()=>{
+                      navigation.navigate('EditReservation',{
+                        screen: 'EditReservationPeople',
+                        params: {
+                          restaurant:reservation.restaurant,
+                          id:reservation.id,
+                          date:reservation.time,
+                          home:route.name==='HomeReservation'
+                        },
+                      })
+                    }}>
+                      <Text style={styles.ButtonText}>Editar Reserva</Text>
+                    </Pressable>
+
                 </View>}
                 {(reservation.status.status==="Uncomfirmed"||reservation.status.status==="Accepted")&&<View style={styles.ButtonContainer}>
-                    <Button title='Cancelar Reserva' onPress={()=>setShowNewBooking(true)} />
+                    <Pressable style={styles.reservationButton} onPress={()=>setShow(true)}><Text style={styles.ButtonText}>Cancelar Reserva</Text></Pressable>
                 </View>}
                 <ConfirmationModal 
                 show={show}
@@ -99,7 +88,6 @@ export default function ReservationData({route,navigation}) {
                 onAccept={onAccept}
                 onCancel={onCancel}
                 />
-              <EditBooking show={showNewBooking} booking={reservation} cancel={cancel} accept={accept} slots={reservation.restaurant.slots.map((item)=>moment(item).format("HH:mm"))} />
             </ScrollView>
         </SafeAreaView>
     );
@@ -119,10 +107,12 @@ const styles = StyleSheet.create({
     Name:{
       fontSize:25,
       fontWeight:'700',
-      textAlign:'center'
+      textAlign:'center',
+      color:COLORS.blue
     },
     Location:{
-      textAlign:'center'
+      textAlign:'center',
+      color:COLORS.white,
     },
     InfoContainer:{
     },
@@ -135,13 +125,37 @@ const styles = StyleSheet.create({
       marginTop:12
     },
     mapButton:{
-      borderRadius:8,
+      borderColor:COLORS.silver,
+      color:COLORS.white,
+      backgroundColor:COLORS.blue,
       borderWidth:2,
-      borderColor:'gray',
-      marginTop:8
+      borderRadius:8,
+      paddingStart:8,
+      textAlign:'center'
     },
     imageCarrousel:{
       height:150,
       marginVertical:8
+    },
+    reservationButton:{
+      backgroundColor:COLORS.blue,
+      width:200,
+      alignSelf:'center',
+      padding:4,
+      borderRadius:15,
+      borderColor:COLORS.silver,
+      borderWidth:2,
+    },
+    ButtonText:{
+      textAlign:'center',
+      color:COLORS.white,
+      fontSize:18
+    },
+    displayText:{
+      marginBottom:4,
+      textAlign:'center',
+      color:COLORS.blue,
+      fontSize:16,
+      fontWeight:'400'
     }
   });

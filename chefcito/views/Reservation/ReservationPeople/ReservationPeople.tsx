@@ -5,12 +5,13 @@ import { Restaurant } from "../../../models/Restauran.model";
 
 type routeParam = {
     restaurant:Restaurant;
-    date?:string
-    id?:string
+    date?:string;
+    id?:string;
+    home?:boolean;
 }
 export default function ReservationPeople({route, navigation}) {
     const [people,setPeople] = useState('1')
-    const {restaurant,date,id}:routeParam = route?.params;
+    const {restaurant,date,id,home}:routeParam = route?.params;
     useEffect(()=>{
         console.log('route',route?.params?.restaurant)
     },[])
@@ -29,7 +30,8 @@ export default function ReservationPeople({route, navigation}) {
                 people:people,
                 restaurant,
                 date,
-                id
+                id,
+                home,
             })
         }
     }

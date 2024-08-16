@@ -1,13 +1,8 @@
 import { Button, StyleSheet, Text, View,Image,ScrollView,SafeAreaView, Pressable, Platform, Linking  } from 'react-native';
-import NewBooking from "../../components/NewBooking/NewBooking"
-import { useRef, useState } from 'react';
-import {NewBookingModel,NewBookingPost} from "../../models/NewBooking.model";
 import {GetUser} from "../../hooks/getUser.hook";
-import {PostBooking} from "../../api/bookings";
 import {Restaurant as RestaurantData, WendysImage} from "../../models/Restauran.model";
-import Loader from '../../components/Loader/Loader';
 import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
-import moment from 'moment';
+import { COLORS } from '../../utils/constants';
 const wendys_1 = require('../../assets/images/wendys.jpg')
 const wendys_2 = require('../../assets/images/wendys_menu_1.jpg')
 const wendys_3 = require('../../assets/images/wendys_menu_2.jpg')
@@ -22,31 +17,6 @@ export default function Restaurant({route, navigation}) {
     user,
   } = GetUser()
   const {restaurant}:routeParam = route.params;
-  const [showNewBooking,setShowNewBooking] = useState(false)
-  const [loading,setLoading] = useState(false)
-
-  const cancel = () =>{
-    setShowNewBooking(false)
-  }
-
-  const accept = async (value:NewBookingModel) =>{
-    setShowNewBooking(false)
-    const data:NewBookingPost = {
-      ...value,
-      venue:restaurant.id
-    }
-    try {
-      setLoading(true)
-      const result = await PostBooking(data,user)
-      setLoading(false)
-      if(result){
-        console.log('reserva creada',result)
-      }
-    } catch(err) {
-      setLoading(false)
-      console.log("error",err)
-    } 
-  }
 
   const openMaps = () => {
     const fullAddress = restaurant.location.split("@").length>0?restaurant.location.split("@")[1]:restaurant.location
@@ -61,7 +31,6 @@ export default function Restaurant({route, navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView centerContent={true}>
-          {loading&&<Loader />}
           <Image source={{uri:restaurant.logo}} style={styles.MainImage}/>
           <View style={styles.InfoContainer}>
               <Text style={styles.Name}>{restaurant.name}</Text>
@@ -80,17 +49,17 @@ export default function Restaurant({route, navigation}) {
             } />}
           </View>
           <View style={styles.ButtonContainer}>
-            <Button title='Hacer una Reserva' onPress={()=>
-              // setShowNewBooking(true)
+            <Pressable style={styles.newReservationButton} onPress={()=>
               navigation.navigate('NewReservation',{
                 screen: 'NewReservationPeople',
                 params: {
                   restaurant
                 },
               })
-            } />
+            }>
+              <Text style={styles.ButtonText}>Hacer una Reserva</Text>
+            </Pressable>
           </View>
-          <NewBooking show={showNewBooking} cancel={cancel} accept={accept} slots={restaurant.slots.map((item)=>moment(item).format("HH:mm"))} />
         </ScrollView>
     </SafeAreaView>
   );
@@ -109,10 +78,12 @@ const styles = StyleSheet.create({
   Name:{
     fontSize:25,
     fontWeight:'700',
-    textAlign:'center'
+    textAlign:'center',
+    color:COLORS.blue
   },
   Location:{
-    textAlign:'center'
+    textAlign:'center',
+    color:COLORS.white,
   },
   InfoContainer:{
   },
@@ -120,16 +91,33 @@ const styles = StyleSheet.create({
     height:300,
   },
   ButtonContainer:{
-    marginTop:12
+    marginTop:80
   },
   mapButton:{
-    borderRadius:8,
+    borderColor:COLORS.silver,
+    color:COLORS.white,
+    backgroundColor:COLORS.blue,
     borderWidth:2,
-    borderColor:'gray',
-    marginTop:8
+    borderRadius:8,
+    paddingStart:8,
+    textAlign:'center'
   },
   imageCarrousel:{
     height:150,
     marginVertical:8
+  },
+  newReservationButton:{
+    backgroundColor:COLORS.blue,
+    width:200,
+    alignSelf:'center',
+    padding:4,
+    borderRadius:15,
+    borderColor:COLORS.silver,
+    borderWidth:2,
+  },
+  ButtonText:{
+    textAlign:'center',
+    color:COLORS.white,
+    fontSize:18
   }
 });

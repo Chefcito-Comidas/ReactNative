@@ -8,12 +8,14 @@ type routeParam = {
     restaurant:Restaurant;
     people:string;
     date:string;
-    id:string;
+    id?:string;
+    home?:boolean;
+
 }
 export default function ReservationTime({route,navigation}) {
 
     const [time,settime] = useState('')
-    const {restaurant,people,date,id}:routeParam = route.params;
+    const {restaurant,people,date,id,home}:routeParam = route.params;
 
     const cancel = () => {
         navigation.goBack();
@@ -34,6 +36,7 @@ export default function ReservationTime({route,navigation}) {
                 time, 
                 date,
                 id,
+                home,
             })
         }
     }

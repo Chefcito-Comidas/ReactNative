@@ -1,5 +1,5 @@
 import { Restaurant } from "../../../models/Restauran.model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View,Pressable, Text } from 'react-native';
 import { COLORS } from "../../../utils/constants";
 import moment from "moment";
@@ -14,7 +14,9 @@ type routeParam = {
     people:string;
     date:string;
     time:string;
-    id:string;
+    id?:string;
+    home?:boolean;
+
 }
 
 export default function ReservationConfirmation({route,navigation}) {
@@ -22,11 +24,15 @@ export default function ReservationConfirmation({route,navigation}) {
     const {
         user,
     } = GetUser()
-    const {restaurant,people,date,time,id}:routeParam = route.params;
+    const {restaurant,people,date,time,id,home}:routeParam = route.params;
 
     const cancel = () => {
         navigation.goBack();
     }
+
+    useEffect(()=>{
+        console.log(route)
+    },[])
 
     const onAccept = async () => {
         const dateData = moment(date)
@@ -40,7 +46,7 @@ export default function ReservationConfirmation({route,navigation}) {
             const booking:NewBookingPost ={
                 people:parseInt(people),
                 venue:restaurant.id,
-                time:dateData.toISOString(false)
+                time:dateData.toISOString()
             }
             try {
                 setLoading(true)
@@ -62,7 +68,7 @@ export default function ReservationConfirmation({route,navigation}) {
                 id:id,
                 people:parseInt(people),
                 venue:restaurant.id,
-                time:dateData.toISOString(false)
+                time:dateData.toISOString()
             }
             try {
                 setLoading(true)
@@ -71,9 +77,14 @@ export default function ReservationConfirmation({route,navigation}) {
                 if(result){
                     console.log('reserva editada',result)
                 }
-                // navigation.navigate('Restaurante', {
-                //     restaurant,
-                // })
+                if(home) {
+                    navigation.navigate('Home', {
+                    })
+                } else {
+                    navigation.navigate('History', {
+                    })
+                }
+                
             } catch(err) {
                 setLoading(false)
                 console.log("error",err)

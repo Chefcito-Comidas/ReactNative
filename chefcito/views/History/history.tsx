@@ -15,19 +15,31 @@ export default function History({navigation}) {
     const [reservations,setReservations] = useState<Reservation[]>([])
     const [loading,setLoading] = useState(false)
 
+    useEffect(()=>{
+      const unsubscribe = navigation.addListener('focus', (e) => {
+        if(!initializing) {
+          getReservation()
+        }
+      });
+      return unsubscribe
+    },[])
+
     const getReservation = async () =>{
         try {
           const props = new GetReservationProps()
           props.start = 0;
           props.limit = 20;
+          setLoading(true)
           const reservation = await GetReservations(props,user)
           for (const item of reservation.result) {
             const rest = await getRestaurantById(user,item.venue)
             item.restaurant = rest[0];
           }
+          setLoading(false)
           setReservations(reservation.result)
         } catch (err) {
           console.log("get reservation error",err)
+          setLoading(false)
         }
     }
 
