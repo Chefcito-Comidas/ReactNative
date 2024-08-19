@@ -139,7 +139,7 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.secondaryBlue,
     padding:8
   },
   ReservationTitle:{
