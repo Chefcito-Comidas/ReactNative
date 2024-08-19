@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     Pressable:{
         borderRadius: 15,
-        backgroundColor:COLORS.secondaryBlue,
+        backgroundColor:COLORS.blue,
         padding:10, 
         marginVertical:4,
         borderColor:COLORS.blue,
