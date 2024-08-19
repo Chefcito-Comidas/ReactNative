@@ -18,7 +18,8 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
             marginHorizontal:12,
             padding:10,
             flex:1,
-            flexDirection:'row'
+            flexDirection:'row',
+            marginVertical:4
         }}
         onPress={()=>{
             goToReservationData(item)
