@@ -18,7 +18,7 @@ export const ConfirmationModal = ({onAccept,onCancel,show,title,subtitle}:Confir
                     <Text style={styles.subTitle}>{subtitle}</Text>
                     <View style={styles.buttonContainer}>
                         <Pressable style={styles.accept} onPress={onAccept}><Text style={styles.buttonText}>Aceptar</Text></Pressable>
-                        <Pressable style={styles.cancel} onPress={onCancel}><Text style={styles.buttonText}>Cancelar</Text></Pressable>
+                        <Pressable style={styles.cancel} onPress={onCancel}><Text style={styles.cancelButtonText}>Cancelar</Text></Pressable>
                     </View>
                 </View>
             </View>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     subModal:{
         alignItems:'center',
-        backgroundColor:COLORS.blue,
+        backgroundColor:COLORS.secondaryBlue,
         alignContent:'center',
         marginVertical:'auto',
         height:110
@@ -53,14 +53,18 @@ const styles = StyleSheet.create({
         color:COLORS.white,
     },
     accept:{
-        backgroundColor:'green',
+        backgroundColor:COLORS.blue,
+        borderColor:COLORS.white,
+        borderWidth:2,
         marginRight:2,
         borderRadius:12,
         width:100,
         height:30,
     },
     cancel:{
-        backgroundColor:'red',
+        backgroundColor:COLORS.white,
+        borderColor:COLORS.blue,
+        borderWidth:2,
         marginLeft:2,
         borderRadius:12,
         height:30,
@@ -68,6 +72,11 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         color:COLORS.white,
+        fontSize:18,
+        textAlign:'center',
+    },
+    cancelButtonText:{
+        color:COLORS.blue,
         fontSize:18,
         textAlign:'center',
     }

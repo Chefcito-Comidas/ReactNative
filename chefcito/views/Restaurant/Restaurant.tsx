@@ -68,7 +68,7 @@ export default function Restaurant({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.secondaryBlue,
     paddingHorizontal:8
   },
   MainImage: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize:25,
     fontWeight:'700',
     textAlign:'center',
-    color:COLORS.blue
+    color:COLORS.white
   },
   Location:{
     textAlign:'center',

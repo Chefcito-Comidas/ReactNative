@@ -12,7 +12,7 @@ const ImageCarrousel = ({data}:ImageCarrouselProps) =>{
                 padding:10,
             }}
             >
-                <Image source={{uri:image}} style={{height:150,width:250}} />
+                <Image source={{uri:image}} style={{minHeight:150,width:250}} resizeMethod='scale' />
           </View>
 
         )

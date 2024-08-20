@@ -53,13 +53,16 @@ export default function ReservationDate({route,navigation}) {
                 ]}
                 previousTitle="Anterior"
                 nextTitle="Próximo"
+                previousTitleStyle={{color:COLORS.white}}
+                nextTitleStyle={{color:COLORS.white}}
+                textStyle={{color:COLORS.white}}
                 />
             </View>
             <View style={styles.buttonContainer}>
                 <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => cancel()}>
-                    <Text style={styles.textStyle}>Atras</Text>
+                    <Text style={styles.cancelButtonText}>Atras</Text>
                 </Pressable>
                 <Pressable
                 disabled={!IsValid()}
@@ -76,7 +79,7 @@ export default function ReservationDate({route,navigation}) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: COLORS.secondaryBlue,
       padding:8
     },
     input: {
@@ -85,9 +88,9 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         padding: 10,
         borderRadius:10,
-        borderColor:COLORS.blue,
+        borderColor:COLORS.white,
         textAlign:'center',
-        color:COLORS.blue,
+        color:COLORS.white,
         fontSize:16,
         fontWeight:'500',
         marginVertical:'auto'
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
     title:{
         fontSize:32,
         fontWeight:'600',
-        color:COLORS.blue,
+        color:COLORS.white,
         textAlign:'center',
         marginBottom:8,
     },
@@ -115,15 +118,18 @@ const styles = StyleSheet.create({
         width:100
     },
     buttonClose: {
-        backgroundColor: 'red',
+        backgroundColor:COLORS.white,
+        borderColor:COLORS.blue,
+        borderWidth:2,
     },
     buttonAccpet: {
         marginLeft:4,
-        backgroundColor:'green'
+        backgroundColor:COLORS.blue,
+        borderColor:COLORS.white,
+        borderWidth:2,
     },
     buttonAccpetDisabled:{
-        backgroundColor:'lightgreen',
-        marginLeft:4,
+        backgroundColor:COLORS.secondaryBlue
     },
     textStyle: {
         color: 'white',
@@ -131,4 +137,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize:16,
     },
+    cancelButtonText:{
+        color:COLORS.blue,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize:16,
+    }
 });

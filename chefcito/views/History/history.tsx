@@ -17,9 +17,7 @@ export default function History({navigation}) {
 
     useEffect(()=>{
       const unsubscribe = navigation.addListener('focus', (e) => {
-        if(!initializing) {
-          getReservation()
-        }
+        getReservation()
       });
       return unsubscribe
     },[])
@@ -71,7 +69,7 @@ export default function History({navigation}) {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: COLORS.secondaryBlue,
       padding:8
     },
     searchBar:{
