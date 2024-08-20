@@ -68,40 +68,51 @@ export default function Home({navigation}) {
 
   useEffect(()=>{
     const unsubscribe = navigation.addListener('focus', (e) => {
-      if(!initializing) {
-        getRestaurantData()
-        getReservation()
-      }
+      getRestaurantData()
+      getReservation()
     });
     return unsubscribe
   },[])
 
   const getRestaurantData = async () => {
-    try {
-      setLoading(true)
-      const restaurantList = await getRestaurant(user)
-      console.log("restaurantList",restaurantList)
-      setLoading(false)
-      setRestaurants(restaurantList.result)
-    } catch {
-      setLoading(false)
+    if(initializing) {
+      setTimeout(() => {
+        getRestaurantData()
+      }, 100);
+    } else {
+      try {
+        setLoading(true)
+        const restaurantList = await getRestaurant(user)
+        console.log("restaurantList",restaurantList)
+        setLoading(false)
+        setRestaurants(restaurantList.result)
+      } catch {
+        setLoading(false)
+      }
     }
+    
   }
 
   const getReservation = async () =>{
-    try {
-      const props = new GetReservationProps()
-      props.start = 0;
-      props.limit = 20;
-      props.status = "Accepted"
-      const reservation = await GetReservations(props,user)
-      for (const item of reservation.result) {
-        const rest = await getRestaurantById(user,item.venue)
-        item.restaurant = rest.result[0];
+    if(initializing) {
+      setTimeout(() => {
+        getRestaurantData()
+      }, 100);
+    } else {
+      try {
+        const props = new GetReservationProps()
+        props.start = 0;
+        props.limit = 20;
+        props.status = "Accepted"
+        const reservation = await GetReservations(props,user)
+        for (const item of reservation.result) {
+          const rest = await getRestaurantById(user,item.venue)
+          item.restaurant = rest.result[0];
+        }
+        setReservations(reservation.result)
+      } catch (err) {
+        console.log("get reservation error",err)
       }
-      setReservations(reservation.result)
-    } catch (err) {
-      console.log("get reservation error",err)
     }
   }
 

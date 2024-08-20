@@ -23,21 +23,27 @@ export default function History({navigation}) {
     },[])
 
     const getReservation = async () =>{
-        try {
-          const props = new GetReservationProps()
-          props.start = 0;
-          props.limit = 20;
-          setLoading(true)
-          const reservation = await GetReservations(props,user)
-          for (const item of reservation.result) {
-            const rest = await getRestaurantById(user,item.venue)
-            item.restaurant = rest.result[0];
+        if(initializing) {
+          setTimeout(() => {
+            getReservation()
+          }, 100);
+        } else {
+          try {
+            const props = new GetReservationProps()
+            props.start = 0;
+            props.limit = 20;
+            setLoading(true)
+            const reservation = await GetReservations(props,user)
+            for (const item of reservation.result) {
+              const rest = await getRestaurantById(user,item.venue)
+              item.restaurant = rest.result[0];
+            }
+            setLoading(false)
+            setReservations(reservation.result)
+          } catch (err) {
+            console.log("get reservation error",err)
+            setLoading(false)
           }
-          setLoading(false)
-          setReservations(reservation.result)
-        } catch (err) {
-          console.log("get reservation error",err)
-          setLoading(false)
         }
     }
 
