@@ -31,7 +31,7 @@ export default function History({navigation}) {
           const reservation = await GetReservations(props,user)
           for (const item of reservation.result) {
             const rest = await getRestaurantById(user,item.venue)
-            item.restaurant = rest[0];
+            item.restaurant = rest.result[0];
           }
           setLoading(false)
           setReservations(reservation.result)

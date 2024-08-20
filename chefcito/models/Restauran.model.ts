@@ -1,3 +1,8 @@
+export class RestaurantData {
+    result:Restaurant[];
+    total:number
+}
+
 export class Restaurant {
     id:string;
     name:string;

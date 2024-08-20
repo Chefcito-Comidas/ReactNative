@@ -80,9 +80,9 @@ export default function Home({navigation}) {
     try {
       setLoading(true)
       const restaurantList = await getRestaurant(user)
-      // console.log("restaurantList",restaurantList)
+      console.log("restaurantList",restaurantList)
       setLoading(false)
-      setRestaurants(restaurantList)
+      setRestaurants(restaurantList.result)
     } catch {
       setLoading(false)
     }
@@ -97,7 +97,7 @@ export default function Home({navigation}) {
       const reservation = await GetReservations(props,user)
       for (const item of reservation.result) {
         const rest = await getRestaurantById(user,item.venue)
-        item.restaurant = rest[0];
+        item.restaurant = rest.result[0];
       }
       setReservations(reservation.result)
     } catch (err) {
