@@ -5,147 +5,155 @@ import { COLORS } from "../../../utils/constants";
 import { Select } from "../../../components/Select/Select";
 import moment from "moment";
 type routeParam = {
-    restaurant:Restaurant;
-    people:string;
-    date:string;
-    id?:string;
-    home?:boolean;
+    restaurant: Restaurant;
+    people: string;
+    date: string;
+    id?: string;
+    home?: boolean;
+};
 
-}
-export default function ReservationTime({route,navigation}) {
+export default function ReservationTime({ route, navigation }) {
 
-    const [time,settime] = useState('')
-    const {restaurant,people,date,id,home}:routeParam = route.params;
+    const [time, setTime] = useState('');
+    const { restaurant, people, date, id, home }: routeParam = route.params;
 
     const cancel = () => {
         navigation.goBack();
-    }
+    };
 
     const onAccept = () => {
-        if(route.name==="NewReservationTime") {
+        if (route.name === "NewReservationTime") {
             navigation.navigate('NewReservationConfirmation', {
-                people:people,
+                people: people,
                 restaurant,
                 date,
-                time, 
-            })
+                time,
+            });
         } else {
             navigation.navigate('EditReservationConfirmation', {
-                people:people,
+                people: people,
                 restaurant,
-                time, 
+                time,
                 date,
                 id,
                 home,
-            })
+            });
         }
-    }
-    const IsValid = () => {
-        return time !==''
-    }
-    const onChange = (data) => {
-        console.log(data)
-        settime(data)
     };
+
+    const IsValid = () => {
+        return time !== '';
+    };
+
+    const onChange = (data) => {
+        setTime(data);
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>¿A Que Hora Llegan a {restaurant?.name}?</Text>
-            <View style={styles.input}>
-                <Select onValueChange={onChange} items={restaurant.slots.map((item)=>{
-                    return {
-                        label:moment(item).format('HH:mm'),
-                        value:moment(item).format('HH:mm'),
-                    }
-                })} placeHolder='Elegir Horario' 
-                customStyles={{
-                    item:{
-                        fontSize:20,
-                        fontWeight:'600',
-                        color:COLORS.blue,
-                    },
-                    placeHolder:{
-                        fontSize:20,
-                        fontWeight:'600',
-                        color:COLORS.white,
-                    },
-                }}
+            <Text style={styles.title}>¿A qué hora llegan a {restaurant?.name}?</Text>
+            <View style={styles.inputContainer}>
+                <Select
+                    onValueChange={onChange}
+                    items={restaurant.slots.map((item) => ({
+                        label: moment(item).format('HH:mm'),
+                        value: moment(item).format('HH:mm'),
+                    }))}
+                    placeHolder='Slecciona Horario'
+                    customStyles={{
+                        item: {
+                            fontSize: 20,
+                            fontWeight: '600',
+                            color: '#1E88E5', // Azul oscuro
+                        },
+                        placeHolder: {
+                            fontSize: 20,
+                            fontWeight: '600',
+                            color: '#B0BEC5', // Gris claro
+                            textAlign: 'center',
+                        },
+                    }}
+                    style={styles.select}
                 />
             </View>
             <View style={styles.buttonContainer}>
                 <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => cancel()}>
-                    <Text style={styles.cancelButtonText}>Atras</Text>
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => cancel()}>
+                    <Text style={styles.cancelButtonText}>Atrás</Text>
                 </Pressable>
                 <Pressable
-                disabled={!IsValid()}
-                style={[styles.button,!IsValid()?styles.buttonAccpetDisabled:styles.buttonAccpet]}
-                onPress={() => onAccept()}>
+                    disabled={!IsValid()}
+                    style={[styles.button, !IsValid() ? styles.buttonAcceptDisabled : styles.buttonAccept]}
+                    onPress={() => onAccept()}>
                     <Text style={styles.textStyle}>Siguiente</Text>
                 </Pressable>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: COLORS.secondaryBlue,
-      padding:8
-    },
-    input: {
         flex: 1,
-        textAlign:'center',
-        alignItems:'center',
-        marginTop:100
+        backgroundColor: '#ECEFF1', // Gris claro
+        padding: 16,
+        justifyContent: 'center',
     },
-    title:{
-        fontSize:32,
-        fontWeight:'600',
-        color:COLORS.white,
-        textAlign:'center',
-        marginBottom:8,
+    inputContainer: {
+        marginTop: 100,
+        marginBottom: 20,
+        borderWidth: 2,
+        borderColor: '#B0BEC5', // Gris claro para el borde del combo box
+        borderRadius: 10,
+        backgroundColor: '#FFFFFF', // Fondo blanco para el combo box
+        padding: 10,
     },
-    buttonContainer:{
-        flex:1,
-        flexDirection:'row',
-        maxHeight:50,
-        justifyContent:'center',
-        marginTop:'auto'
+    select: {
+        width: '100%',
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: '600',
+        color: '#37474F', // Gris oscuro
+        textAlign: 'center',
+        marginBottom: 16,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 20,
+        marginTop: 'auto',
     },
     button: {
-        borderRadius: 15,
-        padding: 10,
-        elevation: 2,
-        marginBottom:8,
-        backgroundColor: '#2196F3',
-        width:100
+        borderRadius: 25,
+        padding: 14,
+        elevation: 3,
+        width: 120,
+        alignItems: 'center',
     },
     buttonClose: {
-        backgroundColor:COLORS.white,
-        borderColor:COLORS.blue,
-        borderWidth:2,
+        backgroundColor: '#CFD8DC', // Gris claro
+        borderColor: '#37474F', // Gris oscuro
+        borderWidth: 2,
     },
-    buttonAccpet: {
-        marginLeft:4,
-        backgroundColor:COLORS.blue,
-        borderColor:COLORS.white,
-        borderWidth:2,
+    buttonAccept: {
+        backgroundColor: '#37474F',
+        borderColor: '#CFD8DC',
+        borderWidth: 2,
     },
-    buttonAccpetDisabled:{
-        backgroundColor:COLORS.secondaryBlue
+    buttonAcceptDisabled: {
+        backgroundColor: '#B0BEC5', // Gris
     },
     textStyle: {
-        color: 'white',
+        color: '#FFFFFF', // Blanco
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize:16,
+        fontSize: 16,
     },
-    cancelButtonText:{
-        color:COLORS.blue,
+    cancelButtonText: {
+        color: '#37474F', // Gris oscuro
         fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize:16,
-    }
+        fontSize: 16,
+    },
 });

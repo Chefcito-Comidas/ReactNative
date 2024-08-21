@@ -63,8 +63,8 @@ export default function History({navigation}) {
         <View style={styles.container}>
             {loading&&<Loader />}
             <Pressable style={styles.searchBar}>
-                <Ionicons name={'search'} size={16} color={COLORS.white}  />
-                <Text style={styles.searchText}>Buscar</Text>
+                <Ionicons name={'search'} size={16} color={COLORS.gray}  />
+                <Text style={styles.searchText}>Buscar mis reservas</Text>
             </Pressable>
             {reservations.length>0&&<ReservationVerticalList data={reservations} goToReservationData={goToReservationData} />}
         </View>
@@ -73,25 +73,37 @@ export default function History({navigation}) {
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: COLORS.secondaryBlue,
-      padding:8
-    },
-    searchBar:{
-      borderColor:COLORS.silver,
-      backgroundColor:COLORS.blue,
-      borderWidth:2,
-      borderRadius:8,
-      width:'100%',
-      paddingStart:8,
-      display:'flex',
-      flexDirection:'row',
-      alignItems:'center'
-    },
-    searchText:{
-      fontSize:18,
-      marginStart:4,
-      color:COLORS.white,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.secondaryBlue,
+    padding: 16,
+  },
+  ReservationTitle: {
+    marginTop: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.white,
+  },
+  searchBar: {
+    borderColor: '#ddd',
+    backgroundColor: '#f0f0f0',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: '100%',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  searchText: {
+    fontSize: 18,
+    marginStart: 8,
+    color: COLORS.darkGray,
+    flex: 1,
+  },
 });

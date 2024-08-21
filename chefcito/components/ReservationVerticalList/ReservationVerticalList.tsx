@@ -10,83 +10,86 @@ interface ReservationVerticalListProps {
 const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalListProps) =>{
     
     const _renderItem = (item:Reservation) =>{
-        return (
-        <Pressable style={{
-            borderRadius: 5,
-            backgroundColor:COLORS.blue,
-            borderColor:COLORS.white,
-            marginHorizontal:12,
-            padding:10,
-            flex:1,
-            flexDirection:'row',
-            marginVertical:4
-        }}
-        onPress={()=>{
-            goToReservationData(item)
-        }}
-        >
-            <View>
-                <Image source={{uri:`${item?.restaurant?.logo}`}} style={{height:70,width:70,borderRadius:15}} />
-            </View>
-            <View style={{marginLeft:8}}>
-                <Text style={{color:COLORS.white}}>{item?.restaurant?.name}</Text>
-                <Text style={{color:COLORS.white}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
-                <Text style={{color:COLORS.white}}>Personas: {item.people}</Text>
-                <Text style={{color:COLORS.white}}>Estado: {item.status.status}</Text>
-            </View>
-          </Pressable>
-        )
-    }
+         return (
+               <Pressable
+                 style={styles.Pressable}
+                 onPress={() => goToReservationData(item)}
+               >
+                 <View style={styles.RestaurantView}>
+                   <Image source={{ uri: `${item?.restaurant?.logo}` }} style={styles.IconImage} />
+                   <View style={styles.InfoContainer}>
+                     <Text style={styles.Name}>{item?.restaurant?.name}</Text>
+                     <Text style={styles.ExtraData}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
+                     <Text style={styles.ExtraData}>Personas: {item.people}</Text>
+                     <Text style={styles.ExtraData}>Estado: {item.status.status}</Text>
+                   </View>
+                 </View>
+               </Pressable>
+             );
+           };
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View
-            style={styles.ListContainer}
-            >
-                <FlatList
-                data={data}
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={(item) => _renderItem(item.item)}
-                keyExtractor={item => item.id}
-                />
-            </View>
-        </SafeAreaView>
-    );
-}
+           return (
+             <SafeAreaView style={styles.container}>
+               <View style={styles.ListContainer}>
+                 <FlatList
+                   data={data}
+                   pagingEnabled={true}
+                   showsHorizontalScrollIndicator={false}
+                   renderItem={(item) => _renderItem(item.item)}
+                   keyExtractor={(item) => item.id.toString()}
+                 />
+               </View>
+             </SafeAreaView>
+           );
+         };
 
-const styles = StyleSheet.create({
-    container: {
-      paddingTop: 8,
-      overflow:'scroll'
-    },
-    ListContainer:{
-        height:'auto'
-    },
-    Pressable:{
-        borderRadius: 5,
-        backgroundColor:'gray',
-        padding:10, 
-        marginVertical:4
-    },
-    RestaurantView:{
-        flex:1,
-        flexDirection:'row',
-    },
-    IconImage:{
-        height:100,
-        width:100,
-        borderRadius:15,
-    },
-    InfoContainer:{
-        marginStart:10
-    },
-    Name:{
-        fontSize:24,
-    },
-    Location:{
-        fontSize: 16
-    }
-});
+         const styles = StyleSheet.create({
+           container: {
+             flex: 1,
+             backgroundColor: COLORS.lightGray,
+             padding: 16,
+           },
+           ListContainer: {
+             height: 'auto',
+           },
+           Pressable: {
+             borderRadius: 20,
+             backgroundColor: '#f9f9f9',
+             padding: 20,
+             marginVertical: 12,
+             borderColor: '#e0e0e0',
+             borderWidth: 1,
+             shadowColor: '#aaa',
+             shadowOpacity: 0.2,
+             shadowOffset: { width: 0, height: 5 },
+             shadowRadius: 10,
+             elevation: 4,
+           },
+           RestaurantView: {
+             flex: 1,
+             flexDirection: 'row',
+             alignItems: 'center',
+           },
+           IconImage: {
+             height: 90,
+             width: 90,
+             borderRadius: 10,
+           },
+           InfoContainer: {
+             marginLeft: 16,
+             flex: 1,
+           },
+           Name: {
+             fontSize: 18,
+             fontWeight: '600',
+             color: COLORS.darkGray,
+           },
+           ExtraData: {
+             fontSize: 16,
+             color: COLORS.gray,
+             marginTop: 4,
+           },
+         });
+
 
 export default ReservationVerticalList

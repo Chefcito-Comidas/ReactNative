@@ -13,76 +13,83 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
         });
     }
 
-    const _renderItem = (item:Restaurant) =>{
+    const _renderItem = (item: Restaurant) => {
         return (
-        <Pressable style={styles.Pressable} onPress={()=>goToRestaurantPage(item)}>
+          <Pressable style={styles.Pressable} onPress={() => goToRestaurantPage(item)}>
             <View style={styles.RestaurantView}>
-                <Image source={{uri:item.logo}} style={styles.IconImage}/>
-                <View style={styles.InfoContainer}>
-                    <Text style={styles.Name}>{item.name}</Text>
-                    <Text style={styles.ExtraData}>Capacidad: {item.capacity}</Text>
-                    <Text style={styles.ExtraData}>Estado: {item.status.status}</Text>
-                    {/* <Text style={styles.Location}>{item.location}</Text> */}
-                </View>
+              <Image source={{ uri: item.logo }} style={styles.IconImage} />
+              <View style={styles.InfoContainer}>
+                <Text style={styles.Name}>{item.name}</Text>
+                <Text style={styles.ExtraData}>{item.characteristics.join(", ")}</Text>
+                <Text style={styles.ExtraData}>Disponible</Text>
+                {/*<Text style={styles.ExtraData}>Estado: {item.status.status}</Text>*/}
+              </View>
             </View>
-        </Pressable>
-        )
-    }
+          </Pressable>
+        );
+      };
 
-    return (
+      return (
         <SafeAreaView style={styles.container}>
-            <View
-            style={styles.ListContainer}
-            >
-                <FlatList
-                data={data}
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={(item) => _renderItem(item.item)}
-                keyExtractor={item => item.id}
-                />
-            </View>
-            
+          <View style={styles.ListContainer}>
+            <FlatList
+              data={data}
+              pagingEnabled={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={(item) => _renderItem(item.item)}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          </View>
         </SafeAreaView>
-    );
-}
+      );
+    };
 
-const styles = StyleSheet.create({
-    container: {
-      paddingTop: 8,
-      overflow:'scroll'
-    },
-    ListContainer:{
-        height:'auto'
-    },
-    Pressable:{
-        borderRadius: 15,
-        backgroundColor:COLORS.blue,
-        padding:10, 
-        marginVertical:4,
-        borderColor:COLORS.blue,
-        borderWidth:4,
-    },
-    RestaurantView:{
-        flex:1,
-        flexDirection:'row',
-    },
-    IconImage:{
-        height:100,
-        width:100,
-        borderRadius:15,
-    },
-    InfoContainer:{
-        marginStart:10,
-    },
-    Name:{
-        fontSize:24,
-        color:COLORS.white,
-    },
-    ExtraData:{
-        fontSize: 16,
-        color:COLORS.white,
-    }
-  });
+    const styles = StyleSheet.create({
+               container: {
+                 flex: 1,
+                 backgroundColor: COLORS.lightGray,
+                 padding: 16,
+               },
+               ListContainer: {
+                 height: 'auto',
+               },
+               Pressable: {
+                 borderRadius: 20,
+                 backgroundColor: '#f0f0f0',
+                 padding: 20,
+                 marginVertical: 12,
+                 borderColor: '#e0e0e0',
+                 borderWidth: 1,
+                 shadowColor: '#aaa',
+                 shadowOpacity: 0.2,
+                 shadowOffset: { width: 0, height: 5 },
+                 shadowRadius: 10,
+                 elevation: 4,
+               },
+               RestaurantView: {
+                 flex: 1,
+                 flexDirection: 'row',
+                 alignItems: 'center',
+               },
+               IconImage: {
+                 height: 90,
+                 width: 90,
+                 borderRadius: 10,
+               },
+               InfoContainer: {
+                 marginLeft: 16,
+                 flex: 1,
+               },
+               Name: {
+                 fontSize: 18,
+                 fontWeight: '600',
+                 color: COLORS.darkGray,
+               },
+               ExtraData: {
+                 fontSize: 16,
+                 color: COLORS.gray,
+                 marginTop: 4,
+               },
+             });
 
-export default RestaurantList
+    export default RestaurantList;

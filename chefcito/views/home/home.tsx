@@ -133,7 +133,7 @@ export default function Home({navigation}) {
     <View style={styles.container}>
       {loading&&<Loader />}
       <Pressable style={styles.searchBar}>
-        <Ionicons name={'search'} size={16} style={{color:COLORS.white}}  />
+        <Ionicons name={'search'} size={16} style={{color:COLORS.gray}}  />
         <Text style={styles.searchText}>Buscar</Text>
       </Pressable>
       {restaurants.length>0&&<RestaurantList data={restaurants} navigation={navigation} />}
@@ -151,26 +151,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.secondaryBlue,
-    padding:8
+    padding: 16,
   },
-  ReservationTitle:{
-    marginTop:8,
-    fontSize:18
+  ReservationTitle: {
+    marginTop: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.white,
   },
-  searchBar:{
-    borderColor:COLORS.silver,
-    backgroundColor:COLORS.blue,
-    borderWidth:2,
-    borderRadius:8,
-    width:'100%',
-    paddingStart:8,
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center'
+  searchBar: {
+    borderColor: '#ddd',
+    backgroundColor: '#f0f0f0',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: '100%',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 10,
+    elevation: 3,
   },
-  searchText:{
-    fontSize:18,
-    marginStart:4,
-    color:COLORS.white
-  }
+  searchText: {
+    fontSize: 18,
+    marginStart: 8,
+    color: COLORS.darkGray,
+    flex: 1,
+  },
 });
+
