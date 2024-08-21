@@ -94,7 +94,7 @@ export default function ReservationConfirmation({route,navigation}) {
     return (
         <View style={styles.container}>
             {loading&&<Loader />}
-            <Text style={styles.title}>Son estos Datos Correctos</Text>
+            <Text style={styles.title}>Confirme los datos</Text>
             <View style={styles.display}>
                 <Text style={styles.infoText}>Lugar: {restaurant?.name}</Text>
                 <Text style={styles.infoText}>Personas: {people}</Text>
@@ -109,7 +109,7 @@ export default function ReservationConfirmation({route,navigation}) {
                 </Pressable>
                 <Pressable
                 disabled={!user}
-                style={[styles.button,styles.buttonAccpet]}
+                style={[styles.button,styles.buttonAccept]}
                 onPress={() => onAccept()}>
                     <Text style={styles.textStyle}>Confirmar</Text>
                 </Pressable>
@@ -120,65 +120,70 @@ export default function ReservationConfirmation({route,navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: COLORS.secondaryBlue,
-      padding:8,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        padding: 20,
     },
-    display:{
-        marginVertical:'auto',
-        marginHorizontal:'auto'
+    title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#333',
+        textAlign: 'center',
+        marginBottom: 20,
     },
-    title:{
-        fontSize:32,
-        fontWeight:'600',
-        color:COLORS.white,
-        textAlign:'center',
-        marginBottom:8,
+    display: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 20,
+        width: '100%',
+        maxWidth: 400,
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 5 },
+        shadowRadius: 10,
+        elevation: 3,
     },
-    infoText:{
-        color:COLORS.white,
-        fontSize:18,
-        fontWeight:'500'
+    infoText: {
+        fontSize: 18,
+        color: '#666',
+        marginBottom: 15,
     },
-    buttonContainer:{
-        flex:1,
-        flexDirection:'row',
-        maxHeight:50,
-        justifyContent:'center',
-        marginTop:'auto'
+    buttonContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: 20,
     },
     button: {
-        borderRadius: 15,
-        padding: 10,
-        elevation: 2,
-        marginBottom:8,
-        backgroundColor: '#2196F3',
-        width:100
+        borderRadius: 25,
+        padding: 14,
+        elevation: 3,
+        width: 120,
+        alignItems: 'center',
     },
     buttonClose: {
-        backgroundColor:COLORS.white,
-        borderColor:COLORS.blue,
-        borderWidth:2,
+        backgroundColor: '#CFD8DC',
+        borderColor: '#37474F',
+        borderWidth: 2,
     },
-    buttonAccpet: {
-        marginLeft:4,
-        backgroundColor:COLORS.blue,
-        borderColor:COLORS.white,
-        borderWidth:2,
+    buttonAccept: {
+        backgroundColor: '#37474F',
+        borderColor: '#CFD8DC',
+        borderWidth: 2,
     },
-    buttonAccpetDisabled:{
-        backgroundColor:COLORS.secondaryBlue
+    buttonAcceptDisabled: {
+        backgroundColor: '#B0BEC5',
     },
     textStyle: {
-        color: 'white',
+        color: '#FFFFFF',
         fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize:16,
+        fontSize: 16,
     },
-    cancelButtonText:{
-        color:COLORS.blue,
+    cancelButtonText: {
+        color: '#37474F',
         fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize:16,
-    }
+        fontSize: 16,
+    },
 });
