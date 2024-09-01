@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   searchText: {
     fontSize: 18,
     marginStart: 8,
-    color: COLORS.darkGray,
+    color: COLORS.gray,
     flex: 1,
   },
 });
