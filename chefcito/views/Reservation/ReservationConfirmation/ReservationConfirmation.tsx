@@ -123,18 +123,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: COLORS.white,
         padding: 20,
     },
     title: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#333',
+        color: COLORS.pasteltitle,
         textAlign: 'center',
         marginBottom: 20,
     },
     display: {
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.pastelblanco,
         borderRadius: 10,
         padding: 20,
         width: '100%',
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     },
     infoText: {
         fontSize: 18,
-        color: '#666',
+        color:COLORS.pasteltitle,
         marginBottom: 15,
     },
     buttonContainer: {
@@ -157,33 +157,33 @@ const styles = StyleSheet.create({
             marginHorizontal: 20,
     },
     button: {
-        borderRadius: 25,
-        padding: 14,
-        elevation: 3,
-        width: 120,
-        alignItems: 'center',
-    },
-    buttonClose: {
-        backgroundColor: '#CFD8DC',
-        borderColor: '#37474F',
-        borderWidth: 2,
-    },
-    buttonAccept: {
-        backgroundColor: '#37474F',
-        borderColor: '#CFD8DC',
-        borderWidth: 2,
-    },
-    buttonAcceptDisabled: {
-        backgroundColor: '#B0BEC5',
-    },
-    textStyle: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    cancelButtonText: {
-        color: '#37474F',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
+                borderRadius: 25,
+                padding: 14,
+                elevation: 3,
+                width: 120,
+                alignItems: 'center',
+            },
+            buttonClose: {
+                backgroundColor: COLORS.pasteloscuro,
+                borderColor: COLORS.pastelborder,
+                borderWidth: 2,
+            },
+            buttonAccept: {
+                backgroundColor: COLORS.pastelclaro,
+                borderColor: COLORS.pastelborder,
+                borderWidth: 2,
+            },
+            buttonAcceptDisabled: {
+                backgroundColor: COLORS.pasteldisabled,
+            },
+            textStyle: {
+                color: COLORS.white,
+                fontWeight: 'bold',
+                fontSize: 16,
+            },
+            cancelButtonText: {
+                color: COLORS.white,
+                fontWeight: 'bold',
+                fontSize: 16,
+            },
 });

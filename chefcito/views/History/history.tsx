@@ -75,7 +75,7 @@ export default function History({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.secondaryBlue,
+    backgroundColor: COLORS.white,
     padding: 16,
   },
   ReservationTitle: {

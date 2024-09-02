@@ -11,4 +11,13 @@ export const COLORS = {
     warning: '#ffff1a',
     silver: '#C0C0C0',
     gray:'gray',
+    pastel: '#ffda9e',
+    pastelclaro: '#eeca8f',
+    pasteloscuro: '#cdab72',
+    pastellog: '#ffe1b1',
+    pastelborder: '#ffda9e',
+    blancopaco: '#f0f0f0',
+    pasteldisabled: '#fff8ec',
+    pasteltitle: '#99835f',
+    pastelblanco: '#fff0d8',
 }

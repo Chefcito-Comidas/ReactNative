@@ -59,17 +59,17 @@ export default function ReservationTime({ route, navigation }) {
                         label: moment(item).format('HH:mm'),
                         value: moment(item).format('HH:mm'),
                     }))}
-                    placeHolder='Slecciona Horario'
+                    placeHolder='Selecciona Horario'
                     customStyles={{
                         item: {
                             fontSize: 20,
                             fontWeight: '600',
-                            color: '#1E88E5', // Azul oscuro
+                            color: COLORS.pasteloscuro,
                         },
                         placeHolder: {
                             fontSize: 20,
                             fontWeight: '600',
-                            color: '#B0BEC5', // Gris claro
+                            color: COLORS.pasteloscuro, // Gris claro
                             textAlign: 'center',
                         },
                     }}
@@ -96,7 +96,7 @@ export default function ReservationTime({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ECEFF1', // Gris claro
+        backgroundColor: COLORS.white,
         padding: 16,
         justifyContent: 'center',
     },
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
         marginTop: 100,
         marginBottom: 20,
         borderWidth: 2,
-        borderColor: '#B0BEC5', // Gris claro para el borde del combo box
+        borderColor: COLORS.white,
         borderRadius: 10,
-        backgroundColor: '#FFFFFF', // Fondo blanco para el combo box
+        backgroundColor: COLORS.pastelblanco,
         padding: 10,
     },
     select: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '600',
-        color: '#37474F', // Gris oscuro
+        color: COLORS.pasteltitle,
         textAlign: 'center',
         marginBottom: 16,
     },
@@ -126,34 +126,33 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
     },
     button: {
-        borderRadius: 25,
-        padding: 14,
-        elevation: 3,
-        width: 120,
-        alignItems: 'center',
-    },
-    buttonClose: {
-        backgroundColor: '#CFD8DC', // Gris claro
-        borderColor: '#37474F', // Gris oscuro
-        borderWidth: 2,
-    },
-    buttonAccept: {
-        backgroundColor: '#37474F',
-        borderColor: '#CFD8DC',
-        borderWidth: 2,
-    },
-    buttonAcceptDisabled: {
-        backgroundColor: '#B0BEC5', // Gris
-    },
-    textStyle: {
-        color: '#FFFFFF', // Blanco
-        fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    cancelButtonText: {
-        color: '#37474F', // Gris oscuro
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-});
+                borderRadius: 25,
+                padding: 14,
+                elevation: 3,
+                width: 120,
+                alignItems: 'center',
+            },
+            buttonClose: {
+                backgroundColor: COLORS.pasteloscuro,
+                borderColor: COLORS.pastelborder,
+                borderWidth: 2,
+            },
+            buttonAccept: {
+                backgroundColor: COLORS.pastelclaro,
+                borderColor: COLORS.pastelborder,
+                borderWidth: 2,
+            },
+            buttonAcceptDisabled: {
+                backgroundColor: COLORS.pasteldisabled,
+            },
+            textStyle: {
+                color: COLORS.white,
+                fontWeight: 'bold',
+                fontSize: 16,
+            },
+            cancelButtonText: {
+                color: COLORS.white,
+                fontWeight: 'bold',
+                fontSize: 16,
+            },
+        });

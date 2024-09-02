@@ -45,7 +45,7 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
     };
 
     const styles = StyleSheet.create({
-               container: {
+            container: {
                  flex: 1,
                  backgroundColor: COLORS.lightGray,
                  padding: 16,
