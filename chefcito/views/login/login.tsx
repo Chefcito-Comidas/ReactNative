@@ -20,7 +20,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
+import { CreateUser } from "../../api/authRestApi";
 
 export const LogInForm = ({ navigation }) => {
   const onLogin = async (values) => {
@@ -40,8 +40,15 @@ export const LogInForm = ({ navigation }) => {
   const signin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      await loginWithGoogleCredentials(user.data.idToken);
+      const userData = await GoogleSignin.signIn();
+      const user = await loginWithGoogleCredentials(userData.data.idToken);
+      if (user) {
+        const token = await user.user.getIdToken();
+        const newUser = await CreateUser(token);
+        console.log("sign in exitoso", newUser);
+      } else {
+        console.log("sign in error");
+      }
     } catch (e) {
       console.log("error", e);
     }
