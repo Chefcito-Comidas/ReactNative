@@ -29,6 +29,13 @@
             {
               "client_id": "170744366068-hrdaou9sieacr0eg5fui2c23npa2berf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "170744366068-egrkd2a4o3b1rut83gp60g0lnbnj7f1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chefcito.app"
+              }
             }
           ]
         }
