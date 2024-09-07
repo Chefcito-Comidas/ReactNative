@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { Select } from '../../components/Select/Select';
 import { Reservation } from '../../models/Reservations.model';
+import { COLORS } from '../../utils/constants';
 type EditBookingProps = {
     cancel:()=>void;
     accept:(value:NewBookingModel)=>void;
@@ -19,14 +20,14 @@ export default function EditBooking({cancel,accept,show,slots,booking}:EditBooki
     const IsValid = ():boolean => {
         const amount = parseInt(people)
         return !isNaN(amount)
-    } 
+    }
     const onAccept = () => {
         const dateData = moment(booking.time)
         console.log('slot',slot)
         const hour = slot.split(':')[0]
         const minute = slot.split(':')[1]
-        dateData.set('hour', parseInt(hour)); 
-        dateData.set('minute', parseInt(minute)); 
+        dateData.set('hour', parseInt(hour));
+        dateData.set('minute', parseInt(minute));
         dateData.set('second', 0);
         if(IsValid()) {
             const booking:NewBookingModel = {
@@ -69,7 +70,7 @@ export default function EditBooking({cancel,accept,show,slots,booking}:EditBooki
                             <Text style={styles.textStyle}>Cancelar</Text>
                         </Pressable>
                     </View>
-                    
+
                 </View>
             </View>
         </Modal>

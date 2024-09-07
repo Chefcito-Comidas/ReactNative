@@ -51,7 +51,7 @@ export default function ReservationPeople({ route, navigation }) {
                 onChangeText={(value) => setPeople(value)}
                 value={people}
                 placeholder="Cantidad de personas"
-                placeholderTextColor="#B0BEC5"
+                placeholderTextColor="#cdab72"
                 keyboardType="numeric"
             />
             <View style={styles.buttonContainer}>
@@ -74,7 +74,7 @@ export default function ReservationPeople({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ECEFF1',
+        backgroundColor: COLORS.white,
         padding: 16,
         justifyContent: 'center',
     },
@@ -84,17 +84,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 12,
         borderRadius: 10,
-        borderColor: '#CFD8DC',
+        borderColor: COLORS.white,
         textAlign: 'center',
         color: '#263238',
         fontSize: 18,
         fontWeight: '500',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: COLORS.pastelblanco,
     },
     title: {
         fontSize: 28,
         fontWeight: '600',
-        color: '#37474F',
+        color: COLORS.pasteltitle,
         textAlign: 'center',
         marginBottom: 16,
     },
@@ -111,25 +111,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonClose: {
-        backgroundColor: '#CFD8DC',
-        borderColor: '#37474F',
+        backgroundColor: COLORS.pasteloscuro,
+        borderColor: COLORS.pastelborder,
         borderWidth: 2,
     },
     buttonAccept: {
-        backgroundColor: '#37474F',
-        borderColor: '#CFD8DC',
+        backgroundColor: COLORS.pastelclaro,
+        borderColor: COLORS.pastelborder,
         borderWidth: 2,
     },
     buttonAcceptDisabled: {
-        backgroundColor: '#B0BEC5',
+        backgroundColor: COLORS.pasteldisabled,
     },
     textStyle: {
-        color: '#FFFFFF',
+        color: COLORS.white,
         fontWeight: 'bold',
         fontSize: 16,
     },
     cancelButtonText: {
-        color: '#37474F',
+        color: COLORS.white,
         fontWeight: 'bold',
         fontSize: 16,
     },

@@ -72,14 +72,14 @@ export default function ReservationDate({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ECEFF1',
+        backgroundColor: COLORS.white,
         padding: 16,
         justifyContent: 'center',
     },
     title: {
         fontSize: 28,
         fontWeight: '600',
-        color: '#37474F',
+        color: COLORS.pasteltitle,
         textAlign: 'center',
         marginBottom: 16,
     },
@@ -90,33 +90,33 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
     },
     button: {
-        borderRadius: 25,
-        padding: 14,
-        elevation: 3,
-        width: 120,
-        alignItems: 'center',
-    },
-    buttonClose: {
-        backgroundColor: '#CFD8DC',
-        borderColor: '#37474F',
-        borderWidth: 2,
-    },
-    buttonAccept: {
-        backgroundColor: '#37474F',
-        borderColor: '#CFD8DC',
-        borderWidth: 2,
-    },
-    buttonAcceptDisabled: {
-        backgroundColor: '#B0BEC5',
-    },
-    textStyle: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    cancelButtonText: {
-        color: '#37474F',
-        fontWeight: 'bold',
-        fontSize: 16,
-    }
-});
+            borderRadius: 25,
+            padding: 14,
+            elevation: 3,
+            width: 120,
+            alignItems: 'center',
+        },
+        buttonClose: {
+            backgroundColor: COLORS.pasteloscuro,
+            borderColor: COLORS.pastelborder,
+            borderWidth: 2,
+        },
+        buttonAccept: {
+            backgroundColor: COLORS.pastelclaro,
+            borderColor: COLORS.pastelborder,
+            borderWidth: 2,
+        },
+        buttonAcceptDisabled: {
+            backgroundColor: COLORS.pasteldisabled,
+        },
+        textStyle: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+        cancelButtonText: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+    });

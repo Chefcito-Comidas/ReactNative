@@ -4,6 +4,7 @@ import { useAppSelector } from '../../redux/hooks/hook';
 import { useEffect } from 'react';
 import { signOut } from '../../api/googleAuth';
 import { GetUser } from '../../hooks/getUser.hook';
+import { COLORS } from '../../utils/constants';
 export default function Profile() {
   const {
     user
@@ -37,11 +38,11 @@ export default function Profile() {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#f0f0f0',
+          backgroundColor: COLORS.white,
           padding: 20,
         },
         card: {
-          backgroundColor: '#fff',
+          backgroundColor: COLORS.pastelblanco,
           borderRadius: 10,
           padding: 20,
           width: '100%',

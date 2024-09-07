@@ -7,60 +7,56 @@ const wendys_1 = require('../../assets/images/wendys.jpg')
 const wendys_2 = require('../../assets/images/wendys_menu_1.jpg')
 const wendys_3 = require('../../assets/images/wendys_menu_2.jpg')
 const wendys_4= require('../../assets/images/wendys_menu_3.jpg')
+import { Ionicons } from '@expo/vector-icons';
 
 type routeParam = {
-  restaurant:RestaurantData
+  restaurant: RestaurantData
 }
-export default function Restaurant({route, navigation}) {
- 
-  const {
-    user,
-  } = GetUser()
-  const {restaurant}:routeParam = route.params;
+
+export default function Restaurant({ route, navigation }) {
+
+  const { user } = GetUser();
+  const { restaurant }: routeParam = route.params;
 
   const openMaps = () => {
-    const fullAddress = restaurant.location.split("@").length>0?restaurant.location.split("@")[1]:restaurant.location
+    const fullAddress = restaurant.location.split("@").length > 0 ? restaurant.location.split("@")[1] : restaurant.location;
     const url = Platform.select({
       ios: `maps:0,0?q=${fullAddress}`,
       android: `geo:0,0?q=${fullAddress}`,
-    })
-    
-    Linking.openURL(url)
+    });
+
+    Linking.openURL(url);
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView centerContent={true}>
-          <Image source={{uri:restaurant.logo}} style={styles.MainImage}/>
-          <View style={styles.InfoContainer}>
-              <Text style={styles.Name}>{restaurant.name}</Text>
-          </View>
-          <View>
-            <Pressable onPress={openMaps} style={styles.mapButton}><Text style={styles.Location}>Abrir ubicacion en el mapa</Text></Pressable>
-          </View>
-          <View style={styles.imageCarrousel}>
-            {restaurant.pictures&&restaurant.pictures.length>0&&<ImageCarrousel data={
-              restaurant.pictures.map((item,index)=>{
-                return {
-                  image:item,
-                  id:index
-                }
-              })
-            } />}
-          </View>
-          <View style={styles.ButtonContainer}>
-            <Pressable style={styles.newReservationButton} onPress={()=>
-              navigation.navigate('NewReservation',{
-                screen: 'NewReservationPeople',
-                params: {
-                  restaurant
-                },
-              })
-            }>
-              <Text style={styles.ButtonText}>Hacer una Reserva</Text>
-            </Pressable>
-          </View>
-        </ScrollView>
+        <Image source={{ uri: restaurant.logo }} style={styles.mainImage} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{restaurant.name}</Text>
+        </View>
+        <View style={styles.imageCarrousel}>
+          {restaurant.pictures && restaurant.pictures.length > 0 && (
+            <ImageCarrousel data={restaurant.pictures.map((item, index) => ({
+              image: item,
+              id: index
+            }))} />
+          )}
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.mapButton} onPress={openMaps}>
+            <Ionicons name="location-outline" size={24} color={COLORS.white} />
+          </Pressable>
+          <Pressable style={styles.newReservationButton} onPress={() =>
+            navigation.navigate('NewReservation', {
+              screen: 'NewReservationPeople',
+              params: { restaurant },
+            })
+          }>
+            <Text style={styles.buttonText}>Reserva!</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -68,56 +64,53 @@ export default function Restaurant({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.secondaryBlue,
-    paddingHorizontal:8
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 16,
   },
-  MainImage: {
-    width:'100%',
-    height:150,
+  mainImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 15,
+    marginBottom: 20,
   },
-  Name:{
-    fontSize:25,
-    fontWeight:'700',
-    textAlign:'center',
-    color:COLORS.white
+  name: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: COLORS.black,
   },
-  Location:{
-    textAlign:'center',
-    color:COLORS.white,
+  infoContainer: {
+    marginBottom: 16,
   },
-  InfoContainer:{
+  imageCarrousel: {
+    height: 200,
+    marginBottom: 24,
   },
-  Image:{
-    height:300,
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 'auto',
   },
-  ButtonContainer:{
-    marginTop:80
+  mapButton: {
+    backgroundColor: COLORS.pastelclaro,
+    padding: 10,
+    borderRadius: 50,
+    marginRight: 16,
+    borderColor: COLORS.pastelborder,
   },
-  mapButton:{
-    borderColor:COLORS.silver,
-    color:COLORS.white,
-    backgroundColor:COLORS.blue,
-    borderWidth:2,
-    borderRadius:8,
-    paddingStart:8,
-    textAlign:'center'
+  newReservationButton: {
+    backgroundColor: COLORS.pastelclaro,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 50,
+    borderColor: COLORS.pastelborder,
+    borderWidth: 2,
   },
-  imageCarrousel:{
-    height:150,
-    marginVertical:8
+  buttonText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
   },
-  newReservationButton:{
-    backgroundColor:COLORS.blue,
-    width:200,
-    alignSelf:'center',
-    padding:4,
-    borderRadius:15,
-    borderColor:COLORS.silver,
-    borderWidth:2,
-  },
-  ButtonText:{
-    textAlign:'center',
-    color:COLORS.white,
-    fontSize:18
-  }
 });

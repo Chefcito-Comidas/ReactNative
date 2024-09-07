@@ -6,11 +6,15 @@ import { Reservation } from '../../models/Reservations.model';
 import {CancelBooking} from "../../api/bookings";
 import { ConfirmationModal } from '../../components/ConfirmationModal/ComfirmationModal';
 import { COLORS } from '../../utils/constants';
+import BarCodeScannerComponent from '../../components/BarCodeScanner/BarCodeScanner';
+import moment from 'moment';
+
 type routeParam = {
     reservation:Reservation
 }
 export default function ReservationData({route,navigation}) {
     const [show,setShow] = useState(false)
+    const [showQrScanner,setShowQrScanner] = useState(false)
 
     const {
         user,
@@ -44,6 +48,14 @@ export default function ReservationData({route,navigation}) {
         setShow(false)
     }
 
+    const confirmReservation = (id:string) => {
+        setShowQrScanner(false)
+        const timeDiff = moment().diff(moment(reservation.time),'hours')
+        if(id===reservation.venue&&timeDiff<12){
+            console.log("confirmar reserva")
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -53,10 +65,11 @@ export default function ReservationData({route,navigation}) {
                 <View style={styles.InfoContainer}>
                     <Text style={styles.Name}>{reservation.restaurant.name}</Text>
                 </View>
-                <View style={styles.ReservationInfoContainer}>
-                  <Text style={styles.displayText}>Personas: {reservation.people}</Text>
-                  <Text style={styles.displayText}>Hora: {reservation.time}</Text>
-                </View>
+                <View style={styles.display}>
+                                <Text style={styles.infoText}>Lugar: {reservation.restaurant.name}</Text>
+                                <Text style={styles.infoText}>Personas: {reservation.people}</Text>
+                                <Text style={styles.infoText}>Horario: {reservation.time}</Text>
+                            </View>
                 <View>
                     <Pressable onPress={openMaps} style={styles.mapButton}><Text style={styles.Location}>Abrir ubicacion en el mapa</Text></Pressable>
                 </View>
@@ -81,6 +94,11 @@ export default function ReservationData({route,navigation}) {
                 {(reservation.status.status==="Uncomfirmed"||reservation.status.status==="Accepted")&&<View style={styles.ButtonContainer}>
                     <Pressable style={styles.reservationButton} onPress={()=>setShow(true)}><Text style={styles.ButtonText}>Cancelar Reserva</Text></Pressable>
                 </View>}
+                {(reservation.status.status==="Uncomfirmed"||reservation.status.status==="Accepted")&&<View style={styles.ButtonContainer}>
+                    <Pressable style={styles.reservationButton} onPress={()=>setShowQrScanner(true)}><Text style={styles.ButtonText}>Confirmar Reserva</Text></Pressable>
+                </View>}
+
+                <BarCodeScannerComponent cancel={()=>{setShowQrScanner(false)}} show={showQrScanner} accept={confirmReservation} />
                 <ConfirmationModal 
                 show={show}
                 title='Cancelar Reserva'
@@ -96,66 +114,83 @@ export default function ReservationData({route,navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: COLORS.secondaryBlue,
-      paddingHorizontal:8
+        flex: 1,
+        backgroundColor: COLORS.secondaryBlue,
+        paddingHorizontal: 16,
+        paddingVertical: 24,
     },
     MainImage: {
-      width:'100%',
-      height:150,
+        width: '100%',
+        height: 200,
+        borderRadius: 12,
+        marginBottom: 20,
     },
-    Name:{
-      fontSize:25,
-      fontWeight:'700',
-      textAlign:'center',
-      color:COLORS.white
+    Name: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: COLORS.white,
+        marginBottom: 12,
     },
-    Location:{
-      textAlign:'center',
-      color:COLORS.white,
+    Location: {
+        textAlign: 'center',
+        color: COLORS.white,
+        fontSize: 16,
+        marginVertical: 12,
     },
-    InfoContainer:{
+    InfoContainer: {
+        marginBottom: 20,
+        paddingHorizontal: 16,
     },
-    ReservationInfoContainer:{
+    display: {
+            backgroundColor: COLORS.pastelblanco,
+            borderRadius: 10,
+            padding: 20,
+            width: '100%',
+            maxWidth: 400,
+            marginBottom: 20,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 0, height: 5 },
+            shadowRadius: 10,
+            elevation: 3,
+        },
+    ButtonContainer: {
+        marginTop: 20,
+        alignItems: 'center',
     },
-    Image:{
-      height:300,
+    mapButton: {
+        borderColor: COLORS.silver,
+        backgroundColor: COLORS.blue,
+        borderWidth: 2,
+        borderRadius: 8,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        textAlign: 'center',
+        marginVertical: 12,
     },
-    ButtonContainer:{
-      marginTop:12
+    reservationButton: {
+        backgroundColor: COLORS.blue,
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 12,
+        borderColor: COLORS.silver,
+        borderWidth: 2,
+        marginBottom: 12,
+        width: '80%',
+        alignItems: 'center',
     },
-    mapButton:{
-      borderColor:COLORS.silver,
-      color:COLORS.white,
-      backgroundColor:COLORS.blue,
-      borderWidth:2,
-      borderRadius:8,
-      paddingStart:8,
-      textAlign:'center'
+    ButtonText: {
+        textAlign: 'center',
+        color: COLORS.white,
+        fontSize: 18,
+        fontWeight: '600',
     },
-    imageCarrousel:{
-      height:150,
-      marginVertical:8
+    displayText: {
+        marginBottom: 8,
+        textAlign: 'center',
+        color: COLORS.white,
+        fontSize: 16,
+        fontWeight: '500',
     },
-    reservationButton:{
-      backgroundColor:COLORS.blue,
-      width:200,
-      alignSelf:'center',
-      padding:4,
-      borderRadius:15,
-      borderColor:COLORS.silver,
-      borderWidth:2,
-    },
-    ButtonText:{
-      textAlign:'center',
-      color:COLORS.white,
-      fontSize:18
-    },
-    displayText:{
-      marginBottom:4,
-      textAlign:'center',
-      color:COLORS.white,
-      fontSize:16,
-      fontWeight:'400'
-    }
-  });
+});
