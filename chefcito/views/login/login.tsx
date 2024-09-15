@@ -64,36 +64,36 @@ export const LogInForm = ({ navigation }) => {
         source={require("../../assets/images/logochefcito.jpg")}
         style={styles.logo}
       />
-      {/* <Formik
-                validationSchema={schema}
-                initialValues={{ email: '', password: '' }}
-                onSubmit={onLogin}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values }) => (
-                    <View style={styles.formContainer}>
-                        <TextInput
-                            onChangeText={handleChange('email')}
-                            onBlur={handleBlur('email')}
-                            value={values.email}
-                            style={styles.formField}
-                            placeholder="Email"
-                            placeholderTextColor="#555"
-                        />
-                        <TextInput
-                            onChangeText={handleChange('password')}
-                            onBlur={handleBlur('password')}
-                            value={values.password}
-                            style={styles.formField}
-                            secureTextEntry
-                            placeholder="Contraseña"
-                            placeholderTextColor="#555"
-                        />
-                        <Pressable style={styles.button} onPress={() => handleSubmit()}>
-                            <Text style={styles.buttonText}>Log In</Text>
-                        </Pressable>
-                    </View>
-                )}
-            </Formik> */}
+      <Formik
+        validationSchema={schema}
+        initialValues={{ email: "", password: "" }}
+        onSubmit={onLogin}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View style={styles.formContainer}>
+            <TextInput
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+              style={styles.formField}
+              placeholder="Email"
+              placeholderTextColor="#555"
+            />
+            <TextInput
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+              style={styles.formField}
+              secureTextEntry
+              placeholder="Contraseña"
+              placeholderTextColor="#555"
+            />
+            <Pressable style={styles.button} onPress={() => handleSubmit()}>
+              <Text style={styles.buttonText}>Log In</Text>
+            </Pressable>
+          </View>
+        )}
+      </Formik>
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Standard}
         color={GoogleSigninButton.Color.Dark}
