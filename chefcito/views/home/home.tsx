@@ -135,6 +135,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     fontSize: 18,
+    marginStart: 8,
+    color: COLORS.gray,
+    flex: 1,
     marginBottom: 16,
   },
 });
