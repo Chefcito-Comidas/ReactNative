@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {GetUser} from "../../hooks/getUser.hook";
 import Loader from '../../components/Loader/Loader';
 import { Reservation } from '../../models/Reservations.model';
-import {CancelBooking} from "../../api/bookings";
+import {CancelBooking, ConfirmBooking} from "../../api/bookings";
 import { ConfirmationModal } from '../../components/ConfirmationModal/ComfirmationModal';
 import { COLORS } from '../../utils/constants';
 import BarCodeScannerComponent from '../../components/BarCodeScanner/BarCodeScanner';
@@ -48,11 +48,12 @@ export default function ReservationData({route,navigation}) {
         setShow(false)
     }
 
-    const confirmReservation = (id:string) => {
+    const confirmReservation = async (id:string) => {
         setShowQrScanner(false)
         const timeDiff = moment().diff(moment(reservation.time),'hours')
         if(id===reservation.venue&&timeDiff<12){
             console.log("confirmar reserva")
+            ConfirmBooking(reservation,user)
         }
     }
 
