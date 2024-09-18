@@ -22,6 +22,7 @@ import ReservationTime from './views/Reservation/ReservationTime/ReservationTime
 import ReservationPeople from './views/Reservation/ReservationPeople/ReservationPeople';
 import ReservationDate from './views/Reservation/ReservationDate/ReservationDate';
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { RecoverPasswordForm } from './views/RecoverPassword/RecoverPassword';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,6 +138,7 @@ export default function App() {
         {!(!initializing&&user!==null)&&<Stack.Navigator>
           <Stack.Screen name="LogIn" component={LogInForm} />
           <Stack.Screen name="SignIn" component={SignInForm} />
+          <Stack.Screen name="RecoverPassword" component={RecoverPasswordForm} />
         </Stack.Navigator>
         }
       </NavigationContainer>

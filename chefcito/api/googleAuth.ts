@@ -50,9 +50,20 @@ const signOut = async () => {
     }
 }
 
+const resetpassword = async (email:string) => {
+    try {
+        auth().sendPasswordResetEmail(email)
+        alert('Email para recuperacion de contraseña enviado');
+    }
+    catch(error) {
+        console.log("error ===>", error);
+    }
+}
+
 export {
     loginUserPassword,
     createUserPassword,
     signOut,
     loginWithGoogleCredentials,
+    resetpassword,
 };

@@ -29,6 +29,10 @@ export const SignInForm = ({ navigation }) => {
         navigation.navigate('LogIn');
     };
 
+    const goToRecoverPassword = () => {
+        navigation.navigate("RecoverPassword");
+    };
+
     return (
         <View style={styles.container}>
             <Image source={require('../../assets/images/logochefcito.jpg')} style={styles.logo} />
@@ -59,12 +63,15 @@ export const SignInForm = ({ navigation }) => {
                             style={styles.formField}
                             secureTextEntry
                         />
-                        <Pressable onPress={handleSubmit} style={styles.button}>
+                        <Pressable onPress={() => handleSubmit()} style={styles.button}>
                             <Text style={styles.buttonText}>Registrate!</Text>
                         </Pressable>
                     </View>
                 )}
             </Formik>
+            <Pressable onPress={goToRecoverPassword}>
+                <Text style={styles.linkText}>¿No recuerdas tu contraseña?</Text>
+            </Pressable>
             <Pressable onPress={goToLogIn}>
                 <Text style={styles.linkText}>Ya tiene usuario, ingrese aquí</Text>
             </Pressable>
