@@ -1,7 +1,6 @@
 // Formik x React Native example
 import React, { useState } from "react";
 import {
-  Button,
   TextInput,
   View,
   StyleSheet,
@@ -12,55 +11,27 @@ import {
 import { Formik } from "formik";
 import * as yup from "yup";
 import {
-  loginUserPassword,
-  loginWithGoogleCredentials,
+    resetpassword,
 } from "../../api/googleAuth";
 import { COLORS } from "../../utils/constants";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
-import { CreateUser } from "../../api/authRestApi";
 
-export const LogInForm = ({ navigation }) => {
-  const onLogin = async (values) => {
-    const user = await loginUserPassword(values.email, values.password);
-    if (user) {
-      console.log("log in exitoso");
-    } else {
-      console.log("log in error");
-    }
+export const RecoverPasswordForm = ({ navigation }) => {
+  const recoverPassword = async (values) => {
+    resetpassword(values.email)
   };
 
   const schema = yup.object().shape({
     email: yup.string().required(),
-    password: yup.string().required(),
   });
-
-  const signin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userData = await GoogleSignin.signIn();
-      const user = await loginWithGoogleCredentials(userData.data.idToken);
-      if (user) {
-        const token = await user.user.getIdToken();
-        const newUser = await CreateUser(token);
-        console.log("sign in exitoso", newUser);
-      } else {
-        console.log("sign in error");
-      }
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
 
   const goToSignIn = () => {
     navigation.navigate("SignIn");
   };
 
-  const goToRecoverPassword = () => {
-    navigation.navigate("RecoverPassword");
-  };
+  const goToLogIn = () => {
+    navigation.navigate('LogIn');
+};
+
 
   return (
     <View style={styles.container}>
@@ -70,8 +41,8 @@ export const LogInForm = ({ navigation }) => {
       />
       <Formik
         validationSchema={schema}
-        initialValues={{ email: "", password: "" }}
-        onSubmit={onLogin}
+        initialValues={{ email: "" }}
+        onSubmit={recoverPassword}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.formContainer}>
@@ -83,32 +54,18 @@ export const LogInForm = ({ navigation }) => {
               placeholder="Email"
               placeholderTextColor="#555"
             />
-            <TextInput
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              style={styles.formField}
-              secureTextEntry
-              placeholder="Contraseña"
-              placeholderTextColor="#555"
-            />
             <Pressable style={styles.button} onPress={() => handleSubmit()}>
-              <Text style={styles.buttonText}>Log In</Text>
+              <Text style={styles.buttonText}>Recuperar Contraseña</Text>
             </Pressable>
           </View>
         )}
       </Formik>
-      <GoogleSigninButton
-        size={GoogleSigninButton.Size.Standard}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={signin}
-      />
-      <Pressable onPress={goToRecoverPassword}>
-        <Text style={styles.linkText}>¿No recuerdas tu contraseña?</Text>
-      </Pressable>
-      <Pressable onPress={goToSignIn}>
-        <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
-      </Pressable>
+        <Pressable onPress={goToLogIn}>
+            <Text style={styles.linkText}>Ya tiene usuario, ingrese aquí</Text>
+        </Pressable>
+        <Pressable onPress={goToSignIn}>
+            <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
+        </Pressable>
     </View>
   );
 };

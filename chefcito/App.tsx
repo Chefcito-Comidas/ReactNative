@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
 import { useEffect } from 'react';
 import { GetUser } from './hooks/getUser.hook';
-
 import Home from './views/home/home';
 import Settings from './views/Settings/Settings';
 import { LogInForm } from './views/login/login';
@@ -22,6 +21,9 @@ import ReservationConfirmation from './views/Reservation/ReservationConfirmation
 import ReservationTime from './views/Reservation/ReservationTime/ReservationTime';
 import ReservationPeople from './views/Reservation/ReservationPeople/ReservationPeople';
 import ReservationDate from './views/Reservation/ReservationDate/ReservationDate';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { RecoverPasswordForm } from './views/RecoverPassword/RecoverPassword';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -75,9 +77,19 @@ export default function App() {
     initializing,
   } = GetUser()
 
+  useEffect(() => {
+  }, []);
+
   useEffect(()=>{
     console.log(user,initializing)
   },[user,initializing])
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "170744366068-hrdaou9sieacr0eg5fui2c23npa2berf.apps.googleusercontent.com",
+      offlineAccess:true
+    });
+  }, []);
 
   return (
     <Provider store={store}>
@@ -126,6 +138,7 @@ export default function App() {
         {!(!initializing&&user!==null)&&<Stack.Navigator>
           <Stack.Screen name="LogIn" component={LogInForm} />
           <Stack.Screen name="SignIn" component={SignInForm} />
+          <Stack.Screen name="RecoverPassword" component={RecoverPasswordForm} />
         </Stack.Navigator>
         }
       </NavigationContainer>
