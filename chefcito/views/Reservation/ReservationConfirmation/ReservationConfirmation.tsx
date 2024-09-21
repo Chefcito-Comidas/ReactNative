@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: COLORS.pasteltitle,
+        color: COLORS.black,
         textAlign: 'center',
         marginBottom: 20,
     },
     display: {
-        backgroundColor: COLORS.pastelblanco,
+        backgroundColor: COLORS.blancopaco,
         borderRadius: 10,
         padding: 20,
         width: '100%',
@@ -157,33 +157,29 @@ const styles = StyleSheet.create({
             marginHorizontal: 20,
     },
     button: {
-                borderRadius: 25,
-                padding: 14,
-                elevation: 3,
-                width: 120,
-                alignItems: 'center',
-            },
-            buttonClose: {
-                backgroundColor: COLORS.pasteloscuro,
-                borderColor: COLORS.pastelborder,
-                borderWidth: 2,
-            },
-            buttonAccept: {
-                backgroundColor: COLORS.pastelclaro,
-                borderColor: COLORS.pastelborder,
-                borderWidth: 2,
-            },
-            buttonAcceptDisabled: {
-                backgroundColor: COLORS.pasteldisabled,
-            },
-            textStyle: {
-                color: COLORS.white,
-                fontWeight: 'bold',
-                fontSize: 16,
-            },
-            cancelButtonText: {
-                color: COLORS.white,
-                fontWeight: 'bold',
-                fontSize: 16,
-            },
+            borderRadius: 30,
+            padding: 16,
+            width: '45%',
+            alignItems: 'center',
+            elevation: 5,
+        },
+        buttonClose: {
+            backgroundColor: COLORS.decline,
+        },
+        buttonAccept: {
+            backgroundColor: COLORS.accept,
+        },
+        buttonAcceptDisabled: {
+            backgroundColor: COLORS.disabled,
+        },
+        textStyle: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+        cancelButtonText: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
 });

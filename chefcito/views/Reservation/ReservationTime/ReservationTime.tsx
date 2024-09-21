@@ -64,12 +64,12 @@ export default function ReservationTime({ route, navigation }) {
                         item: {
                             fontSize: 20,
                             fontWeight: '600',
-                            color: COLORS.pasteloscuro,
+                            color: COLORS.azul,
                         },
                         placeHolder: {
                             fontSize: 20,
                             fontWeight: '600',
-                            color: COLORS.pasteloscuro, // Gris claro
+                            color: COLORS.azul, // Gris claro
                             textAlign: 'center',
                         },
                     }}
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: COLORS.white,
         borderRadius: 10,
-        backgroundColor: COLORS.pastelblanco,
+        backgroundColor: COLORS.blancopaco,
         padding: 10,
     },
     select: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '600',
-        color: COLORS.pasteltitle,
+        color: COLORS.black,
         textAlign: 'center',
         marginBottom: 16,
     },
@@ -126,33 +126,29 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
     },
     button: {
-                borderRadius: 25,
-                padding: 14,
-                elevation: 3,
-                width: 120,
-                alignItems: 'center',
-            },
-            buttonClose: {
-                backgroundColor: COLORS.pasteloscuro,
-                borderColor: COLORS.pastelborder,
-                borderWidth: 2,
-            },
-            buttonAccept: {
-                backgroundColor: COLORS.pastelclaro,
-                borderColor: COLORS.pastelborder,
-                borderWidth: 2,
-            },
-            buttonAcceptDisabled: {
-                backgroundColor: COLORS.pasteldisabled,
-            },
-            textStyle: {
-                color: COLORS.white,
-                fontWeight: 'bold',
-                fontSize: 16,
-            },
-            cancelButtonText: {
-                color: COLORS.white,
-                fontWeight: 'bold',
-                fontSize: 16,
-            },
-        });
+            borderRadius: 30,
+            padding: 16,
+            width: '45%',
+            alignItems: 'center',
+            elevation: 5,
+        },
+        buttonClose: {
+            backgroundColor: COLORS.decline,
+        },
+        buttonAccept: {
+            backgroundColor: COLORS.accept,
+        },
+        buttonAcceptDisabled: {
+            backgroundColor: COLORS.disabled,
+        },
+        textStyle: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+        cancelButtonText: {
+            color: COLORS.white,
+            fontWeight: 'bold',
+            fontSize: 16,
+        },
+    });

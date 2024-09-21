@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '600',
-        color: COLORS.pasteltitle,
+        color: COLORS.black,
         textAlign: 'center',
         marginBottom: 16,
     },
@@ -90,24 +90,20 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
     },
     button: {
-            borderRadius: 25,
-            padding: 14,
-            elevation: 3,
-            width: 120,
+            borderRadius: 30,
+            padding: 16,
+            width: '45%',
             alignItems: 'center',
+            elevation: 5,
         },
         buttonClose: {
-            backgroundColor: COLORS.pasteloscuro,
-            borderColor: COLORS.pastelborder,
-            borderWidth: 2,
+            backgroundColor: COLORS.decline,
         },
         buttonAccept: {
-            backgroundColor: COLORS.pastelclaro,
-            borderColor: COLORS.pastelborder,
-            borderWidth: 2,
+            backgroundColor: COLORS.accept,
         },
         buttonAcceptDisabled: {
-            backgroundColor: COLORS.pasteldisabled,
+            backgroundColor: COLORS.disabled,
         },
         textStyle: {
             color: COLORS.white,

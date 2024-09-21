@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { StyleSheet, View,Pressable, Text,TextInput } from 'react-native';
+import { useEffect, useState } from "react";
+import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
 import { COLORS } from "../../../utils/constants";
 import { Restaurant } from "../../../models/Restauran.model";
 
@@ -45,20 +45,20 @@ export default function ReservationPeople({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>¿Cuántas personas vienen a {restaurant?.name}?</Text>
+            <Text style={styles.title}>¿Cuántas personas asistirán a {restaurant?.name}?</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={(value) => setPeople(value)}
                 value={people}
                 placeholder="Cantidad de personas"
-                placeholderTextColor="#cdab72"
+                placeholderTextColor="#A9A9A9"
                 keyboardType="numeric"
             />
             <View style={styles.buttonContainer}>
                 <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => cancel()}>
-                    <Text style={styles.cancelButtonText}>Atrás</Text>
+                    <Text style={styles.cancelButtonText}>Cancelar</Text>
                 </Pressable>
                 <Pressable
                     disabled={!IsValid()}
@@ -75,53 +75,47 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.white,
-        padding: 16,
         justifyContent: 'center',
+        padding: 24,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: COLORS.primaryText,
+        textAlign: 'center',
+        marginBottom: 24,
     },
     input: {
         height: 50,
-        marginVertical: 20,
         borderWidth: 1,
         padding: 12,
-        borderRadius: 10,
-        borderColor: COLORS.white,
+        borderRadius: 12,
+        borderColor: COLORS.lightGrey,
         textAlign: 'center',
-        color: '#263238',
         fontSize: 18,
-        fontWeight: '500',
-        backgroundColor: COLORS.pastelblanco,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: '600',
-        color: COLORS.pasteltitle,
-        textAlign: 'center',
-        marginBottom: 16,
+        backgroundColor: COLORS.inputBackground,
+        color: COLORS.primaryText,
+        marginBottom: 24,
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 20,
     },
     button: {
-        borderRadius: 25,
-        padding: 14,
-        elevation: 3,
-        width: 120,
+        borderRadius: 30,
+        padding: 16,
+        width: '45%',
         alignItems: 'center',
+        elevation: 5,
     },
     buttonClose: {
-        backgroundColor: COLORS.pasteloscuro,
-        borderColor: COLORS.pastelborder,
-        borderWidth: 2,
+        backgroundColor: COLORS.decline,
     },
     buttonAccept: {
-        backgroundColor: COLORS.pastelclaro,
-        borderColor: COLORS.pastelborder,
-        borderWidth: 2,
+        backgroundColor: COLORS.accept,
     },
     buttonAcceptDisabled: {
-        backgroundColor: COLORS.pasteldisabled,
+        backgroundColor: COLORS.disabled,
     },
     textStyle: {
         color: COLORS.white,
@@ -134,3 +128,4 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+

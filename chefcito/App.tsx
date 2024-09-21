@@ -50,11 +50,11 @@ function EditReservationNavigation () {
 function HomeNavigation() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel}}} />
-      <Stack.Screen name="Restaurante" component={Restaurant} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel}}} />
-      <Stack.Screen name="HomeReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel},title:'Reserva'}} />
-      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel},title:'Editar Reserva'}} />
-      <Stack.Screen name="NewReservation" component={NewReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel},title:'Nueva Reserva'}} />
+      <Stack.Screen name="Home" component={Home} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla}}} />
+      <Stack.Screen name="Restaurante" component={Restaurant} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla}}} />
+      <Stack.Screen name="HomeReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla},title:'Reserva'}} />
+      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla},title:'Editar Reserva'}} />
+      <Stack.Screen name="NewReservation" component={NewReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla},title:'Nueva Reserva'}} />
     </Stack.Navigator>
   )
 }
@@ -62,9 +62,9 @@ function HomeNavigation() {
 function HistoryNavigation() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="History" component={History} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel}}} />
-      <Stack.Screen name="HistoryReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel}}} />
-      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.pastel},title:'Editar Reserva'}} />
+      <Stack.Screen name="History" component={History} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla}}} />
+      <Stack.Screen name="HistoryReservation" component={ReservationData} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla}}} />
+      <Stack.Screen name="EditReservation" component={EditReservationNavigation} options={{headerTitleStyle:{color:COLORS.white},headerStyle:{backgroundColor:COLORS.bordesPantalla},title:'Editar Reserva'}} />
     </Stack.Navigator>
   )
 }
@@ -111,9 +111,9 @@ export default function App() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: COLORS.white,
-          tabBarInactiveTintColor: COLORS.gray,
-          tabBarActiveBackgroundColor:'#ffda9e',
-          tabBarInactiveBackgroundColor:'#ffda9e',
+          tabBarInactiveTintColor: COLORS.pastel,
+          tabBarActiveBackgroundColor:COLORS.bordesPantalla,
+          tabBarInactiveBackgroundColor:COLORS.bordesPantalla,
         })}
         >
           <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />

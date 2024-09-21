@@ -6,6 +6,7 @@ export const COLORS = {
     secondaryBlue:'#5B69DA',
     yellow:'#ffd100',
     white:'white',
+    black:'black',
     success: '#28a745',
     error: '#ff6666',
     warning: '#ffff1a',
@@ -20,4 +21,12 @@ export const COLORS = {
     pasteldisabled: '#fff8ec',
     pasteltitle: '#99835f',
     pastelblanco: '#fff0d8',
+    azulClaro: '#B0C4DE',
+    azul: '#5F9EA0',
+    bordesPantalla: '#5F9EA0',
+    disable: '#B0C4DE',
+    decline: '#1B263B',
+    accept: '#778DA9',
+
 }
+
