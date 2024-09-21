@@ -10,9 +10,9 @@ export default function Profile() {
   const { user } = GetUser();
   
   const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState(user?.email || '');
+  const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.email || ''); 
+  const [phone, setPhone] = useState(user?.phone_number || '');
 
   useEffect(() => {
     console.log(user);
