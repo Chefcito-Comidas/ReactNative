@@ -27,6 +27,10 @@ export const COLORS = {
     disable: '#B0C4DE',
     decline: '#1B263B',
     accept: '#778DA9',
+    violetaClaro:'#ffa69e',
+    fondologin:'#D2E5EB',
+    botonlogin:'#ffa69e',
+    reservaHorizontal:'#02c39a',
 
 }
 

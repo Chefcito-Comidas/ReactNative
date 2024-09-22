@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Image, Pressable, StyleSheet, Text, ScrollView, Platform, Linking } from 'react-native';
+import { SafeAreaView, View, Image, Pressable, StyleSheet, Text, ScrollView, Platform, Linking, Modal, TextInput } from 'react-native';
 import { useState } from 'react';
 import { GetUser } from '../../hooks/getUser.hook';
 import Loader from '../../components/Loader/Loader';
@@ -19,7 +19,9 @@ export default function ReservationData({ route, navigation }) {
     const { user } = GetUser();
     const { reservation }: routeParam = route.params;
     const [loading, setLoading] = useState(false);
-    const [showQrScanner,setShowQrScanner] = useState(false)
+    const [showQrScanner, setShowQrScanner] = useState(false);
+    const [opinionModalVisible, setOpinionModalVisible] = useState(false);
+    const [opinion, setOpinion] = useState('');
 
     const openMaps = () => {
         const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
@@ -44,14 +46,28 @@ export default function ReservationData({ route, navigation }) {
 
     const onCancel = () => setShow(false);
 
-    const confirmReservation = async (id:string) => {
-                setShowQrScanner(false)
-                const timeDiff = moment().diff(moment(reservation.time),'hours')
-                if(id===reservation.venue&&timeDiff<12){
-                    console.log("confirmar reserva")
-                    ConfirmBooking(reservation,user)
-                }
+    const confirmReservation = async (id: string) => {
+        setShowQrScanner(false);
+        const timeDiff = moment().diff(moment(reservation.time), 'hours');
+        if (id === reservation.venue && timeDiff < 12) {
+            console.log("confirmar reserva");
+            ConfirmBooking(reservation, user);
         }
+    };
+
+    const openOpinionModal = () => {
+        setOpinionModalVisible(true);
+    };
+
+    const closeOpinionModal = () => {
+        setOpinionModalVisible(false);
+    };
+
+    const submitOpinion = () => {
+        console.log('Opinión enviada:', opinion);
+        setOpinionModalVisible(false);
+        // Pasar por put la opinion
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -72,6 +88,7 @@ export default function ReservationData({ route, navigation }) {
                         <Text style={styles.infoText}>Horario: {reservation.time}</Text>
                     </View>
                 </View>
+
                 {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
                     <View style={styles.buttonRow}>
                         <Pressable style={styles.actionButton} onPress={() => setShow(true)}>
@@ -79,26 +96,36 @@ export default function ReservationData({ route, navigation }) {
                         </Pressable>
                         <Pressable
                             style={styles.actionButton}
-                                onPress={() =>
+                            onPress={() =>
                                 navigation.navigate('EditReservation', {
-                                screen: 'EditReservationPeople',
-                                params: {
-                                    restaurant: reservation.restaurant,
-                                    id: reservation.id,
-                                    date: reservation.time,
-                                    home: route.name === 'HomeReservation',
-                                },
-                            })
-                        }
-                    >
-                        <Text style={styles.buttonText}>Editar</Text>
+                                    screen: 'EditReservationPeople',
+                                    params: {
+                                        restaurant: reservation.restaurant,
+                                        id: reservation.id,
+                                        date: reservation.time,
+                                        home: route.name === 'HomeReservation',
+                                    },
+                                })
+                            }
+                        >
+                            <Text style={styles.buttonText}>Editar</Text>
                         </Pressable>
                     </View>
                 )}
-                {(reservation.status.status==="Uncomfirmed"||reservation.status.status==="Accepted")&&<View style={styles.actionButton}>
-                    <Pressable style={styles.actionButton} onPress={()=>setShowQrScanner(true)}><Text style={styles.buttonText}>Confirmar Reserva</Text></Pressable>
-                </View>}
-                <BarCodeScannerComponent cancel={()=>{setShowQrScanner(false)}} show={showQrScanner} accept={confirmReservation} />
+
+                {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
+                    <Pressable style={styles.scanButton} onPress={() => setShowQrScanner(true)}>
+                        <Text style={styles.buttonText}>Escanear</Text>
+                    </Pressable>
+                )}
+
+                {reservation.status.status === 'Accepted' && (
+                    <Pressable style={styles.opinionButton} onPress={openOpinionModal}>
+                        <Text style={styles.buttonText}>Deja tu opinión</Text>
+                    </Pressable>
+                )}
+
+                <BarCodeScannerComponent cancel={() => { setShowQrScanner(false); }} show={showQrScanner} accept={confirmReservation} />
                 <ConfirmationModal
                     show={show}
                     title="Cancelar Reserva"
@@ -106,6 +133,27 @@ export default function ReservationData({ route, navigation }) {
                     onAccept={onAccept}
                     onCancel={onCancel}
                 />
+
+                <Modal visible={opinionModalVisible} transparent={true} animationType="slide">
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            <Pressable style={styles.closeButton} onPress={closeOpinionModal}>
+                                <Ionicons name="close-outline" size={30} color={COLORS.black} />
+                            </Pressable>
+                            <Text style={styles.modalTitle}>Escribe tu opinión</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Escribe tu opinión aquí"
+                                value={opinion}
+                                onChangeText={setOpinion}
+                                multiline
+                            />
+                            <Pressable style={styles.submitButton} onPress={submitOpinion}>
+                                <Text style={styles.buttonText}>Enviar</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         </SafeAreaView>
     );
@@ -200,9 +248,68 @@ const styles = StyleSheet.create({
         width: '48%',
         alignItems: 'center',
     },
+    scanButton: {
+        backgroundColor: COLORS.blue,
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 12,
+        marginVertical: 10,
+        width: '100%',
+        maxWidth: 400,
+        alignItems: 'center',
+    },
+    opinionButton: {
+        backgroundColor: COLORS.blue,
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 12,
+        marginVertical: 10,
+        width: '100%',
+        maxWidth: 400,
+        alignItems: 'center',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: COLORS.white,
+        padding: 20,
+        borderRadius: 10,
+        width: '80%',
+        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+    },
+    textInput: {
+        width: '100%',
+        height: 100,
+        borderColor: COLORS.lightGray,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 20,
+        textAlignVertical: 'top',
+    },
+    submitButton: {
+        backgroundColor: COLORS.blue,
+        paddingVertical: 12,
+        paddingHorizontal: 25,
+        borderRadius: 10,
+    },
     buttonText: {
-        fontSize: 18,
         color: COLORS.white,
-        fontWeight: '600',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });

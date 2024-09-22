@@ -3,86 +3,99 @@ import { getRestaurantById } from '../../api/Restaurant.API';
 import { GetUser } from '../../hooks/getUser.hook';
 import { WendysImage } from '../../models/Restauran.model';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View,Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
 import { Reservation } from '../../models/Reservations.model';
 import Loader from '../../components/Loader/Loader';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ReservationVerticalList from '../../components/ReservationVerticalList/ReservationVerticalList';
 import { COLORS } from '../../utils/constants';
 
-export default function History({navigation}) {
-    const {user,initializing} = GetUser()
-    const [reservations,setReservations] = useState<Reservation[]>([])
-    const [loading,setLoading] = useState(false)
+export default function History({ navigation }) {
+  const { user, initializing } = GetUser();
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); // Estado para el texto de búsqueda
+  const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]); // Estado para las reservas filtradas
 
-    useEffect(()=>{
-      const unsubscribe = navigation.addListener('focus', (e) => {
-        getReservation()
-      });
-      return unsubscribe
-    },[])
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', (e) => {
+      getReservation();
+    });
+    return unsubscribe;
+  }, []);
 
-    const getReservation = async () =>{
-        if(initializing) {
-          setTimeout(() => {
-            getReservation()
-          }, 100);
-        } else {
-          try {
-            const props = new GetReservationProps()
-            props.start = 0;
-            props.limit = 20;
-            setLoading(true)
-            const reservation = await GetReservations(props,user)
-            for (const item of reservation.result) {
-              const rest = await getRestaurantById(user,item.venue)
-              item.restaurant = rest.result[0];
-            }
-            setLoading(false)
-            setReservations(reservation.result)
-          } catch (err) {
-            console.log("get reservation error",err)
-            setLoading(false)
-          }
+  useEffect(() => {
+    if (searchQuery) {
+      const filteredData = reservations.filter((reservation) =>
+        reservation.restaurant?.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredReservations(filteredData);
+    } else {
+      setFilteredReservations(reservations);
+    }
+  }, [searchQuery, reservations]);
+
+  const getReservation = async () => {
+    if (initializing) {
+      setTimeout(() => {
+        getReservation();
+      }, 100);
+    } else {
+      try {
+        const props = new GetReservationProps();
+        props.start = 0;
+        props.limit = 20;
+        setLoading(true);
+        const reservation = await GetReservations(props, user);
+        for (const item of reservation.result) {
+          const rest = await getRestaurantById(user, item.venue);
+          item.restaurant = rest.result[0];
         }
+        setLoading(false);
+        setReservations(reservation.result);
+      } catch (err) {
+        console.log('get reservation error', err);
+        setLoading(false);
+      }
     }
+  };
 
-    const goToReservationData = (reservation:Reservation) =>{
-      navigation.navigate('HistoryReservation', {
-        reservation:reservation
-      });
-    }
-    
-    useEffect(()=>{
-    if(!initializing) {
-        getReservation()
-    }
-    },[user,initializing])
+  const goToReservationData = (reservation: Reservation) => {
+    navigation.navigate('HistoryReservation', {
+      reservation: reservation,
+    });
+  };
 
-    return(
-        <View style={styles.container}>
-            {loading&&<Loader />}
-            <Pressable style={styles.searchBar}>
-                <Ionicons name={'search'} size={16} color={COLORS.gray}  />
-                <Text style={styles.searchText}>Buscar mis reservas</Text>
-            </Pressable>
-            {reservations.length>0&&<ReservationVerticalList data={reservations} goToReservationData={goToReservationData} />}
-        </View>
-    )
+  useEffect(() => {
+    if (!initializing) {
+      getReservation();
+    }
+  }, [user, initializing]);
+
+  return (
+    <View style={styles.container}>
+      {loading && <Loader />}
+      <View style={styles.searchBar}>
+        <Ionicons name={'search'} size={16} color={COLORS.gray} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar mis reservas"
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
+        />
+      </View>
+      {filteredReservations.length > 0 && (
+        <ReservationVerticalList data={filteredReservations} goToReservationData={goToReservationData} />
+      )}
+    </View>
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
     padding: 16,
-  },
-  ReservationTitle: {
-    marginTop: 16,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.white,
   },
   searchBar: {
     borderColor: '#ddd',
@@ -99,8 +112,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowRadius: 10,
     elevation: 3,
+    marginBottom: 16,
   },
-  searchText: {
+  searchInput: {
     fontSize: 18,
     marginStart: 8,
     color: COLORS.darkGray,

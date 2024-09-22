@@ -14,8 +14,8 @@ const ReservetionHorizontalList = ({data,goToReservationData}:ReservetionHorizon
         return (
           <Pressable style={{
                 borderRadius: 5,
-                backgroundColor:COLORS.blue,
-                borderColor:COLORS.white,
+                backgroundColor:COLORS.reservaHorizontal,
+                borderColor:COLORS.azulClaro,
                 marginHorizontal:12,
                 padding:10,
                 flex:1,
@@ -29,9 +29,9 @@ const ReservetionHorizontalList = ({data,goToReservationData}:ReservetionHorizon
                     <Image source={{uri:`${item?.restaurant?.logo}`}} style={{height:70,width:70,borderRadius:15}} />
                 </View>
                 <View style={{marginLeft:8}}>
-                    <Text style={{color:COLORS.white}}>{item?.restaurant?.name}</Text>
-                    <Text style={{color:COLORS.white}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
-                    <Text style={{color:COLORS.white}}>Personas: {item.people}</Text>
+                    <Text style={{color:COLORS.black}}>{item?.restaurant?.name}</Text>
+                    <Text style={{color:COLORS.black}}>Fecha: {moment(item.time).format('DD/MM/yyyy')}</Text>
+                    <Text style={{color:COLORS.black}}>Personas: {item.people}</Text>
                 </View>
           </Pressable>
     

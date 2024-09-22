@@ -65,7 +65,7 @@ export const LogInForm = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/logochefcito.jpg")}
+        source={require("../../assets/images/chefcito.jpg")}
         style={styles.logo}
       />
       <Formik
@@ -116,7 +116,7 @@ export const LogInForm = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.pastellog,
+    backgroundColor: COLORS.fondologin,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   formField: {
     borderWidth: 1,
-    borderColor: COLORS.pastelborder,
+    borderColor: COLORS.azulClaro,
     backgroundColor: "#fff",
     borderRadius: 10,
     marginBottom: 15,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#ffa726",
+    backgroundColor: COLORS.botonlogin,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
