@@ -23,7 +23,7 @@ export default function Home({ navigation }) {
 
   const [open, setOpen] = useState(false);
   const [characteristics, setCharacteristics] = useState([
-    { label: 'Todas las categorías', value: null },  // Agregamos esta opción
+    { label: 'Todas las categorías', value: null },
     { label: 'Arepas', value: 'Arepas' },
     { label: 'Cafeteria', value: 'Cafeteria' },
     { label: 'Carnes', value: 'Carnes' },

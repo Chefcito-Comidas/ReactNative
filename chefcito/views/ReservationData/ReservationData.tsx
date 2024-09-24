@@ -9,6 +9,7 @@ import { COLORS } from '../../utils/constants';
 import { Ionicons } from '@expo/vector-icons';
 import BarCodeScannerComponent from '../../components/BarCodeScanner/BarCodeScanner';
 import moment from 'moment';
+import { PostOpinion } from '../../api/opinion.API';
 
 type routeParam = {
     reservation: Reservation;
@@ -63,10 +64,26 @@ export default function ReservationData({ route, navigation }) {
         setOpinionModalVisible(false);
     };
 
-    const submitOpinion = () => {
+    const submitOpinion = async() => {
         console.log('Opinión enviada:', opinion);
-        setOpinionModalVisible(false);
-        // Pasar por put la opinion
+        const OpinionUser = {
+            reservation:reservation.id,
+            opinion:opinion,
+            venue:reservation.venue,
+            date:moment().toISOString(),
+        }
+        console.log(OpinionUser);
+        try {
+            setLoading(true);
+            const result = await PostOpinion(OpinionUser, user);
+            alert("Opinion creada");
+        } catch (err) {
+            console.log('Error al Enviar opinion', err);
+            alert("Error al crear Opinion");
+        } finally {
+            setOpinionModalVisible(false);
+            setLoading(false);
+        }
     };
 
     return (
@@ -294,7 +311,7 @@ const styles = StyleSheet.create({
     textInput: {
         width: '100%',
         height: 100,
-        borderColor: COLORS.lightGray,
+        borderColor: COLORS.gray,
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,

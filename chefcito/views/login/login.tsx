@@ -99,7 +99,7 @@ export const LogInForm = ({ navigation }) => {
         )}
       </Formik>
       <GoogleSigninButton
-        size={GoogleSigninButton.Size.Standard}
+        size={GoogleSigninButton.Size.Stadard}
         color={GoogleSigninButton.Color.Dark}
         onPress={signin}
       />

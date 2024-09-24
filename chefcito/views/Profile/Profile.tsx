@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import { signOut } from '../../api/googleAuth';
 import { GetUser } from '../../hooks/getUser.hook';
 import { COLORS } from '../../utils/constants';
+import { getProfileData } from '../../api/profileGoogle';
 
 export default function Profile() {
   const { user } = GetUser();
-  
+  const { dataProfile } = getProfileData(user);
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -23,8 +24,7 @@ export default function Profile() {
   };
 
   const saveChanges = () => {
-    // Aquí manejarías el guardado de cambios
-    // En un caso real, enviarías estos datos actualizados al backend
+    // mandar por put los cambios en el profile
     setModalVisible(false);
   };
 
