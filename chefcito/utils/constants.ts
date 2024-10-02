@@ -30,7 +30,8 @@ export const COLORS = {
     violetaClaro:'#ffa69e',
     fondologin:'#D2E5EB',
     botonlogin:'#ffa69e',
-    reservaHorizontal:'#02c39a',
+    reservaHorizontal:'#ffb4a2',
+    dataExtra: '#004346',
 
 }
 

@@ -4,3 +4,9 @@ export type OpinionPost = {
     venue:string;
     date:string;
 }
+
+export type Summary = {
+    text:string;
+    date:string;
+    venue:string;
+  }

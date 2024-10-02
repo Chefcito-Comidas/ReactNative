@@ -5,27 +5,58 @@ import { useEffect, useState } from 'react';
 import { signOut } from '../../api/googleAuth';
 import { GetUser } from '../../hooks/getUser.hook';
 import { COLORS } from '../../utils/constants';
-import { getProfileData } from '../../api/profileGoogle';
+import { getProfileData, putProfileData } from '../../api/profile.API';
+import Loader from '../../components/Loader/Loader';
+import { string } from 'yup';
+
 
 export default function Profile() {
   const { user } = GetUser();
-  const { dataProfile } = getProfileData(user);
   const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone_number || '');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log(user);
+    if (user){
+      getData();
+    }
   }, [user]);
 
   const signout = async () => {
     await signOut();
   };
 
-  const saveChanges = () => {
-    // mandar por put los cambios en el profile
-    setModalVisible(false);
+  const getData = async () => {
+    const result = await getProfileData(user);
+    console.log(result)
+    setName(result.name)
+    setEmail(result.email)
+    setPhone(result.phone_number)
+  };
+
+  const saveChanges = async () => {
+    if (user) {
+      const updatedProfile = {
+        name,
+        phone
+      };
+      try {
+        setLoading(true);
+        const result = await putProfileData(user, updatedProfile);
+        console.log(result)
+        getData();
+        alert("Perfil modificado");
+    } catch (err) {
+        console.log('Error al modificar perfil', err);
+        alert("Error modificar perfil");
+    } finally {
+        setModalVisible(false);
+        setLoading(false);
+    }
+    }
   };
 
   return (
@@ -33,11 +64,11 @@ export default function Profile() {
       {user && (
         <View style={styles.card}>
           <Text style={styles.label}>Nombre:</Text>
-          <Text style={styles.info}>{user?.name}</Text>
+          <Text style={styles.info}>{name}</Text>
           <Text style={styles.label}>Correo:</Text>
-          <Text style={styles.info}>{user?.email}</Text>
+          <Text style={styles.info}>{user.email}</Text>
           <Text style={styles.label}>Teléfono:</Text>
-          <Text style={styles.info}>{user?.phone_number}</Text>
+          <Text style={styles.info}>{phone}</Text>
         </View>
       )}
       
@@ -47,48 +78,48 @@ export default function Profile() {
       </View>
 
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>Editar Perfil</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Nombre" 
-            value={name} 
-            onChangeText={setName} 
-          />
-          <TextInput 
-            style={styles.input} 
-            placeholder="Correo" 
-            value={email} 
-            onChangeText={setEmail} 
-          />
-          <TextInput 
-            style={styles.input} 
-            placeholder="Teléfono" 
-            value={phone} 
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-          <View style={styles.modalButtonRow}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Cancelar</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonSave]}
-              onPress={saveChanges}>
-              <Text style={styles.textStyle}>Guardar</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    setModalVisible(!modalVisible);
+  }}>
+  <View style={styles.modalView}>
+    <Text style={styles.modalTitle}>Editar Perfil</Text>
+    <TextInput 
+      style={styles.input} 
+      placeholder="Nombre" 
+      value={name} 
+      onChangeText={setName} 
+    />
+    <TextInput 
+      style={styles.input} 
+      placeholder={user?.email} 
+      value={email} 
+      editable={false}
+    />
+    <TextInput 
+      style={styles.input} 
+      placeholder="Teléfono" 
+      value={phone} 
+      onChangeText={setPhone}
+      keyboardType="phone-pad"
+    />
+    <View style={styles.modalButtonRow}>
+      <Pressable
+        style={[styles.button, styles.buttonClose]}
+        onPress={() => setModalVisible(!modalVisible)}>
+        <Text style={styles.textStyle}>Cancelar</Text>
+      </Pressable>
+      <Pressable
+        style={[styles.button, styles.buttonSave]}
+        onPress={saveChanges}>
+        <Text style={styles.textStyle}>Guardar</Text>
+      </Pressable>
     </View>
+  </View>
+</Modal>
+</View>
   );
 }
 

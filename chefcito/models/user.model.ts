@@ -8,4 +8,9 @@ export type Profile = {
     email: string,
     name:string,
     phone_number:string,
+    points: {
+    user: string,
+    total: 0,
+    level: string
+  }
   }
