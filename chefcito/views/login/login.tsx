@@ -44,7 +44,7 @@ export const LogInForm = ({ navigation }) => {
       const user = await loginWithGoogleCredentials(userData.data.idToken);
       if (user) {
         const token = await user.user.getIdToken();
-        const newUser = await CreateUser(token);
+        const newUser = await CreateUser(token,userData.data.user.name);
         console.log("sign in exitoso", newUser);
       } else {
         console.log("sign in error");
@@ -99,7 +99,7 @@ export const LogInForm = ({ navigation }) => {
         )}
       </Formik>
       <GoogleSigninButton
-        size={GoogleSigninButton.Size.Stadard}
+        size={GoogleSigninButton.Size.Standard}
         color={GoogleSigninButton.Color.Dark}
         onPress={signin}
       />
