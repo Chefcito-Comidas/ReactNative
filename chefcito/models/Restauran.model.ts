@@ -8,10 +8,12 @@ export class Restaurant {
     name:string;
     location:string
     logo:string;
+    menu:string;
     pictures:string[];
     slots:string[];
     capacity:number;
     reservationLeadTime:number;
+    features:string[];
     characteristics:string[];
     vacations:string[];
     status:Status;

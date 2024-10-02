@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Image, Pressable, StyleSheet, Text, ScrollView, Platform, Linking, Modal, TextInput } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetUser } from '../../hooks/getUser.hook';
 import Loader from '../../components/Loader/Loader';
 import { Reservation } from '../../models/Reservations.model';
@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import BarCodeScannerComponent from '../../components/BarCodeScanner/BarCodeScanner';
 import moment from 'moment';
 import { PostOpinion } from '../../api/opinion.API';
+import * as Font from 'expo-font';
 
 type routeParam = {
     reservation: Reservation;
@@ -23,6 +24,18 @@ export default function ReservationData({ route, navigation }) {
     const [showQrScanner, setShowQrScanner] = useState(false);
     const [opinionModalVisible, setOpinionModalVisible] = useState(false);
     const [opinion, setOpinion] = useState('');
+    const [fontsLoaded, setFontsLoaded] = useState(false); // Estado para verificar si la fuente está cargada
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Montserrat': require('../../assets/fonts/Montserrat-VariableFont_wght.ttf'),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
 
     const openMaps = () => {
         const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
@@ -108,11 +121,11 @@ export default function ReservationData({ route, navigation }) {
 
                 {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
                     <View style={styles.buttonRow}>
-                        <Pressable style={styles.actionButton} onPress={() => setShow(true)}>
+                        <Pressable style={styles.cancelButton} onPress={() => setShow(true)}>
                             <Text style={styles.buttonText}>Cancelar</Text>
                         </Pressable>
                         <Pressable
-                            style={styles.actionButton}
+                            style={styles.editButton}
                             onPress={() =>
                                 navigation.navigate('EditReservation', {
                                     screen: 'EditReservationPeople',
@@ -133,12 +146,14 @@ export default function ReservationData({ route, navigation }) {
                 {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
                     <Pressable style={styles.scanButton} onPress={() => setShowQrScanner(true)}>
                         <Text style={styles.buttonText}>Escanear</Text>
+                        <Ionicons name="qr-code-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
                     </Pressable>
                 )}
 
                 {reservation.status.status === 'Accepted' && (
                     <Pressable style={styles.opinionButton} onPress={openOpinionModal}>
                         <Text style={styles.buttonText}>Deja tu opinión</Text>
+                        <Ionicons name="create-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
                     </Pressable>
                 )}
 
@@ -206,8 +221,9 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     name: {
+        fontFamily: 'Montserrat 600',
         fontSize: 28,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: COLORS.black,
         flex: 1,
         marginRight: 10,
@@ -245,88 +261,93 @@ const styles = StyleSheet.create({
     },
     infoText: {
         fontSize: 16,
-        color: COLORS.secondaryBlue,
-        marginBottom: 8,
-        textAlign: 'center',
+        color: COLORS.gray,
+        marginBottom: 5,
     },
     buttonRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        maxWidth: 400,
-        marginTop: 20,
+        marginBottom: 20,
     },
-    actionButton: {
-        backgroundColor: COLORS.blue,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        marginVertical: 10,
+    cancelButton: {
+        backgroundColor: COLORS.error,
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
         width: '48%',
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    editButton: {
+        backgroundColor: COLORS.dataExtra,
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        width: '48%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     scanButton: {
         backgroundColor: COLORS.blue,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        marginVertical: 10,
-        width: '100%',
-        maxWidth: 400,
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        marginBottom: 20,
+        flexDirection: 'row',
         alignItems: 'center',
     },
     opinionButton: {
         backgroundColor: COLORS.blue,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        borderRadius: 12,
-        marginVertical: 10,
-        width: '100%',
-        maxWidth: 400,
-        alignItems: 'center',
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-        backgroundColor: COLORS.white,
-        padding: 20,
-        borderRadius: 10,
-        width: '80%',
-        alignItems: 'center',
-    },
-    modalTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 10,
-        left: 10,
-    },
-    textInput: {
-        width: '100%',
-        height: 100,
-        borderColor: COLORS.gray,
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
-        marginBottom: 20,
-        textAlignVertical: 'top',
-    },
-    submitButton: {
-        backgroundColor: COLORS.blue,
         paddingVertical: 12,
-        paddingHorizontal: 25,
-        borderRadius: 10,
+        paddingHorizontal: 24,
+        borderRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
     },
     buttonText: {
         color: COLORS.white,
         fontWeight: 'bold',
         fontSize: 16,
+    },
+    iconStyle: {
+        marginLeft: 10,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalContent: {
+        backgroundColor: COLORS.white,
+        borderRadius: 8,
+        padding: 20,
+        width: '90%',
+        maxWidth: 400,
+    },
+    closeButton: {
+        alignSelf: 'flex-end',
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    textInput: {
+        borderWidth: 1,
+        borderColor: COLORS.gray,
+        borderRadius: 8,
+        padding: 10,
+        height: 100,
+        textAlignVertical: 'top',
+        marginBottom: 10,
+    },
+    submitButton: {
+        backgroundColor: COLORS.blue,
+        paddingVertical: 12,
+        borderRadius: 8,
+        alignItems: 'center',
     },
 });

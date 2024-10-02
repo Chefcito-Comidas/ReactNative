@@ -16,7 +16,6 @@ type routeParam = {
     time:string;
     id?:string;
     home?:boolean;
-
 }
 
 export default function ReservationConfirmation({route,navigation}) {
@@ -48,6 +47,7 @@ export default function ReservationConfirmation({route,navigation}) {
                 venue:restaurant.id,
                 time:dateData.toISOString()
             }
+            console.log('Dato de nueva reserva',booking)
             try {
                 setLoading(true)
                 const result = await PostBooking(booking,user)
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     },
     infoText: {
         fontSize: 18,
-        color:COLORS.pasteltitle,
+        color:COLORS.dataExtra,
         marginBottom: 15,
     },
     buttonContainer: {
@@ -168,9 +168,6 @@ const styles = StyleSheet.create({
         },
         buttonAccept: {
             backgroundColor: COLORS.accept,
-        },
-        buttonAcceptDisabled: {
-            backgroundColor: COLORS.disabled,
         },
         textStyle: {
             color: COLORS.white,

@@ -2,12 +2,28 @@ import { SafeAreaView, View, FlatList,Image,Pressable, StyleSheet,Text } from 'r
 import { Reservation } from '../../models/Reservations.model';
 import moment from 'moment';
 import { COLORS } from '../../utils/constants';
-
+import { useState, useEffect } from 'react';
+import * as Font from 'expo-font';
 interface ReservationVerticalListProps {
     data:Reservation[],
     goToReservationData:(reservation:Reservation)=>void,
 }
 const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalListProps) =>{
+
+  
+  const [fontsLoaded, setFontsLoaded] = useState(false); // Estado para verificar si la fuente está cargada
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Montserrat': require('../../assets/fonts/Montserrat-VariableFont_wght.ttf'),
+      });
+      setFontsLoaded(true);
+    };
+
+    loadFonts();
+  }, []);
+
     
     const _renderItem = (item:Reservation) =>{
          return (
@@ -46,7 +62,7 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
          const styles = StyleSheet.create({
            container: {
              flex: 1,
-             backgroundColor: COLORS.lightGray,
+             backgroundColor: COLORS.white,
              padding: 16,
            },
            ListContainer: {
@@ -80,13 +96,15 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
              flex: 1,
            },
            Name: {
+             fontFamily: 'Montserrat 600',
              fontSize: 18,
              fontWeight: '600',
-             color: COLORS.darkGray,
+             color: COLORS.black,
            },
            ExtraData: {
+            fontFamily: 'Montserrat',
              fontSize: 16,
-             color: COLORS.gray,
+             color: COLORS.dataExtra,
              marginTop: 4,
            },
          });
