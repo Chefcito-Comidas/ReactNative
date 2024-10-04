@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "170744366068-0mgs76uf4qhsk041jftg5ufa80tfjhq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "chefcito.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "170744366068-hrdaou9sieacr0eg5fui2c23npa2berf.apps.googleusercontent.com",
           "client_type": 3
         }

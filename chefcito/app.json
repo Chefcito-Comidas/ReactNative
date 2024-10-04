@@ -24,6 +24,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyALC7PuzLD_92FLil_m9nKpObW0JdJFNro"
+        }
+      },
       "googleServicesFile": "./google-services.json",
       "package": "chefcito.app"
     },

@@ -23,7 +23,7 @@ import ReservationPeople from './views/Reservation/ReservationPeople/Reservation
 import ReservationDate from './views/Reservation/ReservationDate/ReservationDate';
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { RecoverPasswordForm } from './views/RecoverPassword/RecoverPassword';
-
+import Map from "./views/Map/Map";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -111,6 +111,9 @@ export default function App() {
               case 'RestósNavigation':
                 iconName = 'restaurant'
                 break;
+              case 'MapNavigation':
+                iconName = 'map'
+                break;
               case 'PerfilNavigation':
                 return <AntDesign name="user" size={size} color={color} />
                 break;
@@ -130,6 +133,7 @@ export default function App() {
         >
           <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{ headerShown: false, title:'Home' }} />
           <Tab.Screen name="HistorialNavigation" component={HistoryNavigation} options={{ headerShown: false, title:'Historial'}} />
+          <Tab.Screen name="MapNavigation" component={Map} options={{ headerShown: false, title:'Mapa'}} />
           {/* <Tab.Screen name="MapaNavigation" component={Settings} options={{ headerShown: false, title:'Mapa' }} /> */}
           {/* <Tab.Screen name="ExplorarNavigation" component={Settings} options={{ headerShown: false, title:'Explorar' }} /> */}
           {/* <Tab.Screen name="RestósNavigation" component={Settings} options={{ headerShown: false, title:'Restós' }} /> */}
