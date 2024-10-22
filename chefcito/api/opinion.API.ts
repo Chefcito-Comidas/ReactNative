@@ -21,7 +21,7 @@ export const GetSummary = async (user:FirebaseAuthTypes.User,venue:string) => {
 
 export const GetSummaries = async (user:FirebaseAuthTypes.User,venue:string) => {
     const token = await user.getIdToken()
-    return apiGet<any>({url:`opinion?venue=${venue}}`,customHeaders:{Authorization:`Bearer ${token}`} })
+    return apiGet<any>({url:`opinions?venue=${venue}&limit=10&start=0}`,customHeaders:{Authorization:`Bearer ${token}`} })
 }
 
 

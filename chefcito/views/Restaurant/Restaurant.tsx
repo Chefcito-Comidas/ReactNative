@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, View, Image, ScrollView, SafeAreaView, Pressable, Platform, Linking, Modal } from 'react-native';
+import { Button,StyleSheet, Text, View, Image, ScrollView, SafeAreaView, Pressable, Platform, Linking, Modal } from 'react-native';
 import * as Font from 'expo-font';
 import { GetUser } from "../../hooks/getUser.hook";
 import { Restaurant as RestaurantData } from "../../models/Restauran.model";
@@ -7,7 +7,7 @@ import ImageCarrousel from '../../components/ImageCarrousel/ImageCarrousel';
 import { COLORS } from '../../utils/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { Summary } from 'models/opinion.model';
-import { GetSummary, GetSummaries } from '../../api/opinion.API'; // Importar GetSummaries para obtener todas las opiniones
+import { GetSummary, GetSummaries } from '../../api/opinion.API'; // Comentamos la importación de GetSummaries
 import moment from 'moment';
 
 type routeParam = {
@@ -15,16 +15,16 @@ type routeParam = {
 }
 
 export default function Restaurant({ route, navigation }) {
-  const { user } = GetUser();
-  const { restaurant }: routeParam = route.params;
 
+  const { restaurant }: routeParam = route.params;
+  const { user, initializing } = GetUser();
   const [summaryText, setSummaryText] = useState<string | null>(null);
   const [menuModalVisible, setMenuModalVisible] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false); // Estado para verificar si la fuente está cargada
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Estado para manejar la visibilidad del popup con las opiniones
+
   const [reviewsModalVisible, setReviewsModalVisible] = useState(false);
-  const [reviews, setReviews] = useState<Summary[]>([]); // Estado para almacenar las opiniones
+  const [reviews, setReviews] = useState<Summary[]>([]); 
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -37,33 +37,49 @@ export default function Restaurant({ route, navigation }) {
     loadFonts();
   }, []);
 
-  useEffect(() => {
-    const fetchSummary = async () => {
-      if (user) {
-        try {
-          const response = await GetSummary(user, restaurant.id);
-          setSummaryText(response.text); // Actualiza el estado con el texto del resumen
-        } catch (error) {
-          console.error('Error al obtener el resumen:', error);
-          setSummaryText('No hay resumen disponible.'); // Manejo de errores
-        }
-      }
-    };
-
-    fetchSummary();
-  }, [user, restaurant.id]);
-
-  // Función para obtener todas las opiniones del restaurante
-  const fetchReviews = async () => {
-    if (user) {
+  const summaryReview = async () => {
+    console.log("entro a la funcion")
+    if(user){
       try {
-        const response = await GetSummaries(user, restaurant.id);
-        setReviews(response); // Actualiza el estado con las opiniones recibidas
+        const response = await GetSummary(user,restaurant.id);
+        setSummaryText(response.text);
+        console.log("respuesta de summary",response)
       } catch (error) {
-        console.error('Error al obtener las opiniones:', error);
+        console.log("Summary error",error);
+        setTimeout(() => {
+           summaryReview();
+        }, 500);
       }
     }
   };
+
+  useEffect(() => {
+    if (!initializing) {
+      console.log("useeffect de summary")
+      summaryReview();
+    }
+  }, [user, initializing]);
+
+  const fetchReviews = async () => {
+    console.log("entro a la funcion 2")
+    console.log(restaurant.id)
+    if(user){
+      try {
+        const response = await GetSummaries(user,restaurant.id);
+        console.log("respuesta de summaries",response)
+        setReviews(response.result);
+      } catch (error) {
+        console.log("Summaries error",error);
+        setTimeout(() => {
+           summaryReview();
+        }, 500);
+      }
+    }
+    //const response = await GetSummaries(user,restaurant.id);
+    //setReviews(response.data);
+  };
+
+  
 
   const openMaps = () => {
     const fullAddress = restaurant.location.split("@").length > 0 ? restaurant.location.split("@")[1] : restaurant.location;
@@ -74,10 +90,6 @@ export default function Restaurant({ route, navigation }) {
 
     Linking.openURL(url);
   }
-
- // if (!fontsLoaded) {
- //   return <Text>Cargando fuentes...</Text>;
- // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -94,6 +106,8 @@ export default function Restaurant({ route, navigation }) {
         <View style={styles.logoContainer}>
           <Image source={{ uri: restaurant.logo }} style={styles.logoImage} />
           <Text style={styles.name}>{restaurant.name}</Text>
+          <Text style={styles.smallBoxText}> A 500 metros</Text>
+          <Text style={styles.smallBoxText}>Reserva desde {moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>
           <Pressable style={styles.menuButton} onPress={() => setMenuModalVisible(true)}>
             <Text style={styles.menuButtonText}>Ver Menú</Text>
           </Pressable>
@@ -102,11 +116,11 @@ export default function Restaurant({ route, navigation }) {
         <View style={styles.reviewContainer}>
           <Text style={styles.sectionTitle}>Resumen de Reseñas</Text>
           <Text style={styles.reviewText}>
-            {summaryText ? summaryText : 'Cargando...'} {/* Muestra el resumen o un mensaje de carga */}
+            {summaryText ? summaryText : 'Cargando...'}
           </Text>
           <Pressable style={styles.reviewButton} onPress={() => {
             setReviewsModalVisible(true);
-            fetchReviews(); // Llamar a la función para obtener las opiniones al abrir el popup
+            fetchReviews(); 
           }}>
             <Text style={styles.buttonText}>Ver todas</Text>
           </Pressable>
@@ -117,33 +131,24 @@ export default function Restaurant({ route, navigation }) {
             {restaurant.features.map((feature, index) => (
             <Text key={index} style={styles.featureText}>• {feature}</Text>
               ))}
-      </View>
+        </View>
 
         <View style={styles.buttonContainer}>
-          <View style={styles.buttonWrapper}>
-            <Pressable style={styles.mapButton} onPress={openMaps}>
-              <Ionicons name="location-outline" size={24} color={COLORS.white} />
-              <Text style={styles.mapButtonText}>Ver ubicación</Text>
-            </Pressable>
-            <View style={styles.smallBox}>
-              <Text style={styles.smallBoxText}>500 metros</Text>
-            </View>
-          </View>
+          <Pressable style={styles.actionButton} onPress={openMaps}>
+            <Ionicons name="location-outline" size={24} color={COLORS.white} />
+            <Text style={styles.buttonText}>Ver ubicación</Text>
+          </Pressable>
 
-          <View style={styles.buttonWrapper}>
-            <Pressable style={styles.newReservationButton} onPress={() =>
+          <Pressable style={styles.actionButton} onPress={() =>
               navigation.navigate('NewReservation', {
-                screen: 'NewReservationPeople',
-                params: { restaurant },
-              })
-            }>
-              <Text style={styles.buttonText}>Reservá!</Text>
-            </Pressable>
-            <View style={styles.smallBox}>
-              <Text style={styles.smallBoxText}>Min:{moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>
-            </View>
-          </View>
+              screen: 'NewReservationPeople',
+              params: { restaurant },
+            })
+          }>
+          <Text style={styles.buttonText}>Reservá!</Text>
+          </Pressable>
         </View>
+
       </ScrollView>
 
       {/* Modal del Menú */}
@@ -164,7 +169,7 @@ export default function Restaurant({ route, navigation }) {
         </View>
       </Modal>
 
-      {/* modal de las reseñas */}
+      {/* Modal de las reseñas */}
       <Modal
         visible={reviewsModalVisible}
         transparent={true}
@@ -178,7 +183,7 @@ export default function Restaurant({ route, navigation }) {
               {reviews.map((review, index) => (
                 <View key={index}>
                   <Text style={styles.reviewText}>{review.text}</Text>
-                  {index < reviews.length - 1 && <View style={styles.reviewSeparator} />} 
+                  {index < reviews.length - 1 && <View style={styles.reviewSeparator} />}
                 </View>
               ))}
             </ScrollView>
@@ -188,10 +193,10 @@ export default function Restaurant({ route, navigation }) {
           </View>
         </View>
       </Modal>
-
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -298,11 +303,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     marginBottom: 8,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
+  
   buttonWrapper: {
     flex: 1,
     position: 'relative',
@@ -341,10 +342,6 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
   },
-  buttonText: {
-    color: COLORS.white,
-    fontWeight: 'bold',
-  },
   smallBox: {
     position: 'absolute',
     backgroundColor: '#B0C4DE',
@@ -360,8 +357,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   smallBoxText: {
+    fontFamily: 'Montserrat 600',
     color: COLORS.black,
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 12,
     textAlign: 'center',
   },
@@ -439,5 +437,31 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     marginVertical: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  actionButton: {
+    flex: 1, // Ambos botones tienen el mismo tamaño
+    flexDirection: 'row', // Para alinear el icono y el texto en línea
+    backgroundColor: '#5F9EA0',
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5, // Espacio entre los botones
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  buttonText: {
+    color: COLORS.white,
+    fontWeight: 'bold',
+    marginLeft: 2, // Espacio entre el icono y el texto
   },
 });

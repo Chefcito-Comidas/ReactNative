@@ -7,8 +7,6 @@ import { GetUser } from '../../hooks/getUser.hook';
 import { COLORS } from '../../utils/constants';
 import { getProfileData, putProfileData } from '../../api/profile.API';
 import Loader from '../../components/Loader/Loader';
-import { string } from 'yup';
-
 
 export default function Profile() {
   const { user } = GetUser();
@@ -17,24 +15,30 @@ export default function Profile() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [level, setLevel] = useState('');
+  const [totalPoints, setTotalPoints] = useState(0);
+
+  const getData = async () => {
+    const result = await getProfileData(user);
+    console.log("data user", result);
+    setName(result.name);
+    setEmail(result.email);
+    setPhone(result.phone_number);
+    setLevel(result.points.level); 
+    setTotalPoints(result.points.total);
+  };
 
   useEffect(() => {
-    console.log(user);
-    if (user){
+    getData();
+    if (user) {
       getData();
+    }else{
+      console.log("esta fallando get data")
     }
   }, [user]);
 
   const signout = async () => {
     await signOut();
-  };
-
-  const getData = async () => {
-    const result = await getProfileData(user);
-    console.log(result)
-    setName(result.name)
-    setEmail(result.email)
-    setPhone(result.phone_number)
   };
 
   const saveChanges = async () => {
@@ -46,21 +50,30 @@ export default function Profile() {
       try {
         setLoading(true);
         const result = await putProfileData(user, updatedProfile);
-        console.log(result)
-        getData();
+        console.log("info del put", result);
+        //getData();
         alert("Perfil modificado");
-    } catch (err) {
+      } catch (err) {
         console.log('Error al modificar perfil', err);
         alert("Error modificar perfil");
-    } finally {
+      } finally {
         setModalVisible(false);
         setLoading(false);
-    }
+      }
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Mi Perfil</Text>
+
+      <View style={styles.row}>
+        <Text style={styles.label}>Nivel: </Text>
+        <Text style={styles.info}>{level}</Text>
+        <Text style={styles.label}>  Puntos: </Text>
+        <Text style={styles.info}>{totalPoints}</Text>
+      </View>
+      
       {user && (
         <View style={styles.card}>
           <Text style={styles.label}>Nombre:</Text>
@@ -71,55 +84,55 @@ export default function Profile() {
           <Text style={styles.info}>{phone}</Text>
         </View>
       )}
-      
+
       <View style={styles.buttonRow}>
         <Button onPress={() => setModalVisible(true)} title="Editar Perfil" color="#87CEEB" />
         <Button onPress={() => signout()} title="Cerrar Sesion" color="#ff6347" />
       </View>
 
       <Modal
-  animationType="slide"
-  transparent={true}
-  visible={modalVisible}
-  onRequestClose={() => {
-    setModalVisible(!modalVisible);
-  }}>
-  <View style={styles.modalView}>
-    <Text style={styles.modalTitle}>Editar Perfil</Text>
-    <TextInput 
-      style={styles.input} 
-      placeholder="Nombre" 
-      value={name} 
-      onChangeText={setName} 
-    />
-    <TextInput 
-      style={styles.input} 
-      placeholder={user?.email} 
-      value={email} 
-      editable={false}
-    />
-    <TextInput 
-      style={styles.input} 
-      placeholder="Teléfono" 
-      value={phone} 
-      onChangeText={setPhone}
-      keyboardType="phone-pad"
-    />
-    <View style={styles.modalButtonRow}>
-      <Pressable
-        style={[styles.button, styles.buttonClose]}
-        onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={styles.textStyle}>Cancelar</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.button, styles.buttonSave]}
-        onPress={saveChanges}>
-        <Text style={styles.textStyle}>Guardar</Text>
-      </Pressable>
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>Editar Perfil</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={user?.email}
+            value={email}
+            editable={false}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Teléfono"
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
+          <View style={styles.modalButtonRow}>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.textStyle}>Cancelar</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonSave]}
+              onPress={saveChanges}>
+              <Text style={styles.textStyle}>Guardar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
-  </View>
-</Modal>
-</View>
   );
 }
 
@@ -130,6 +143,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
     padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  row: {
+    flexDirection: 'row',  // Nivel y puntos en la misma línea
+    marginBottom: 20,
+    alignItems: 'center',  // Alineación vertical de los textos
   },
   card: {
     backgroundColor: COLORS.blancopaco,
@@ -151,9 +174,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   info: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#666',
-    marginBottom: 15,
+    marginBottom: 5,
   },
   buttonRow: {
     flexDirection: 'row',

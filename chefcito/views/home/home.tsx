@@ -61,6 +61,7 @@ export default function Home({ navigation }) {
     const unsubscribe = navigation.addListener('focus', () => {
       getRestaurantData();
       getReservation();
+      
     });
     return unsubscribe;
   }, []);
@@ -85,6 +86,7 @@ export default function Home({ navigation }) {
       try {
         setLoading(true);
         const restaurantList = await getRestaurant(user);
+        console.log(restaurantList);
         setLoading(false);
         setRestaurants(restaurantList.result);
         setFilteredRestaurants(restaurantList.result);
