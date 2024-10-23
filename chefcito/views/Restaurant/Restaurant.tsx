@@ -24,7 +24,7 @@ export default function Restaurant({ route, navigation }) {
 
 
   const [reviewsModalVisible, setReviewsModalVisible] = useState(false);
-  const [reviews, setReviews] = useState<Summary[]>([]); 
+  const [reviews, setReviews] = useState<{ text: string }[]>([]); 
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -59,27 +59,20 @@ export default function Restaurant({ route, navigation }) {
       summaryReview();
     }
   }, [user, initializing]);
-
+  const [loadingReviews, setLoadingReviews] = useState(false);
   const fetchReviews = async () => {
-    console.log("entro a la funcion 2")
-    console.log(restaurant.id)
-    if(user){
-      try {
-        const response = await GetSummaries(user,restaurant.id);
-        console.log("respuesta de summaries",response)
-        setReviews(response.result);
-      } catch (error) {
-        console.log("Summaries error",error);
-        setTimeout(() => {
-           summaryReview();
-        }, 500);
-      }
+    setLoadingReviews(true);
+    try {
+      const response = await GetSummaries(user, restaurant.id);
+      const opinionsArray = response.result.map((item: any) => item.opinion);
+      console.log("Array de opiniones",opinionsArray)
+      setReviews(opinionsArray);
+    } catch (error) {
+      console.log("Summaries error", error);
+    } finally {
+      setLoadingReviews(false);
     }
-    //const response = await GetSummaries(user,restaurant.id);
-    //setReviews(response.data);
   };
-
-  
 
   const openMaps = () => {
     const fullAddress = restaurant.location.split("@").length > 0 ? restaurant.location.split("@")[1] : restaurant.location;
@@ -180,12 +173,16 @@ export default function Restaurant({ route, navigation }) {
           <View style={styles.reviewsModalContent}>
             <Text style={styles.modalTitle}>Reseñas de {restaurant.name}</Text>
             <ScrollView style={styles.reviewsScrollView}>
-              {reviews.map((review, index) => (
-                <View key={index}>
-                  <Text style={styles.reviewText}>{review.text}</Text>
-                  {index < reviews.length - 1 && <View style={styles.reviewSeparator} />}
-                </View>
-              ))}
+              {loadingReviews ? (
+                  <Text>Cargando reseñas...</Text>
+                ) : (
+                  reviews.map((review, index) => (
+                    <View key={index}>
+                      <Text style={styles.reviewText}>{review}</Text>
+                      {index < reviews.length - 1 && <View style={styles.reviewSeparator} />}
+                    </View>
+                  ))
+                )}
             </ScrollView>
             <Pressable style={styles.closeButton} onPress={() => setReviewsModalVisible(false)}>
               <Text style={styles.closeButtonText}>Cerrar</Text>

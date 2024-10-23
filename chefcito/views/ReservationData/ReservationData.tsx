@@ -150,7 +150,7 @@ export default function ReservationData({ route, navigation }) {
                     </Pressable>
                 )}
 
-                {reservation.status.status === 'Accepted' && (
+                {reservation.status.status === 'Confirmed' && (
                     <Pressable style={styles.opinionButton} onPress={openOpinionModal}>
                         <Text style={styles.buttonText}>Deja tu opinión</Text>
                         <Ionicons name="create-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
