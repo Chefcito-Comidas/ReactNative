@@ -1,6 +1,6 @@
 import { RestaurantData } from "models/Restauran.model"
 import { GetUser } from "../hooks/getUser.hook"
-import { apiGet, apiPost } from "./apiRestWrapper"
+import {apiGet, apiPost } from "./apiRestWrapper"
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { OpinionPost, Summary } from "models/opinion.model"
 

@@ -149,7 +149,7 @@ export default function Home({ navigation }) {
       <View style={styles.searchAndFilterContainer}>
         <TextInput
           style={styles.searchBar}
-          placeholder="A dónde querés comer?"
+          placeholder="A dónde comes?"
           value={searchText}
           onChangeText={setSearchText}
         />
