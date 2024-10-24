@@ -143,14 +143,14 @@ export default function ReservationData({ route, navigation }) {
                     </View>
                 )}
 
-                {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
+                {(reservation.status.status === 'Accepted') && (
                     <Pressable style={styles.scanButton} onPress={() => setShowQrScanner(true)}>
                         <Text style={styles.buttonText}>Escanear</Text>
                         <Ionicons name="qr-code-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
                     </Pressable>
                 )}
 
-                {reservation.status.status === 'Confirmed' && (
+                {reservation.status.status === 'Assisted' && (
                     <Pressable style={styles.opinionButton} onPress={openOpinionModal}>
                         <Text style={styles.buttonText}>Deja tu opinión</Text>
                         <Ionicons name="create-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
