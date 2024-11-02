@@ -54,6 +54,7 @@ export default function ReservationData({ route, navigation }) {
         } catch (err) {
             console.log('Error al cancelar');
         } finally {
+            alert('Reserva cancelada');
             setLoading(false);
         }
     };

@@ -53,6 +53,7 @@ export default function ReservationConfirmation({route,navigation}) {
                 const result = await PostBooking(booking,user)
                 setLoading(false)
                 if(result){
+                    alert('Reserva creada con exito!')
                     console.log('reserva creada',result)
                 }
                 navigation.navigate('Restaurante', {
