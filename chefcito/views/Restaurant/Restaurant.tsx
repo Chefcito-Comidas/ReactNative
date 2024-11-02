@@ -100,7 +100,7 @@ export default function Restaurant({ route, navigation }) {
           <Image source={{ uri: restaurant.logo }} style={styles.logoImage} />
           <Text style={styles.name}>{restaurant.name}</Text>
           <Text style={styles.smallBoxText}> A 500 metros</Text>
-          <Text style={styles.smallBoxText}>Reserva desde {moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>
+          <Text style={styles.smallBoxText}>Reserva a partir de: {moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>
           <Pressable style={styles.menuButton} onPress={() => setMenuModalVisible(true)}>
             <Text style={styles.menuButtonText}>Ver Menú</Text>
           </Pressable>

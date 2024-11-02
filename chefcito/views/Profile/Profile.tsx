@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View, Modal, TextInput, Pressable } from 'react-native';
-import { useAppSelector } from '../../redux/hooks/hook';
+import { useNavigation } from '@react-navigation/native'; // Importa el hook de navegación
 import { useEffect, useState } from 'react';
 import { signOut } from '../../api/googleAuth';
 import { GetUser } from '../../hooks/getUser.hook';
@@ -9,6 +9,7 @@ import { getProfileData, putProfileData } from '../../api/profile.API';
 import Loader from '../../components/Loader/Loader';
 
 export default function Profile() {
+  const navigation = useNavigation<any>(); 
   const { user } = GetUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState('');
   const [totalPoints, setTotalPoints] = useState(0);
-
+  
   const getData = async () => {
     const result = await getProfileData(user);
     console.log("data user", result);
@@ -39,6 +40,7 @@ export default function Profile() {
 
   const signout = async () => {
     await signOut();
+    navigation.navigate('LogIn');
   };
 
   const saveChanges = async () => {
@@ -51,11 +53,11 @@ export default function Profile() {
         setLoading(true);
         const result = await putProfileData(user, updatedProfile);
         console.log("info del put", result);
-        //getData();
         alert("Perfil modificado");
       } catch (err) {
         console.log('Error al modificar perfil', err);
         alert("Error modificar perfil");
+        setLoading(false);
       } finally {
         setModalVisible(false);
         setLoading(false);
@@ -65,6 +67,7 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text style={styles.title}>Mi Perfil</Text>
 
       <View style={styles.row}>
@@ -98,6 +101,7 @@ export default function Profile() {
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.modalView}>
+        {loading && <Loader />}
           <Text style={styles.modalTitle}>Editar Perfil</Text>
           <TextInput
             style={styles.input}

@@ -29,6 +29,7 @@ export const LogInForm = ({ navigation }) => {
       console.log("log in exitoso");
     } else {
       console.log("log in error");
+      alert("Usuario o contraseña incorrectos, por favor intenta de nuevo");
     }
   };
 
