@@ -25,10 +25,11 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
   }, []);
 
     
-    const _renderItem = (item:Reservation) =>{
+    const _renderItem = (item:Reservation,index?:number) =>{
          return (
                <Pressable
                  style={styles.Pressable}
+                 key={index}
                  onPress={() => goToReservationData(item)}
                >
                  <View style={styles.RestaurantView}>
@@ -47,13 +48,14 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
            return (
              <SafeAreaView style={styles.container}>
                <View style={styles.ListContainer}>
-                 <FlatList
+                 {/* <FlatList
                    data={data}
                    pagingEnabled={true}
                    showsHorizontalScrollIndicator={false}
                    renderItem={(item) => _renderItem(item.item)}
                    keyExtractor={(item) => item.id.toString()}
-                 />
+                 /> */}
+                {data.map((item,index)=>_renderItem(item,index))}
                </View>
              </SafeAreaView>
            );
@@ -80,6 +82,7 @@ const ReservationVerticalList = ({data,goToReservationData}:ReservationVerticalL
              shadowOffset: { width: 0, height: 5 },
              shadowRadius: 10,
              elevation: 4,
+             minHeight:100
            },
            RestaurantView: {
              flex: 1,

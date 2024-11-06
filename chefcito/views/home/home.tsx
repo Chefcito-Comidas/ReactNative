@@ -1,8 +1,8 @@
-import { Button, StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, Pressable, TextInput, ScrollView, RefreshControl } from 'react-native';
 import RestaurantList from '../../components/RestaurantList/RestaurantList';
 import { Restaurant } from "../../models/Restauran.model";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getRestaurant, getRestaurantById } from "../../api/Restaurant.API";
 import { GetReservations, GetReservationProps } from "../../api/bookings";
 import { GetUser } from '../../hooks/getUser.hook';
@@ -11,8 +11,21 @@ import { Reservation } from '../../models/Reservations.model';
 import ReservetionHorizontalList from '../../components/ReservationsHorizontalList/ReservetionHorizontalList';
 import { COLORS } from '../../utils/constants';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Home({ navigation }) {
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getRestaurantData();
+    getReservation();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [searchText, setSearchText] = useState('');
@@ -144,43 +157,62 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      {loading && <Loader />}
-      <View style={styles.searchAndFilterContainer}>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="A dónde comes?"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-        <DropDownPicker
-          open={open}
-          value={selectedCharacteristic}
-          items={characteristics}
-          setOpen={setOpen}
-          setValue={setSelectedCharacteristic}
-          setItems={setCharacteristics}
-          placeholder="Filtrar por tipo"
-          style={styles.dropdown}
-          containerStyle={{ width: 150 }}
-        />
-      </View>
-      {filteredRestaurants.length > 0 ? (
-        <RestaurantList data={filteredRestaurants} navigation={navigation} />
-      ) : (
-        <Text style={styles.noResultsText}>No se encontraron resultados</Text>
-      )}
-      {reservations.length > 0 && (
-        <View>
-          <Text style={styles.reservationTitle}>Reservas</Text>
-          <ReservetionHorizontalList data={reservations} goToReservationData={goToReservationData} />
-        </View>
-      )}
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        >
+          <View style={styles.container}>
+            {loading && <Loader />}
+            <View style={styles.searchAndFilterContainer}>
+              <TextInput
+                style={styles.searchBar}
+                placeholder="A dónde comes?"
+                value={searchText}
+                onChangeText={setSearchText}
+              />
+              <DropDownPicker
+                open={open}
+                value={selectedCharacteristic}
+                items={characteristics}
+                setOpen={setOpen}
+                setValue={setSelectedCharacteristic}
+                setItems={setCharacteristics}
+                placeholder="Filtrar por tipo"
+                style={styles.dropdown}
+                containerStyle={{ width: 150 }}
+              />
+            </View>
+            {filteredRestaurants.length > 0 ? (
+              <RestaurantList data={filteredRestaurants} navigation={navigation} />
+            ) : (
+              <Text style={styles.noResultsText}>No se encontraron resultados</Text>
+            )}
+            {reservations.length > 0 && (
+              <View>
+                <Text style={styles.reservationTitle}>Reservas</Text>
+                <ReservetionHorizontalList data={reservations} goToReservationData={goToReservationData} />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+    
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow:1,
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,

@@ -27,11 +27,11 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
     loadFonts();
   }, []);
 
-    const _renderItem = (item: Restaurant) => {
+    const _renderItem = (item: Restaurant,index?:number) => {
         return (
-          <Pressable style={styles.Pressable} onPress={() => goToRestaurantPage(item)}>
+          <Pressable style={styles.Pressable} onPress={() => goToRestaurantPage(item)} key={index}>
             <View style={styles.RestaurantView}>
-              <Image source={{ uri: item.logo }} style={styles.IconImage} />
+              {item.logo&&<Image source={{ uri: item.logo }} style={styles.IconImage} />}
               <View style={styles.InfoContainer}>
                 <Text style={styles.Name}>{item.name}</Text>
                 <Text style={styles.ExtraData}>{item.characteristics.join(", ")}</Text>
@@ -44,17 +44,16 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
       };
 
       return (
-        <SafeAreaView style={styles.container}>
           <View style={styles.ListContainer}>
-            <FlatList
+            {/* <FlatList
               data={data}
               pagingEnabled={true}
               showsHorizontalScrollIndicator={false}
               renderItem={(item) => _renderItem(item.item)}
               keyExtractor={(item) => item.id.toString()}
-            />
+            /> */}
+            {data.map((item,index)=>_renderItem(item,index))}
           </View>
-        </SafeAreaView>
       );
     };
 
@@ -79,6 +78,7 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
                  shadowOffset: { width: 0, height: 5 },
                  shadowRadius: 10,
                  elevation: 4,
+                 minHeight:130
                },
                RestaurantView: {
                  flex: 1,

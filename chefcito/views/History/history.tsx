@@ -2,20 +2,32 @@ import { GetReservationProps, GetReservations } from '../../api/bookings';
 import { getRestaurantById } from '../../api/Restaurant.API';
 import { GetUser } from '../../hooks/getUser.hook';
 import { WendysImage } from '../../models/Restauran.model';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, TextInput, ScrollView, RefreshControl } from 'react-native';
 import { Reservation } from '../../models/Reservations.model';
 import Loader from '../../components/Loader/Loader';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ReservationVerticalList from '../../components/ReservationVerticalList/ReservationVerticalList';
 import { COLORS } from '../../utils/constants';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function History({ navigation }) {
   const { user, initializing } = GetUser();
+  const init = useRef(true)
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // Estado para el texto de búsqueda
   const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]); // Estado para las reservas filtradas
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getReservation();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', (e) => {
@@ -36,7 +48,8 @@ export default function History({ navigation }) {
   }, [searchQuery, reservations]);
 
   const getReservation = async () => {
-    if (initializing) {
+    console.log('getReservation',init.current)
+    if (init.current) {
       setTimeout(() => {
         getReservation();
       }, 100);
@@ -67,31 +80,50 @@ export default function History({ navigation }) {
   };
 
   useEffect(() => {
+    init.current = initializing
     if (!initializing) {
       getReservation();
     }
   }, [user, initializing]);
 
   return (
-    <View style={styles.container}>
-      {loading && <Loader />}
-      <View style={styles.searchBar}>
-        <Ionicons name={'search'} size={16} color={COLORS.gray} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar mis reservas"
-          value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
-      </View>
-      {filteredReservations.length > 0 && (
-        <ReservationVerticalList data={filteredReservations} goToReservationData={goToReservationData} />
-      )}
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+          <View style={styles.container}>
+            {loading && <Loader />}
+            <View style={styles.searchBar}>
+              <Ionicons name={'search'} size={16} color={COLORS.gray} />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Buscar mis reservas"
+                value={searchQuery}
+                onChangeText={(text) => setSearchQuery(text)}
+              />
+            </View>
+            {filteredReservations.length > 0 && (
+              <ReservationVerticalList data={filteredReservations} goToReservationData={goToReservationData} />
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+    
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow:1,
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
