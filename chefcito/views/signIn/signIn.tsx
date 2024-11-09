@@ -16,7 +16,7 @@ export const SignInForm = ({ navigation }) => {
         const user = await createUserPassword(values.email, values.password);
         if(user) {
             const token = await user.getIdToken();
-            const newUser = await CreateUser(token);
+            const newUser = await CreateUser(token,values.name,values.phone_number);
             console.log('sign in exitoso', newUser);
             dispatch(login())
 
@@ -28,6 +28,8 @@ export const SignInForm = ({ navigation }) => {
     const schema = yup.object().shape({
         email: yup.string().required(),
         password: yup.string().required(),
+        name: yup.string().required(),
+        phone_number: yup.string().required(),
     });
 
     const goToLogIn = () => {
@@ -40,10 +42,12 @@ export const SignInForm = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../../assets/images/logochefcito.jpg')} style={styles.logo} />
+            <Image source={require("../../assets/images/chefcito.jpg")} style={styles.logo} />
             <Formik
                 validationSchema={schema}
                 initialValues={{
+                    name: '',
+                    phone_number: '',
                     email: '',
                     password: ''
                 }}
@@ -52,8 +56,24 @@ export const SignInForm = ({ navigation }) => {
                 {({ handleChange, handleBlur, handleSubmit, values }) => (
                     <View style={styles.formContainer}>
                         <TextInput
+                            placeholder="Nombre Completo"
+                            placeholderTextColor="#555"
+                            onChangeText={handleChange('name')}
+                            onBlur={handleBlur('name')}
+                            value={values.name}
+                            style={styles.formField}
+                        />
+                        <TextInput
+                            placeholder="Teléfono"
+                            placeholderTextColor="#555"
+                            onChangeText={handleChange('phone_number')}
+                            onBlur={handleBlur('phone_number')}
+                            value={values.phone_number}
+                            style={styles.formField}
+                        />
+                        <TextInput
                             placeholder="Email"
-                            placeholderTextColor="#8f4f0a"
+                            placeholderTextColor="#555"
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -61,7 +81,7 @@ export const SignInForm = ({ navigation }) => {
                         />
                         <TextInput
                             placeholder="Contraseña"
-                            placeholderTextColor="#8f4f0a"
+                            placeholderTextColor="#555"
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
@@ -87,7 +107,7 @@ export const SignInForm = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.pastellog,
+        backgroundColor: COLORS.fondologin,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
@@ -103,7 +123,7 @@ const styles = StyleSheet.create({
     },
     formField: {
         borderWidth: 1,
-        borderColor: COLORS.pastelborder,
+        borderColor: COLORS.azulClaro,
         backgroundColor: '#fff',
         borderRadius: 10,
         marginBottom: 15,
@@ -114,14 +134,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     button: {
-        backgroundColor: '#ffa726',
+        backgroundColor: COLORS.botonlogin,
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         marginTop: 10,
-    },
+      },
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',

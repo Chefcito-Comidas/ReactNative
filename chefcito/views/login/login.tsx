@@ -99,7 +99,7 @@ export const LogInForm = ({ navigation }) => {
               placeholderTextColor="#555"
             />
             <Pressable style={styles.button} onPress={() => handleSubmit()}>
-              <Text style={styles.buttonText}>Log In</Text>
+              <Text style={styles.buttonText}>Entra a Comer!</Text>
             </Pressable>
           </View>
         )}
