@@ -49,9 +49,11 @@ export const LogInForm = ({ navigation }) => {
         console.log("sign in exitoso", newUser);
       } else {
         console.log("sign in error");
+        alert("sign in error")
       }
     } catch (e) {
       console.log("error", e);
+      alert(e)
     }
   };
 
