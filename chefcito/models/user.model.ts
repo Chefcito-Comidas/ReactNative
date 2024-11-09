@@ -4,13 +4,15 @@ export type UserPost = {
 }
 
 export type Profile = {
-    localid:string,
-    email: string,
-    name:string,
-    phone_number:string,
+    data:{
+        localid:string,
+        email: string,
+        name:string,
+        phone_number:string,
+    },
     points: {
-    user: string,
-    total: 0,
-    level: string
-  }
+        user: string,
+        total: 0,
+        level: string
+    }
   }

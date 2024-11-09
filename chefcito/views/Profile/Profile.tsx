@@ -36,9 +36,9 @@ export default function Profile() {
   const getData = async () => {
     const result = await getProfileData(user);
     console.log("data user", result);
-    setName(result.name);
-    setEmail(result.email);
-    setPhone(result.phone_number);
+    setName(result.data.name);
+    setEmail(result.data.email);
+    setPhone(result.data.phone_number);
     setLevel(result.points.level); 
     setTotalPoints(result.points.total);
   };
@@ -68,8 +68,8 @@ export default function Profile() {
         const result = await putProfileData(user, updatedProfile);
         console.log("info del put", result);
         alert("Perfil modificado");
-        setName(result.name);
-        setPhone(result.phone_number);
+        setName(result.data.name);
+        setPhone(result.data.phone_number);
       } catch (err) {
         console.log('Error al modificar perfil', err);
         alert("Error modificar perfil");
