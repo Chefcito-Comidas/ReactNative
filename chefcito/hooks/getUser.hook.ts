@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 type GetUserActions = {
   initializing:boolean,
-  user:FirebaseAuthTypes.User
+  user:FirebaseAuthTypes.User,
+  setInitializing:(value:boolean)=>void,
+  setUser:(value:any)=>void,
 }
 export const GetUser = ():GetUserActions => {
     const [initializing, setInitializing] = useState(true);
@@ -24,5 +26,7 @@ export const GetUser = ():GetUserActions => {
     return {
       initializing,
       user,
+      setInitializing,
+      setUser,
     }
 }
