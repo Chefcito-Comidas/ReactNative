@@ -6,8 +6,11 @@ import * as yup from 'yup';
 import { createUserPassword } from '../../api/googleAuth';
 import { CreateUser } from '../../api/authRestApi';
 import { COLORS } from '../../utils/constants';
+import { useAppDispatch } from "../../redux/hooks/hook";
+import { login } from "../../redux/reducer/user";
 
 export const SignInForm = ({ navigation }) => {
+    const dispatch = useAppDispatch()
 
     const signIn = async (values:any) => {
         const user = await createUserPassword(values.email, values.password);
@@ -15,6 +18,8 @@ export const SignInForm = ({ navigation }) => {
             const token = await user.getIdToken();
             const newUser = await CreateUser(token);
             console.log('sign in exitoso', newUser);
+            dispatch(login())
+
         } else {
             console.log('sign in error');
         }

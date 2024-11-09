@@ -21,10 +21,13 @@ import {
   GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
 import { CreateUser } from "../../api/authRestApi";
-
+import { useAppDispatch } from "../../redux/hooks/hook";
+import { login } from "../../redux/reducer/user";
 export const LogInForm = ({ navigation }) => {
+  const dispatch = useAppDispatch()
   const onLogin = async (values) => {
     const user = await loginUserPassword(values.email, values.password);
+    dispatch(login())
     if (user) {
       console.log("log in exitoso");
     } else {
@@ -49,8 +52,8 @@ export const LogInForm = ({ navigation }) => {
         console.log("sign in exitoso", newUser);
       } else {
         console.log("sign in error");
-        alert("sign in error")
       }
+      dispatch(login())
     } catch (e) {
       console.log("error", e);
       alert(e)

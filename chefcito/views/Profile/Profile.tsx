@@ -8,10 +8,12 @@ import { COLORS } from '../../utils/constants';
 import { getProfileData, putProfileData } from '../../api/profile.API';
 import Loader from '../../components/Loader/Loader';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { useAppDispatch } from '../../redux/hooks/hook';
+import {signout as SingOut} from "../../redux/reducer/user";
 
 export default function Profile() {
   const navigation = useNavigation<any>(); 
-  const { user, setUser, setInitializing } = GetUser();
+  const { user } = GetUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ export default function Profile() {
   const [totalPoints, setTotalPoints] = useState(0);
 
   const [refreshing, setRefreshing] = useState(false);
-
+  const dispatch = useAppDispatch()
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -52,8 +54,7 @@ export default function Profile() {
 
   const signout = async () => {
     await signOut();
-    setInitializing(true);
-    setUser(null);
+    dispatch(SingOut())
   };
 
   const saveChanges = async () => {

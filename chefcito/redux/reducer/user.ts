@@ -4,12 +4,14 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 // Define a type for the slice state
 interface UserState {
-  user: any
+  user: any;
+  initializing:boolean
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
   user: null,
+  initializing:true
 }
 
 export const userSlice = createSlice({
@@ -17,11 +19,12 @@ export const userSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    login: (state,action: PayloadAction<FirebaseAuthTypes.User>) => {
-      state.user = action?.payload
+    login: (state) => {
+      state.initializing = false
     },
     signout:(state) => {
         state.user = null
+        state.initializing = true
     }
   },
 })
