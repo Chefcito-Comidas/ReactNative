@@ -1,16 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View, Modal, TextInput, Pressable } from 'react-native';
+import { Button, StyleSheet, Text, View, Modal, TextInput, Pressable, RefreshControl, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Importa el hook de navegación
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { signOut } from '../../api/googleAuth';
 import { GetUser } from '../../hooks/getUser.hook';
 import { COLORS } from '../../utils/constants';
 import { getProfileData, putProfileData } from '../../api/profile.API';
 import Loader from '../../components/Loader/Loader';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export default function Profile() {
   const navigation = useNavigation<any>(); 
-  const { user } = GetUser();
+  const { user, setUser, setInitializing } = GetUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +19,17 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState('');
   const [totalPoints, setTotalPoints] = useState(0);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   
   const getData = async () => {
     const result = await getProfileData(user);
@@ -40,7 +52,8 @@ export default function Profile() {
 
   const signout = async () => {
     await signOut();
-    navigation.navigate('LogIn');
+    setInitializing(true);
+    setUser(null);
   };
 
   const saveChanges = async () => {
@@ -54,6 +67,8 @@ export default function Profile() {
         const result = await putProfileData(user, updatedProfile);
         console.log("info del put", result);
         alert("Perfil modificado");
+        setName(result.name);
+        setPhone(result.phone_number);
       } catch (err) {
         console.log('Error al modificar perfil', err);
         alert("Error modificar perfil");
@@ -67,75 +82,83 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Text style={styles.title}>Mi Perfil</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <StatusBar style="auto" />
+        <Text style={styles.title}>Mi Perfil</Text>
 
-      <View style={styles.row}>
-        <Text style={styles.label}>Nivel: </Text>
-        <Text style={styles.info}>{level}</Text>
-        <Text style={styles.label}>  Puntos: </Text>
-        <Text style={styles.info}>{totalPoints}</Text>
-      </View>
-      
-      {user && (
-        <View style={styles.card}>
-          <Text style={styles.label}>Nombre:</Text>
-          <Text style={styles.info}>{name}</Text>
-          <Text style={styles.label}>Correo:</Text>
-          <Text style={styles.info}>{user.email}</Text>
-          <Text style={styles.label}>Teléfono:</Text>
-          <Text style={styles.info}>{phone}</Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Nivel: </Text>
+          <Text style={styles.info}>{level}</Text>
+          <Text style={styles.label}>  Puntos: </Text>
+          <Text style={styles.info}>{totalPoints}</Text>
         </View>
-      )}
-
-      <View style={styles.buttonRow}>
-        <Button onPress={() => setModalVisible(true)} title="Editar Perfil" color="#87CEEB" />
-        <Button onPress={() => signout()} title="Cerrar Sesion" color="#ff6347" />
-      </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.modalView}>
-        {loading && <Loader />}
-          <Text style={styles.modalTitle}>Editar Perfil</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nombre"
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={user?.email}
-            value={email}
-            editable={false}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Teléfono"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-          <View style={styles.modalButtonRow}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Cancelar</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonSave]}
-              onPress={saveChanges}>
-              <Text style={styles.textStyle}>Guardar</Text>
-            </Pressable>
+        
+        {user && (
+          <View style={styles.card}>
+            <Text style={styles.label}>Nombre:</Text>
+            <Text style={styles.info}>{name}</Text>
+            <Text style={styles.label}>Correo:</Text>
+            <Text style={styles.info}>{user.email}</Text>
+            <Text style={styles.label}>Teléfono:</Text>
+            <Text style={styles.info}>{phone}</Text>
           </View>
+        )}
+
+        <View style={styles.buttonRow}>
+          <Button onPress={() => setModalVisible(true)} title="Editar Perfil" color="#87CEEB" />
+          <Button onPress={() => signout()} title="Cerrar Sesion" color="#ff6347" />
         </View>
-      </Modal>
+        </ScrollView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.modalView}>
+          {loading && <Loader />}
+            <Text style={styles.modalTitle}>Editar Perfil</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Nombre"
+              value={name}
+              onChangeText={setName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={user?.email}
+              value={email}
+              editable={false}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Teléfono"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+            />
+            <View style={styles.modalButtonRow}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonSave]}
+                onPress={saveChanges}>
+                <Text style={styles.textStyle}>Guardar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        
     </View>
   );
 }
@@ -152,6 +175,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  scrollView: {
+    flexGrow:1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   row: {
     flexDirection: 'row',  // Nivel y puntos en la misma línea
@@ -185,8 +214,9 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '70%',
-    marginBottom: 20,
+    alignItems: 'center',
+    width: '80%',
+    marginBottom: 40,
   },
   modalView: {
     margin: 20,

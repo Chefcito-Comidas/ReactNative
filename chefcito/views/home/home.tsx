@@ -209,7 +209,7 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   scrollView: {
     flexGrow:1,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
