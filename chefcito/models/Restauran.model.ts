@@ -17,8 +17,16 @@ export class Restaurant {
     characteristics:string[];
     vacations:string[];
     status:Status;
+    distance?:number|null
 }
-
+export class RestaurantLocationData {
+    result:RestaurantLocation[];
+    total:number
+}
+export class RestaurantLocation {
+    venue:Restaurant
+    distance:number
+}
 type Status = {
     status:string;
 }

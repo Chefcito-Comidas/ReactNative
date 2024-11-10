@@ -3,7 +3,7 @@ import RestaurantList from '../../components/RestaurantList/RestaurantList';
 import { Restaurant } from "../../models/Restauran.model";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useCallback, useEffect, useState } from 'react';
-import { getRestaurant, getRestaurantById } from "../../api/Restaurant.API";
+import { getRestaurant, getRestaurantById,getRestaurantWithLocation } from "../../api/Restaurant.API";
 import { GetReservations, GetReservationProps } from "../../api/bookings";
 import { GetUser } from '../../hooks/getUser.hook';
 import Loader from '../../components/Loader/Loader';
@@ -12,6 +12,7 @@ import ReservetionHorizontalList from '../../components/ReservationsHorizontalLi
 import { COLORS } from '../../utils/constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import * as Location from 'expo-location';
 
 export default function Home({ navigation }) {
 
@@ -34,6 +35,8 @@ export default function Home({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [selectedCharacteristic, setSelectedCharacteristic] = useState(null);
 
+  const [location, setLocation] = useState<Location.LocationObject>(null);
+  const [locationError, setLocationError] = useState<boolean>(null);
   const [open, setOpen] = useState(false);
   const [characteristics, setCharacteristics] = useState([
     { label: 'Todas las categorías', value: null },
@@ -71,6 +74,20 @@ export default function Home({ navigation }) {
   ]);
 
   useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Permission to access location was denied');
+        setLocationError(true)
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getRestaurantData();
       getReservation();
@@ -84,27 +101,53 @@ export default function Home({ navigation }) {
       getRestaurantData();
       getReservation();
     }
-  }, [user, initializing]);
+  }, [user, initializing,location,locationError]);
 
   useEffect(() => {
     filterRestaurants(searchText, selectedCharacteristic);
   }, [searchText, restaurants, selectedCharacteristic]);
 
+
+  const getRestauranInfo = async () =>{
+    try {
+      setLoading(true);
+      const restaurantList = await getRestaurant(user);
+      console.log(restaurantList);
+      setLoading(false);
+      setRestaurants(restaurantList.result);
+      setFilteredRestaurants(restaurantList.result);
+    } catch {
+      setLoading(false);
+    }
+  }
+
+  const getRestaurantWithLocationData = async () =>{
+    try {
+      setLoading(true);
+      const restaurantList = await getRestaurantWithLocation(user,location.coords.latitude,location.coords.longitude);
+      console.log(restaurantList);
+      setLoading(false);
+      const data:Restaurant[] = [] 
+      for(const restaurant of restaurantList.result) {
+        data.push({
+          ...restaurant.venue,
+          distance:restaurant.distance
+        })
+      }
+      setRestaurants(data);
+      setFilteredRestaurants(data);
+    } catch {
+      setLoading(false);
+    }
+  }
+
   const getRestaurantData = async () => {
-    if (initializing) {
-      setTimeout(() => {
-        getRestaurantData();
-      }, 100);
-    } else {
-      try {
-        setLoading(true);
-        const restaurantList = await getRestaurant(user);
-        console.log(restaurantList);
-        setLoading(false);
-        setRestaurants(restaurantList.result);
-        setFilteredRestaurants(restaurantList.result);
-      } catch {
-        setLoading(false);
+    if(user) {
+      if(location) {
+        getRestaurantWithLocationData()
+      }
+      if(!location&&locationError) {
+        getRestauranInfo()
       }
     }
   };
@@ -188,7 +231,7 @@ export default function Home({ navigation }) {
               />
             </View>
             {filteredRestaurants.length > 0 ? (
-              <RestaurantList data={filteredRestaurants} navigation={navigation} />
+              <RestaurantList data={filteredRestaurants} navigation={navigation}/>
             ) : (
               <Text style={styles.noResultsText}>No se encontraron resultados</Text>
             )}

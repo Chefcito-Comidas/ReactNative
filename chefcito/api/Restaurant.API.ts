@@ -1,4 +1,4 @@
-import { RestaurantData } from "models/Restauran.model"
+import { RestaurantData,RestaurantLocationData } from "models/Restauran.model"
 import { GetUser } from "../hooks/getUser.hook"
 import { apiGet } from "./apiRestWrapper"
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
@@ -23,7 +23,12 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 
 export const getRestaurant = async (user:FirebaseAuthTypes.User) => {
     const token = await user.getIdToken()
-    return apiGet<RestaurantData>({url:'venues?limit=10&start=0',customHeaders:{Authorization:`Bearer ${token}`} })
+    return apiGet<RestaurantData>({url:'venues?limit=100&start=0',customHeaders:{Authorization:`Bearer ${token}`} })
+}
+
+export const getRestaurantWithLocation = async (user:FirebaseAuthTypes.User,latitud,longitud) => {
+    const token = await user.getIdToken()
+    return apiGet<RestaurantLocationData>({url:`venues/near?location=${latitud}&location=${longitud}`,customHeaders:{Authorization:`Bearer ${token}`} })
 }
 
 export const getRestaurantById = async (user:FirebaseAuthTypes.User,id:string) => {
