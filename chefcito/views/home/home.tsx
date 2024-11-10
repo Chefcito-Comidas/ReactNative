@@ -1,9 +1,9 @@
-import { Button, StyleSheet, Text, View, Pressable, TextInput, ScrollView, RefreshControl } from 'react-native';
+import { Button, StyleSheet, Text, View, Pressable, TextInput, ScrollView, RefreshControl, Modal, TouchableOpacity, Image } from 'react-native';
 import RestaurantList from '../../components/RestaurantList/RestaurantList';
 import { Restaurant } from "../../models/Restauran.model";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useCallback, useEffect, useState } from 'react';
-import { getRestaurant, getRestaurantById,getRestaurantWithLocation } from "../../api/Restaurant.API";
+import { getRestaurant, getRestaurantById,getRestaurantWithLocation,getRestaurantPromotion } from "../../api/Restaurant.API";
 import { GetReservations, GetReservationProps } from "../../api/bookings";
 import { GetUser } from '../../hooks/getUser.hook';
 import Loader from '../../components/Loader/Loader';
@@ -13,6 +13,7 @@ import { COLORS } from '../../utils/constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function Home({ navigation }) {
 
@@ -29,11 +30,14 @@ export default function Home({ navigation }) {
 
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
+  const [promotionRestaurants, setPromotionRestaurants] = useState<Restaurant>(null);
   const [searchText, setSearchText] = useState('');
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { user, initializing } = GetUser();
   const [loading, setLoading] = useState(false);
   const [selectedCharacteristic, setSelectedCharacteristic] = useState(null);
+  const [showPopup, setShowPopup] = useState(false); // Estado para controlar el modal
+
 
   const [location, setLocation] = useState<Location.LocationObject>(null);
   const [locationError, setLocationError] = useState<boolean>(null);
@@ -91,6 +95,7 @@ export default function Home({ navigation }) {
     const unsubscribe = navigation.addListener('focus', () => {
       getRestaurantData();
       getReservation();
+      getRestaurantPromotionData();
       
     });
     return unsubscribe;
@@ -100,6 +105,7 @@ export default function Home({ navigation }) {
     if (!initializing) {
       getRestaurantData();
       getReservation();
+      getRestaurantPromotionData();
     }
   }, [user, initializing,location,locationError]);
 
@@ -148,6 +154,26 @@ export default function Home({ navigation }) {
       }
       if(!location&&locationError) {
         getRestauranInfo()
+      }
+    }
+  };
+
+  const getRestaurantPromotionData = async () => {
+    if (initializing) {
+      setTimeout(() => {
+        getRestaurantPromotionData();
+      }, 100);
+    } else {
+      try {
+        const promotionRestaurant = await getRestaurantPromotion(user);
+        console.log(promotionRestaurant);
+        let index = Math.floor(Math.random() * promotionRestaurant.result.length);
+        setPromotionRestaurants(promotionRestaurant.result[index]);
+        if (promotionRestaurant.result.length > 0){
+          setShowPopup(true);
+        }
+      } catch {
+        console.log("Error al cargar la promoción");
       }
     }
   };
@@ -243,6 +269,35 @@ export default function Home({ navigation }) {
             )}
           </View>
         </ScrollView>
+        <Modal
+        visible={showPopup}
+        transparent
+        animationType="slide"
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity onPress={() => setShowPopup(false)} style={styles.closeButton}>
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>¿Querés probar nuevos locales?</Text>
+            {restaurants.length > 0 && (
+              <View>
+                <Image
+                  source={{ uri: promotionRestaurants.logo }} 
+                  style={styles.restaurantLogo}
+                />
+                <Text style={styles.restaurantName}>{promotionRestaurants.name}</Text>
+                <ScrollView horizontal style={styles.imageGallery}>
+                  {promotionRestaurants.pictures.map((photoUrl, index) => (
+                    <Image key={index} source={{ uri: photoUrl }} style={styles.restaurantImage} />
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
+
       </SafeAreaView>
     </SafeAreaProvider>
     
@@ -295,5 +350,48 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.gray,
     textAlign: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  restaurantLogo: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  restaurantName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  imageGallery: {
+    flexDirection: 'row',
+  },
+  restaurantImage: {
+    width: 100,
+    height: 100,
+    marginRight: 8,
+    borderRadius: 10,
   },
 });
