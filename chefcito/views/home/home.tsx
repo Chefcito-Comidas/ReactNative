@@ -270,33 +270,38 @@ export default function Home({ navigation }) {
           </View>
         </ScrollView>
         <Modal
-        visible={showPopup}
-        transparent
-        animationType="slide"
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity onPress={() => setShowPopup(false)} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.modalTitle}>¿Querés probar nuevos locales?</Text>
-            {restaurants.length > 0 && (
-              <View>
-                <Image
-                  source={{ uri: promotionRestaurants.logo }} 
-                  style={styles.restaurantLogo}
-                />
-                <Text style={styles.restaurantName}>{promotionRestaurants.name}</Text>
-                <ScrollView horizontal style={styles.imageGallery}>
-                  {promotionRestaurants.pictures.map((photoUrl, index) => (
-                    <Image key={index} source={{ uri: photoUrl }} style={styles.restaurantImage} />
-                  ))}
-                </ScrollView>
-              </View>
-            )}
+          visible={showPopup}
+          transparent
+          animationType="slide"
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity onPress={() => setShowPopup(false)} style={styles.closeButton}>
+                <Ionicons name="close" size={24} color="black" />
+              </TouchableOpacity>
+              <Text style={styles.modalTitle}>Te recomendamos</Text>
+
+              {restaurants.length > 0 && (
+                <View style={styles.restaurantContainer}>
+                  {/* Logo y nombre del restaurante */}
+                  <Image
+                    source={{ uri: promotionRestaurants.logo }}
+                    style={styles.restaurantLogo}
+                  />
+                  <Text style={styles.restaurantName}>{promotionRestaurants.name}</Text>
+
+                  {/* Galería de fotos */}
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageGallery}>
+                    {promotionRestaurants.pictures.map((photoUrl, index) => (
+                      <Image key={index} source={{ uri: photoUrl }} style={styles.restaurantImage} />
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+
 
       </SafeAreaView>
     </SafeAreaProvider>
@@ -333,7 +338,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderWidth: 1,
     borderRadius: 10,
-    width: '60%', // Ajusta el ancho para que el dropdown pueda aparecer al lado
+    width: '60%', 
     paddingVertical: 8,
     paddingHorizontal: 12,
     fontSize: 18,
@@ -358,40 +363,57 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    width: '80%',
+    width: '90%',
+    maxHeight: '70%',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 20,
     padding: 20,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   closeButton: {
     position: 'absolute',
     top: 10,
     right: 10,
+    padding: 5,
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontFamily: 'Montserrat 600',
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 15,
+    color: '#333',
+    textAlign: 'center',
+  },
+  restaurantContainer: {
+    alignItems: 'center',
+    width: '100%',
   },
   restaurantLogo: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     borderRadius: 10,
     marginBottom: 10,
   },
   restaurantName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontFamily: 'Montserrat 600',
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 15,
+    color: '#555',
+    textAlign: 'center',
   },
   imageGallery: {
     flexDirection: 'row',
+    marginTop: 10,
   },
   restaurantImage: {
-    width: 100,
-    height: 100,
+    width: 180,
+    height: 120,
     marginRight: 8,
-    borderRadius: 10,
+    borderRadius: 15,
   },
 });
