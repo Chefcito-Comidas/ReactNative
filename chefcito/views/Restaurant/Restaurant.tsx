@@ -97,7 +97,7 @@ export default function Restaurant({ route, navigation }) {
         </View>
 
         <View style={styles.logoContainer}>
-          <Image source={{ uri: restaurant.logo }} style={styles.logoImage} />
+          <Image source={{ uri: restaurant?.logo }} style={styles.logoImage} />
           <Text style={styles.name}>{restaurant.name}</Text>
           <Text style={styles.smallBoxText}> A 500 metros</Text>
           <Text style={styles.smallBoxText}>Reserva a partir de: {moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>

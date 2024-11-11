@@ -42,7 +42,7 @@ export const SignInForm = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Image source={require("../../assets/images/chefcito.jpg")} style={styles.logo} />
+            <Image source={require("../../assets/images/chefcito.jpg")} style={styles?.logo} />
             <Formik
                 validationSchema={schema}
                 initialValues={{

@@ -37,7 +37,7 @@ export const RecoverPasswordForm = ({ navigation }) => {
     <View style={styles.container}>
       <Image
         source={require("../../assets/images/logochefcito.jpg")}
-        style={styles.logo}
+        style={styles?.logo}
       />
       <Formik
         validationSchema={schema}

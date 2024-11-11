@@ -285,7 +285,7 @@ export default function Home({ navigation }) {
                 <View style={styles.restaurantContainer}>
                   {/* Logo y nombre del restaurante */}
                   <Image
-                    source={{ uri: promotionRestaurants.logo }}
+                    source={{ uri: promotionRestaurants?.logo }}
                     style={styles.restaurantLogo}
                   />
                   <Text style={styles.restaurantName}>{promotionRestaurants.name}</Text>

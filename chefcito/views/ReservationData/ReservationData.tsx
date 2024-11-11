@@ -104,7 +104,7 @@ export default function ReservationData({ route, navigation }) {
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {loading && <Loader />}
-                <Image source={{ uri: reservation.restaurant.logo }} style={styles.mainImage} />
+                <Image source={{ uri: reservation.restaurant?.logo }} style={styles.mainImage} />
                 <View style={styles.infoContainer}>
                     <View style={styles.nameContainer}>
                         <Text style={styles.name}>{reservation.restaurant.name}</Text>

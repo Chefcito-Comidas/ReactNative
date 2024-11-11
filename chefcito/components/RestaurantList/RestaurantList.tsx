@@ -41,7 +41,7 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
     return (
       <Pressable style={styles.Pressable} onPress={() => goToRestaurantPage(item)} key={index}>
         <View style={styles.RestaurantView}>
-          {item.logo&&<Image source={{ uri: item.logo }} style={styles.IconImage} />}
+          {item?.logo&&<Image source={{ uri: item?.logo }} style={styles.IconImage} />}
           <View style={styles.InfoContainer}>
             <Text style={styles.Name}>{item.name}</Text>
             <Text style={styles.ExtraData}>{item.characteristics.join(", ")}</Text>
