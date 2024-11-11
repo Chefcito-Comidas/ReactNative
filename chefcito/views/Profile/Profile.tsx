@@ -116,6 +116,9 @@ export default function Profile() {
           <Button onPress={() => signout()} title="Cerrar Sesion" color="#ff6347" />
         </View>
         </ScrollView>
+        <Text style={styles.contactText}>
+          En caso de tener problemas con la app, contactanos a chefcito@gmail.com
+        </Text>
         <Modal
           animationType="slide"
           transparent={true}
@@ -184,9 +187,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   row: {
-    flexDirection: 'row',  // Nivel y puntos en la misma línea
+    flexDirection: 'row',  
     marginBottom: 20,
-    alignItems: 'center',  // Alineación vertical de los textos
+    alignItems: 'center',  
   },
   card: {
     backgroundColor: COLORS.blancopaco,
@@ -269,4 +272,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  contactText: {
+  fontSize: 14,
+  color: 'rgba(128, 128, 128, 0.7)', 
+  textAlign: 'center',
+  marginTop: 20,
+  paddingHorizontal: 20,
+  marginBottom: 10,
+},
 });
