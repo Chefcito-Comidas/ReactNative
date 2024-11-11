@@ -29,6 +29,14 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
     loadFonts();
   }, []);
 
+  const getDistance = (distance:number):string => {
+    if(distance < 1000) {
+      return ` | ${distance} m`
+    } else {
+      return ` | ${Math.floor(distance/1000)} km`
+    }
+  }
+
   const _renderItem = (item: Restaurant,index?:number) => {
     return (
       <Pressable style={styles.Pressable} onPress={() => goToRestaurantPage(item)} key={index}>
@@ -37,7 +45,7 @@ const RestaurantList = ({data,navigation}:RestaurantListProps) =>{
           <View style={styles.InfoContainer}>
             <Text style={styles.Name}>{item.name}</Text>
             <Text style={styles.ExtraData}>{item.characteristics.join(", ")}</Text>
-            <Text style={styles.ExtraData}>Disponible {item.distance?` | ${item.distance} metros`:''}</Text>
+            <Text style={styles.ExtraData}>Disponible {item.distance?getDistance(item.distance):''}</Text>
             {/*<Text style={styles.ExtraData}>Estado: {item.status.status}</Text>*/}
           </View>
         </View>
