@@ -26,16 +26,16 @@ export default function ReservationData({ route, navigation }) {
     const [opinion, setOpinion] = useState('');
     const [fontsLoaded, setFontsLoaded] = useState(false); // Estado para verificar si la fuente está cargada
 
-  useEffect(() => {
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        'Montserrat': require('../../assets/fonts/Montserrat-VariableFont_wght.ttf'),
-      });
-      setFontsLoaded(true);
-    };
+    useEffect(() => {
+        const loadFonts = async () => {
+        await Font.loadAsync({
+            'Montserrat': require('../../assets/fonts/Montserrat-VariableFont_wght.ttf'),
+        });
+        setFontsLoaded(true);
+        };
 
-    loadFonts();
-  }, []);
+        loadFonts();
+    }, []);
 
     const openMaps = () => {
         //const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
@@ -62,11 +62,21 @@ export default function ReservationData({ route, navigation }) {
     const onCancel = () => setShow(false);
 
     const confirmReservation = async (id: string) => {
-        setShowQrScanner(false);
+        setTimeout(()=>{
+            setShowQrScanner(false);
+        },500)
         const timeDiff = moment().diff(moment(reservation.time), 'hours');
         if (id === reservation.venue && timeDiff < 12) {
-            console.log("confirmar reserva");
-            ConfirmBooking(reservation, user);
+            try{ 
+                setLoading(true)
+                const data = await ConfirmBooking(reservation, user);
+                console.log('reserva creada',data)
+                setLoading(false)
+                alert("Reserva confirmada con Exito")
+            } catch (err) {
+                setLoading(false)
+                alert("Error al confirmar reserva")
+            }
         }
     };
 
