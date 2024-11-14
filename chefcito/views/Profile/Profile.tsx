@@ -34,6 +34,7 @@ export default function Profile() {
   }, []);
   
   const getData = async () => {
+    setLoading(true);
     const result = await getProfileData(user);
     console.log("data user", result);
     setName(result.data.name);
@@ -41,6 +42,7 @@ export default function Profile() {
     setPhone(result.data.phone_number);
     setLevel(result.points.level); 
     setTotalPoints(result.points.total);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -117,7 +119,7 @@ export default function Profile() {
         </View>
         </ScrollView>
         <Text style={styles.contactText}>
-          En caso de tener problemas con la app, contactanos a chefcito@gmail.com
+          En caso de tener problemas con la app, contactanos a chefcito.reservas@gmail.com
         </Text>
         <Modal
           animationType="slide"

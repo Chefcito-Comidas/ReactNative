@@ -21,13 +21,11 @@ export default function History({ navigation }) {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    getReservation();
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+const onRefresh = useCallback(async () => {
+  setRefreshing(true);
+  await getReservation(); // Espera a que la función termine
+  setRefreshing(false);   // Luego de que los datos se cargan, detén el refresco
+}, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', (e) => {
@@ -49,11 +47,11 @@ export default function History({ navigation }) {
 
   const getReservation = async () => {
     console.log('getReservation',init.current)
-    if (init.current) {
-      setTimeout(() => {
-        getReservation();
-      }, 100);
-    } else {
+    //if (init.current) {
+    //  setTimeout(() => {
+    //    getReservation();
+    //  }, 100);
+    //} else {
       try {
         const props = new GetReservationProps();
         props.start = 0;
@@ -70,7 +68,7 @@ export default function History({ navigation }) {
         console.log('get reservation error', err);
         setLoading(false);
       }
-    }
+    //}
   };
 
   const goToReservationData = (reservation: Reservation) => {

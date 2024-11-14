@@ -53,6 +53,14 @@ export default function Restaurant({ route, navigation }) {
     }
   };
 
+  const getDistance = (distance:number):string => {
+    if(distance < 1000) {
+      return ` A ${distance} m`
+    } else {
+      return ` A ${Math.floor(distance/1000)} km`
+    }
+  }
+
   useEffect(() => {
     if (!initializing) {
       console.log("useeffect de summary")
@@ -75,14 +83,19 @@ export default function Restaurant({ route, navigation }) {
   };
 
   const openMaps = () => {
-    const fullAddress = restaurant.location.split("@").length > 0 ? restaurant.location.split("@")[1] : restaurant.location;
+    //const fullAddress = restaurant.location.split(",").length > 0 ? restaurant.location.split(",")[1] : restaurant.location;
     const url = Platform.select({
-      ios: `maps:0,0?q=${fullAddress}`,
-      android: `geo:0,0?q=${fullAddress}`,
+      ios: `maps:0,0?q=${restaurant.location}`,
+      android: `geo:0,0?q=${restaurant.location}`,
     });
 
     Linking.openURL(url);
   }
+
+  const openMenu = () => {
+    Linking.openURL(restaurant.menu);
+  }
+  console.log("Restaurant menu:",restaurant.menu)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,9 +112,9 @@ export default function Restaurant({ route, navigation }) {
         <View style={styles.logoContainer}>
           <Image source={{ uri: restaurant?.logo }} style={styles.logoImage} />
           <Text style={styles.name}>{restaurant.name}</Text>
-          <Text style={styles.smallBoxText}> A 500 metros</Text>
+          <Text style={styles.smallBoxText}>{restaurant.distance?getDistance(restaurant.distance):''}</Text>
           <Text style={styles.smallBoxText}>Reserva a partir de: {moment().add(restaurant.reservationLeadTime,'days').format('DD [de] MMM')}</Text>
-          <Pressable style={styles.menuButton} onPress={() => setMenuModalVisible(true)}>
+          <Pressable style={styles.menuButton} onPress={() => openMenu()}>
             <Text style={styles.menuButtonText}>Ver Menú</Text>
           </Pressable>
         </View>
@@ -154,7 +167,6 @@ export default function Restaurant({ route, navigation }) {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Menú del Local</Text>
-            <Image source={{ uri: restaurant.menu }} style={styles.menuImage} />
             <Pressable style={styles.closeButton} onPress={() => setMenuModalVisible(false)}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </Pressable>

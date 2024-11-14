@@ -38,10 +38,10 @@ export default function ReservationData({ route, navigation }) {
   }, []);
 
     const openMaps = () => {
-        const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
+        //const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
         const url = Platform.select({
-            ios: `maps:0,0?q=${fullAddress}`,
-            android: `geo:0,0?q=${fullAddress}`,
+            ios: `maps:0,0?q=${reservation.restaurant.location}`,
+            android: `geo:0,0?q=${reservation.restaurant.location}`,
         });
         Linking.openURL(url);
     };

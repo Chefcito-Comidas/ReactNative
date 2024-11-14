@@ -225,6 +225,12 @@ export default function Home({ navigation }) {
     });
   };
 
+  const goToRestaurantPage = (item:Restaurant) => {
+    navigation.navigate('Restaurante', {
+      restaurant:item
+    });
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -283,12 +289,19 @@ export default function Home({ navigation }) {
 
               {restaurants.length > 0 && (
                 <View style={styles.restaurantContainer}>
-                  {/* Logo y nombre del restaurante */}
+                  {/* Logo del restaurante */}
                   <Image
                     source={{ uri: promotionRestaurants?.logo }}
                     style={styles.restaurantLogo}
                   />
-                  <Text style={styles.restaurantName}>{promotionRestaurants.name}</Text>
+                  
+                  {/* Contenedor del nombre y botón "Ir" */}
+                  <View style={styles.nameAndButtonContainer}>
+                    <Text style={styles.restaurantNameProm}>{promotionRestaurants.name}</Text>
+                    <Pressable style={styles.menuButton} onPress={() => goToRestaurantPage(promotionRestaurants)}>
+                      <Text style={styles.menuButtonText}>Ir</Text>
+                    </Pressable>
+                  </View>
 
                   {/* Galería de fotos */}
                   <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageGallery}>
@@ -301,6 +314,7 @@ export default function Home({ navigation }) {
             </View>
           </View>
         </Modal>
+
 
 
       </SafeAreaView>
@@ -398,9 +412,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  restaurantName: {
+  restaurantNameProm: {
     fontFamily: 'Montserrat 600',
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: '600',
     marginBottom: 15,
     color: '#555',
@@ -415,5 +429,29 @@ const styles = StyleSheet.create({
     height: 120,
     marginRight: 8,
     borderRadius: 15,
+  },
+  menuButton: {
+    backgroundColor: '#5F9EA0',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 30,
+    marginTop: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  menuButtonText: {
+    color: COLORS.white,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  nameAndButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '50%',
+    marginBottom: 10,
   },
 });
