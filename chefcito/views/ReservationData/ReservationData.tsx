@@ -20,6 +20,7 @@ export default function ReservationData({ route, navigation }) {
     const [show, setShow] = useState(false);
     const { user } = GetUser();
     const { reservation }: routeParam = route.params;
+    const [reservationData, setReservationData] = useState<Reservation>() 
     const [loading, setLoading] = useState(false);
     const [showQrScanner, setShowQrScanner] = useState(false);
     const [opinionModalVisible, setOpinionModalVisible] = useState(false);
@@ -36,6 +37,10 @@ export default function ReservationData({ route, navigation }) {
 
         loadFonts();
     }, []);
+
+    useEffect(()=>{
+        if(reservation) setReservationData(reservation)
+    },[reservation])
 
     const openMaps = () => {
         //const fullAddress = reservation.restaurant.location.split('@')[1] || reservation.restaurant.location;
@@ -71,9 +76,12 @@ export default function ReservationData({ route, navigation }) {
                 setLoading(true)
                 const data = await ConfirmBooking(reservation, user);
                 console.log('reserva creada',data)
+                reservationData.status.status = 'Accepted'
+                setReservationData(reservationData)
                 setLoading(false)
                 alert("Reserva confirmada con Exito")
             } catch (err) {
+                console.log('confirmReservation err',err)
                 setLoading(false)
                 alert("Error al confirmar reserva")
             }
@@ -130,7 +138,7 @@ export default function ReservationData({ route, navigation }) {
                     </View>
                 </View>
 
-                {(reservation.status.status === 'Uncomfirmed' || reservation.status.status === 'Accepted') && (
+                {(reservationData?.status?.status === 'Uncomfirmed' || reservationData?.status?.status === 'Accepted') && (
                     <View style={styles.buttonRow}>
                         <Pressable style={styles.cancelButton} onPress={() => setShow(true)}>
                             <Text style={styles.buttonText}>Cancelar</Text>
@@ -154,14 +162,14 @@ export default function ReservationData({ route, navigation }) {
                     </View>
                 )}
 
-                {(reservation.status.status === 'Accepted') && (
+                {(reservationData?.status?.status === 'Accepted') && (
                     <Pressable style={styles.scanButton} onPress={() => setShowQrScanner(true)}>
                         <Text style={styles.buttonText}>Escanear</Text>
                         <Ionicons name="qr-code-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
                     </Pressable>
                 )}
 
-                {reservation.status.status === 'Assisted' && (
+                {reservationData?.status?.status === 'Assisted' && (
                     <Pressable style={styles.opinionButton} onPress={openOpinionModal}>
                         <Text style={styles.buttonText}>Deja tu opinión</Text>
                         <Ionicons name="create-outline" size={16} color={COLORS.white} style={styles.iconStyle} />
