@@ -21,11 +21,11 @@ export default function History({ navigation }) {
 
   const [refreshing, setRefreshing] = useState(false);
 
-const onRefresh = useCallback(async () => {
-  setRefreshing(true);
-  await getReservation(); // Espera a que la función termine
-  setRefreshing(false);   // Luego de que los datos se cargan, detén el refresco
-}, []);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getReservation(); // Espera a que la función termine
+    setRefreshing(false);   // Luego de que los datos se cargan, detén el refresco
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', (e) => {
@@ -53,17 +53,20 @@ const onRefresh = useCallback(async () => {
     //  }, 100);
     //} else {
       try {
-        const props = new GetReservationProps();
-        props.start = 0;
-        props.limit = 20;
-        setLoading(true);
-        const reservation = await GetReservations(props, user);
-        for (const item of reservation.result) {
-          const rest = await getRestaurantById(user, item.venue);
-          item.restaurant = rest.result[0];
+        if(user){
+          const props = new GetReservationProps();
+          props.start = 0;
+          props.limit = 20;
+          setLoading(true);
+          const reservation = await GetReservations(props, user);
+          for (const item of reservation.result) {
+            const rest = await getRestaurantById(user, item.venue);
+            item.restaurant = rest.result[0];
+          }
+          setLoading(false);
+          setReservations(reservation.result);
         }
-        setLoading(false);
-        setReservations(reservation.result);
+        
       } catch (err) {
         console.log('get reservation error', err);
         setLoading(false);

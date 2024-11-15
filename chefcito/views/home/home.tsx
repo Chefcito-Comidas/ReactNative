@@ -297,7 +297,7 @@ export default function Home({ navigation }) {
                   
                   {/* Contenedor del nombre y botón "Ir" */}
                   <View style={styles.nameAndButtonContainer}>
-                    <Text style={styles.restaurantNameProm}>{promotionRestaurants.name}</Text>
+                    <Text style={styles.restaurantNameProm}>{promotionRestaurants?.name}</Text>
                     <Pressable style={styles.menuButton} onPress={() => goToRestaurantPage(promotionRestaurants)}>
                       <Text style={styles.menuButtonText}>Ir</Text>
                     </Pressable>
