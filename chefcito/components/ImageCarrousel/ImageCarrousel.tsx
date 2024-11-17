@@ -1,19 +1,18 @@
 import { SafeAreaView, View, FlatList,Image } from 'react-native';
 
 interface ImageCarrouselProps {
-    data:any[]
+    data:{image:string,id:any}[]
 }
 const ImageCarrousel = ({data}:ImageCarrouselProps) =>{
-    const _renderItem = ({item}) =>{
+    const _renderItem = (image) =>{
         return (
           <View style={{
                 borderRadius: 5,
-                backgroundColor:'transparent',
                 marginHorizontal:12,
                 padding:10,
             }}
             >
-                <Image source={item.image} style={{height:150}} />
+                <Image source={{uri:image}} style={{minHeight:150,width:250}} resizeMethod='scale' />
           </View>
 
         )
@@ -29,7 +28,7 @@ const ImageCarrousel = ({data}:ImageCarrouselProps) =>{
                 horizontal
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => _renderItem({item})}
+                renderItem={({item}) => _renderItem(item.image)}
                 keyExtractor={item => item.id}
                 />
             </View>
