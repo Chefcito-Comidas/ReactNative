@@ -15,11 +15,15 @@ export const SignInForm = ({ navigation }) => {
     const signIn = async (values:any) => {
         const user = await createUserPassword(values.email, values.password);
         if(user) {
-            const token = await user.getIdToken();
-            const newUser = await CreateUser(token,values.name,values.phone_number);
-            console.log('sign in exitoso', newUser);
-            dispatch(login())
-
+            try {
+                const token = await user.getIdToken();
+                const newUser = await CreateUser(token,values.name,values.phone_number);
+                console.log('sign in exitoso', newUser);
+                dispatch(login())
+            } catch (err) {
+                console.log('signIn err: ',err)
+                alert(err)
+            }
         } else {
             console.log('sign in error');
         }

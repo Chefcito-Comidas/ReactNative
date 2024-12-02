@@ -27,9 +27,9 @@ export const LogInForm = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const onLogin = async (values) => {
     const user = await loginUserPassword(values.email, values.password);
-    dispatch(login())
     if (user) {
       console.log("log in exitoso");
+      dispatch(login())
     } else {
       console.log("log in error");
       alert("Usuario o contraseña incorrectos, por favor intenta de nuevo");
@@ -50,10 +50,10 @@ export const LogInForm = ({ navigation }) => {
         const token = await user.user.getIdToken();
         const newUser = await CreateUser(token,userData.data.user.name);
         console.log("sign in exitoso", newUser);
+        dispatch(login())
       } else {
         console.log("sign in error");
       }
-      dispatch(login())
     } catch (e) {
       console.log("error", e);
       alert(e)
