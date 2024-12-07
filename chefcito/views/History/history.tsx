@@ -46,7 +46,6 @@ export default function History({ navigation }) {
   }, [searchQuery, reservations]);
 
   const getReservation = async () => {
-    console.log('getReservation',init.current)
     //if (init.current) {
     //  setTimeout(() => {
     //    getReservation();
@@ -58,6 +57,7 @@ export default function History({ navigation }) {
           props.start = 0;
           props.limit = 20;
           setLoading(true);
+          console.log('getReservation')
           const reservation = await GetReservations(props, user);
           for (const item of reservation.result) {
             const rest = await getRestaurantById(user, item.venue);
