@@ -78,6 +78,7 @@ export default function ReservationData({ route, navigation }) {
                 console.log('reserva creada',data)
                 reservationData.status.status = 'Accepted'
                 setReservationData(reservationData)
+                navigation.navigate('HomeNavigation')
                 setLoading(false)
                 alert("Reserva confirmada con Exito")
             } catch (err) {
