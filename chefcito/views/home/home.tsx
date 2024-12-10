@@ -18,16 +18,6 @@ import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 export default function Home({ navigation }) {
 
   const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    getRestaurantData();
-    getReservation();
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [promotionRestaurants, setPromotionRestaurants] = useState<Restaurant>(null);
@@ -76,6 +66,16 @@ export default function Home({ navigation }) {
     { label: 'Woks', value: 'Woks' },
     { label: 'Wraps', value: 'Wraps' },
   ]);
+
+  const onRefresh = useCallback(() => {
+    console.log('Home refresh')
+    setRefreshing(true);
+    getRestaurantData();
+    getReservation();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [user]);
 
   useEffect(() => {
     (async () => {

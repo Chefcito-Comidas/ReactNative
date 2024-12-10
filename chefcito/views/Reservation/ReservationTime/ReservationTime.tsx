@@ -56,8 +56,8 @@ export default function ReservationTime({ route, navigation }) {
                 <Select
                     onValueChange={onChange}
                     items={restaurant.slots.map((item) => ({
-                        label: moment(item).format('HH:mm'),
-                        value: moment(item).format('HH:mm'),
+                        label: moment(item).add(-3,'hour').local().format('HH:mm'),
+                        value: moment(item).add(-3,'hour').local().format('HH:mm'),
                     }))}
                     placeHolder='Selecciona Horario'
                     customStyles={{

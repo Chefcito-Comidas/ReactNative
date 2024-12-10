@@ -18,14 +18,16 @@ export default function History({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // Estado para el texto de búsqueda
   const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]); // Estado para las reservas filtradas
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
+    console.log('History refresh')
     setRefreshing(true);
-    await getReservation(); // Espera a que la función termine
-    setRefreshing(false);   // Luego de que los datos se cargan, detén el refresco
-  }, []);
+    getReservation(); // Espera a que la función termine
+    setTimeout(() => {
+      setRefreshing(false); // Luego de que los datos se cargan, detén el refresco
+    }, 2000);
+  },[user]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', (e) => {
