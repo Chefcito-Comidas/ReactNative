@@ -167,9 +167,9 @@ export default function Home({ navigation }) {
       try {
         const promotionRestaurant = await getRestaurantPromotion(user);
         console.log(promotionRestaurant);
-        let index = Math.floor(Math.random() * promotionRestaurant.result.length);
-        setPromotionRestaurants(promotionRestaurant.result[index]);
-        if (promotionRestaurant.result.length > 0){
+        let index = Math.floor(Math.random() * 2);
+        if (promotionRestaurant?.result?.length > 0){
+          setPromotionRestaurants(promotionRestaurant.result[0]);
           setShowPopup(true);
         }
       } catch {
